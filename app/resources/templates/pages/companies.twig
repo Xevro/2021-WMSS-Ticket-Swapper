@@ -1,0 +1,197 @@
+{% extends 'layout/main.twig' %}
+
+{% block pageContent %}
+    <!-- page content -->
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>Companies & Contacts<contact></contact></h3>
+                </div>
+
+                <div class="title_right">
+                    <div class="col-md-5 col-sm-5   form-group pull-right top_search">
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row" style="display: block;">
+                <div class="col-md-12 col-sm-12  ">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>Companies</h2>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="x_content">
+                            <form action="" method="GET" class="form-label-left input_mask">
+                                <div class="col-md-4 col-sm-4 form-group has-feedback">
+                                    <label for="term" value="">Term</label>
+                                    <input type="text" name="term" class="form-control" id="term" placeholder="Term" value="{{ term }}">
+                                    <!--<?php if(!empty($error['searchTerm'])) { ?>
+                                        <div class="red p-2"><?php echo $error['searchTerm'] ?></div>
+                                    <?php }?>-->
+                                </div>
+
+                                <div class="col-md-4 col-sm-4 form-group has-feedback">
+                                    <label for="city">City</label>
+                                    <select class="form-control" id="city" name="city">
+                                        <option value="">Choose city</option>
+                                        {% for city in cities %}
+                                            <option value="{{ city }}"{% if city2 == city %} selected{% endif %}>{{ city }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <!-- <?php if(!empty($error['city'])) { ?>
+                                         <div class="red p-2">Pls enter a valid city</div>
+                                     <?php } ?>-->
+                                </div>
+
+                                <div class="col-md-4 col-sm-4 form-group has-feedback">
+                                    <label for="province">Province</label>
+                                    <select class="select2_multiple form-control" id="province" name="province[]" multiple="multiple">
+                                        {% for prov in provinciesList %}
+                                            <option value="{{ prov }}"{% if prov in provincies %} selected{% endif %}>{{ prov }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <!--  <?php if(!empty($error['provincies'])) { ?>
+                                          <div class="red p-2"><?php echo $error['provincies']?></div>
+                                      <?php }?>-->
+                                </div>
+
+                                <div class="col-md-12 col-sm-6 form-group has-feedback">
+                                    <input type="hidden" name="moduleAction" value="search-company" />
+                                    <input type="submit" value="Search" class="btn btn-success" name="submit" />
+                                </div>
+
+                            </form>
+
+                            <div class="row mb-3">
+                                <div class="col-sm-9">
+                                    <p>This is an overview of all our companies</p>
+                                </div>
+                            </div>
+                            {% if companies %}
+                                <div class="table-responsive">
+                                    <table class="table table-striped jambo_table bulk_action">
+                                        <thead>
+                                        <tr class="headings">
+                                            <th>
+                                                <input type="checkbox" id="check-all" class="flat">
+                                            </th>
+                                            <th class="column-title">Name</th>
+                                            <th class="column-title">Address</th>
+                                            <th class="column-title">Zip</th>
+                                            <th class="column-title">City</th>
+                                            <th class="column-title">VAT</th>
+                                            <th class="column-title">Activity</th>
+                                            <th class="column-title no-link last"><span class="nobr">Action</span>
+                                            </th>
+                                            <th class="bulk-actions" colspan="7">
+                                                <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions (
+                                                    <span class="action-cnt"> </span> ) <i
+                                                            class="fa fa-chevron-down"></i></a>
+                                            </th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+                                        {% for counter, company in companies %}
+                                            <tr class="{% if loop.index0 % 2 == 0 %}even{% else %}odd{% endif %}> pointer">
+                                                <td class="a-center ">
+                                                    <input type="checkbox" class="flat" name="table_records">
+                                                </td>
+                                                <td class=" ">{{ company.getName() }}</td>
+                                                <td class=" ">{{ company.gegetFullAddresstName() }}</td>
+                                                <td class=" ">{{ company.getZip() }}</td>
+                                                <td class=" ">{{ company.getCity() }}</td>
+                                                <td class=" ">{{ company.getVat() }}</td>
+                                                <td class=" ">{{ company.getActivity() }}</td>
+                                                <td class=" last"><a href="company.php?id={{ counter }}">View</a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% else %}
+                                <div class="row mb-3">
+                                    <div class="col-sm-9">
+                                        <p>No companies found matching your request</p>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="display: block;">
+                <div class="col-md-12 col-sm-12  ">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>Contacts</h2>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="x_content">
+
+                            <div class="row mb-3">
+                                <div class="col-sm-9">
+                                    <p>This is an overview of all our contacts</p>
+                                </div>
+                            </div>
+                            {% if companies %}
+                                <div class="table-responsive">
+                                    <table class="table table-striped jambo_table bulk_action">
+                                        <thead>
+                                        <tr class="headings">
+                                            <th>
+                                                <input type="checkbox" id="check-all" class="flat">
+                                            </th>
+                                            <th class="column-title">Name</th>
+                                            <th class="column-title">Client</th>
+                                            <th class="column-title">Email</th>
+                                            <th class="column-title">Phone</th>
+                                            <th class="column-title no-link last"><span class="nobr">Action</span>
+                                            </th>
+                                            <th class="bulk-actions" colspan="7">
+                                                <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions (
+                                                    <span class="action-cnt"> </span> ) <i
+                                                            class="fa fa-chevron-down"></i></a>
+                                            </th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+                                        {% for counter, contact in contacts %}
+                                            <tr class="{% if loop.index0 % 2 == 0 %}even{% else %}odd{% endif %}> pointer">
+                                                <td class="a-center ">
+                                                    <input type="checkbox" class="flat" name="table_records">
+                                                </td>
+                                                <td class=" ">{{ contact.getName() }}</td>
+                                                <td class=" ">{{ contact.getClient() }}</td>
+                                                <td class=" ">{{ contact.getEmail() }}</td>
+                                                <td class=" ">{{ contact.getPhone() }}</td>
+                                                <td class=" last"><a href="contact.php?id={{ counter }}">View</a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% else %}
+                                <div class="row mb-3">
+                                    <div class="col-sm-9">
+                                        <p>No contacts found matching your request</p>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /page content -->
+{% endblock %}

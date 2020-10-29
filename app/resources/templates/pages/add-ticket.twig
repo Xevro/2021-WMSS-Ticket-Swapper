@@ -1,0 +1,137 @@
+{% extends 'layout/main.twig' %}
+
+{% block pageContent %}
+    <!-- page content -->
+    <div class="right_col" role="main">
+            <div class="">
+                <div class="page-title">
+                    <div class="title_left">
+                        <h3>Add ticket</h3>
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="x_panel">
+                            <div class="x_content">
+                                <form class="" action="{{action}}" method="post" enctype="multipart/form-data" novalidate="">
+                                    <div class="field item form-group bad">
+                                        <label class="col-form-label col-md-3 col-sm-3  label-align">Name<span class="required">*</span></label>
+                                        <div class="col-md-6 col-sm-6">
+                                            <input class="form-control" name="name" value="{{name}}" placeholder="Your name" required="required">
+                                        </div>
+                                        {% if msgName %}
+                                            <div class="red p-2">{{ msgName }}</div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="field item form-group">
+                                        <label class="col-form-label col-md-3 col-sm-3  label-align">VAT number<span class="required">*</span></label>
+                                        <div class="col-md-6 col-sm-6">
+                                            <input class="form-control" name="vat" value="{{ vat }}" placeholder="VAT" required="required">
+                                        </div>
+                                        {% if msgVAT %}
+                                            <div class="red p-2">{{ msgVAT }}</div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="field item form-group bad">
+                                        <label class="col-form-label col-md-3 col-sm-3  label-align">Title<span class="required">*</span></label>
+                                        <div class="col-md-6 col-sm-6">
+                                            <input class="form-control" name="title" value="{{ title }}" placeholder="Title" required="required">
+                                        </div>
+                                        {% if msgTitle %}
+                                            <div class="red p-2">{{ msgTitle }}</div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="field item form-group">
+                                        <label class="col-form-label col-md-3 col-sm-3 label-align">Company<span class="required">*</span></label>
+                                        <select class="col-md-6 form-control" id="company" name="company">
+                                            <option value="">Choose Company</option>
+                                            {% for comp in companies %}
+                                                <option value="{{comp['name']}}"{% if comp['name'] == company%} selected{% endif%}>{{ comp['name'] }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        {% if msgCompany %}
+                                            <div class="red p-2">{{ msgCompany }}</div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="field item form-group">
+                                        <label class="col-form-label col-md-3 col-sm-3 label-align">Date<span class="required">*</span></label>
+                                        <div class="col-md-6 col-sm-6">
+                                            <input type="date" class="form-control" name="date" value="{{ date }}" placeholder="{{ date }}" required="required">
+                                        </div>
+                                        {% if msgDate %}
+                                            <div class="red p-2">{{ msgDate }}</div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="field item form-group">
+                                        <label class="col-form-label col-md-3 col-sm-3  label-align">Short description<span class="required">*</span></label>
+                                        <div class="col-md-6 col-sm-6">
+                                            <textarea class="form-control" name="shortdescription" rows="2" cols="20" placeholder="Short description" required="required">{{ shortDescription }}</textarea>
+                                        </div>
+                                        {% if msgShortDes %}
+                                            <div class="red p-2">{{ msgShortDes }}</div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="field item form-group">
+                                        <label class="col-form-label col-md-3 col-sm-3  label-align">Long description</label>
+                                        <div class="col-md-6 col-sm-6">
+                                            <textarea class="form-control" name="longdescription" rows="4" cols="20" placeholder="Long description">{{ longDescription }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="field item form-group">
+                                        <label class="col-form-label col-md-3 col-sm-3  label-align">Desired situation</label>
+                                        <div class="col-md-6 col-sm-6">
+                                            <textarea class="form-control" name="desiredsituation" rows="2" cols="20" placeholder="Desired situation">{{ desiredSituation }}</textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="field item form-group">
+                                        <label class="col-form-label col-md-3 col-sm-3 label-align">Priority<span class="required">*</span></label>
+                                        <select class="col-md-6 form-control" id="priority" name="priority">
+                                            <option value="">Choose priority</option>
+                                                <option value="High"{% if priority == 'High'%} selected{% endif%}>High</option>
+                                                <option value="Medium"{% if priority == 'Medium'%} selected{% endif%}>Medium</option>
+                                                <option value="Low"{% if priority == 'Low'%} selected{% endif%}>Low</option>
+                                        </select>
+                                        {% if msgPriority %}
+                                            <div class="red p-2">{{ msgPriority }}</div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="field item form-group">
+                                        <label class="col-form-label col-md-3 col-sm-3  label-align">Email address<span class="required">*</span></label>
+                                        <div class="col-md-6 col-sm-6">
+                                            <input class="form-control" name="email" value="{{email}}" placeholder="Email responsible for customer" required="required">
+                                        </div>
+                                        {% if msgEmail %}
+                                            <div class="red p-2">{{ msgEmail }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="field item form-group">
+                                        <label class="col-form-label col-md-3 col-sm-3  label-align">Document</label>
+                                        <div class="col-md-6 col-sm-6">
+                                            <input type="file" name="file" id="file"/><br/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-6 offset-md-3">
+                                            <button type="submit" value="Save company" id="btnSubmit" name="btnSubmit" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- /page content -->
+{% endblock %}
