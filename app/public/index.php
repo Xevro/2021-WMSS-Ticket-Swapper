@@ -12,8 +12,5 @@ $twig = new \Twig\Environment($loader);
 
 // View
 
-
-echo 'test';
-
-
+echo 'test Timon';
 echo $twig->render('pages/index.twig', []);
