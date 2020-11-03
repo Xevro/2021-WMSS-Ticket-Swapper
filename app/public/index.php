@@ -13,4 +13,7 @@ $twig = new \Twig\Environment($loader);
 // View
 
 
+echo 'test';
+
+
 echo $twig->render('pages/index.twig', []);
