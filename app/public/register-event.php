@@ -1,7 +1,7 @@
 <?php
-
 // General variables
 $basePath = __DIR__ . '/../';
+
 // Data
 require_once $basePath . 'vendor/autoload.php';
 
@@ -11,4 +11,4 @@ $twig = new \Twig\Environment($loader);
 
 // View
 
-echo $twig->render('pages/index.twig', []);
+echo $twig->render('pages/register-event.twig', []);

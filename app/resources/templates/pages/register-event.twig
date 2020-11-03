@@ -1,0 +1,103 @@
+{% extends 'layout/main.twig' %}
+
+{% block pageContent %}
+    <!-- page content -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Register event</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+                        <li class="breadcrumb-item active"><a href="#">Register event</a></li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-default">
+                <div class="card-header">
+                    <h4 class="card-title">Register your event here by filling in this form</h4>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <form action="{{ action }}" method="post" novalidate="">
+                        <div class="row">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label>Event name</label>
+                                    <input type="text" class="form-control" id="eventname" placeholder="Enter name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Standard ticket price</label>
+                                    <input type="number" min="0" class="form-control scroll" id="standardprice" placeholder="€50.00">
+                                </div>
+                                <div class="form-group">
+                                    <label>Start date</label>
+                                    <div class="input-group date" id=startdate data-target-input="nearest">
+                                        <input type="text" class="form-control datetimepicker-input" data-target="#startdate"/>
+                                        <div class="input-group-append" data-target="#startdate" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>End date</label>
+                                    <div class="input-group date" id="enddate" data-target-input="nearest">
+                                        <input type="text" class="form-control datetimepicker-input" data-target="#enddate"/>
+                                        <div class="input-group-append" data-target="#enddate" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label>Location</label>
+                                            <input type="text" class="form-control" id="location" placeholder="Ghent, Belgium">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>About the event</label>
+                                            <textarea class="form-control" id="description" rows="3" cols="20" placeholder="About the event..."></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Artists present at the event</label>
+                                            <textarea class="form-control" id="artists" rows="3" cols="20" placeholder="Martin Garrix, Netsky,..."></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                        <!-- /.row -->
+                        <div class="form-group">
+                            <button type="submit" value="Register event" id="btnRegister" name="btnRegister" class="btn btn-primary">Register event</button>
+                        </div>
+                    </form>
+                    <!-- /.row -->
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <script>
+        document.addEventListener("wheel", function(event) {
+            if (document.activeElement.type === "number" && document.activeElement.classList.contains("noscroll")) {
+                document.activeElement.blur();
+            }
+        });
+    </script>
+    <!-- /page content -->
+{% endblock %}

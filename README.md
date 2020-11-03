@@ -1,19 +1,12 @@
-# Serverside web project
+# Serverside web project Ticketswapper
 
-# Infrastructure
-## Docker
-
-This project has been setup with a multi container docker system.
-This means that, if your Docker is running, you'll be able to bootstrap by
-
+## Docker setup
 ```
 docker-compose up -d
 ```
 
-Once you're in you can use the bin/console
+Open console to install doctrine/dbal version 2.12
 
 ```
-php bin/console
+composer require doctrine/dbal ^2.12
 ```
-
-test
