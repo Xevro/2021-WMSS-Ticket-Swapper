@@ -34,15 +34,21 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>Event name</label>
-                                    <input type="text" class="form-control" id="eventname" placeholder="Enter name">
+                                    <input type="text" class="form-control" id="eventname" name="eventName" placeholder="Enter name" value="{{ eventName }}">
+                                    {% if errorName %}
+                                        <div class="red p-2">{{errorName}}</div>
+                                    {% endif %}
                                 </div>
                                 <div class="form-group">
                                     <label>Standard ticket price</label>
-                                    <input type="number" min="0" class="form-control scroll" id="standardprice" placeholder="€50.00">
+                                    <input type="number" min="0" class="form-control scroll" id="standardprice" name="standardPrice" placeholder="€50.00" value="{{ standardPrice }}">
+                                    {% if errorPrice %}
+                                        <div class="red p-2">{{errorPrice}}</div>
+                                    {% endif %}
                                 </div>
                                 <div class="form-group">
                                     <label>Start date</label>
-                                    <div class="input-group date" id=startdate data-target-input="nearest">
+                                    <div class="input-group date" id=startdate name="startdate" data-target-input="nearest">
                                         <input type="text" class="form-control datetimepicker-input" data-target="#startdate"/>
                                         <div class="input-group-append" data-target="#startdate" data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -51,12 +57,15 @@
                                 </div>
                                 <div class="form-group">
                                     <label>End date</label>
-                                    <div class="input-group date" id="enddate" data-target-input="nearest">
+                                    <div class="input-group date" id="enddate" name="enddate" data-target-input="nearest">
                                         <input type="text" class="form-control datetimepicker-input" data-target="#enddate"/>
                                         <div class="input-group-append" data-target="#enddate" data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                         </div>
                                     </div>
+                                    {% if msgDate %}
+                                        <div class="red p-2">{{msgDate}}</div>
+                                    {% endif %}
                                 </div>
                             </div>
                             <!-- /.card-body -->
@@ -65,15 +74,24 @@
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label>Location</label>
-                                            <input type="text" class="form-control" id="location" placeholder="Ghent, Belgium">
+                                            <input type="text" class="form-control" id="location" name="location" placeholder="Ghent, Belgium" value="{{ location }}">
+                                            {% if errorLocation %}
+                                                <div class="red p-2">{{errorLocation}}</div>
+                                            {% endif %}
                                         </div>
                                         <div class="form-group">
                                             <label>About the event</label>
-                                            <textarea class="form-control" id="description" rows="3" cols="20" placeholder="About the event..."></textarea>
+                                            <textarea class="form-control" id="description" name="description" rows="3" cols="20" placeholder="About the event...">{{ description }}</textarea>
+                                            {% if errorDescription %}
+                                                <div class="red p-2">{{errorDescription}}</div>
+                                            {% endif %}
                                         </div>
                                         <div class="form-group">
                                             <label>Artists present at the event</label>
-                                            <textarea class="form-control" id="artists" rows="3" cols="20" placeholder="Martin Garrix, Netsky,..."></textarea>
+                                            <textarea class="form-control" id="artists" name="artists" rows="3" cols="20" placeholder="Martin Garrix, Netsky,...">{{ artists }}</textarea>
+                                            {% if errorArtists %}
+                                                <div class="red p-2">{{errorArtists}}</div>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
