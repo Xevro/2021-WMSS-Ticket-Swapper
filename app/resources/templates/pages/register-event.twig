@@ -36,37 +36,33 @@
                                     <label>Event name</label>
                                     <input type="text" class="form-control" id="eventname" name="eventName" placeholder="Enter name" value="{{ eventName }}">
                                     {% if errorName %}
-                                        <div class="red p-2">{{errorName}}</div>
+                                        <div class="error-message">{{ errorName }}</div>
                                     {% endif %}
                                 </div>
                                 <div class="form-group">
                                     <label>Standard ticket price</label>
                                     <input type="number" min="0" class="form-control scroll" id="standardprice" name="standardPrice" placeholder="€50.00" value="{{ standardPrice }}">
                                     {% if errorPrice %}
-                                        <div class="red p-2">{{errorPrice}}</div>
+                                        <div class="error-message">{{ errorPrice }}</div>
                                     {% endif %}
                                 </div>
+
                                 <div class="form-group">
                                     <label>Start date</label>
-                                    <div class="input-group date" id=startdate name="startdate" data-target-input="nearest">
-                                        <input type="text" class="form-control datetimepicker-input" data-target="#startdate"/>
-                                        <div class="input-group-append" data-target="#startdate" data-toggle="datetimepicker">
-                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>End date</label>
-                                    <div class="input-group date" id="enddate" name="enddate" data-target-input="nearest">
-                                        <input type="text" class="form-control datetimepicker-input" data-target="#enddate"/>
-                                        <div class="input-group-append" data-target="#enddate" data-toggle="datetimepicker">
-                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                        </div>
-                                    </div>
-                                    {% if msgDate %}
-                                        <div class="red p-2">{{msgDate}}</div>
+                                    <input type="date" class="form-control" id="startdate" name="startdate" placeholder="{{ startDate }}" value="{{ startDate }}">
+                                    {% if errorStartDate %}
+                                        <div class="error-message">{{ errorStartDate }}</div>
                                     {% endif %}
                                 </div>
+
+                                <div class="form-group">
+                                    <label>End date</label>
+                                    <input type="text" class="form-control" id="enddate" name="enddate" placeholder="{{ endDate }}" value="{{ endDate }}">
+                                    {% if errorEndDate %}
+                                        <div class="error-message">{{ errorEndDate }}</div>
+                                    {% endif %}
+                                </div>
+
                             </div>
                             <!-- /.card-body -->
                             <div class="col-md-6">
@@ -76,21 +72,21 @@
                                             <label>Location</label>
                                             <input type="text" class="form-control" id="location" name="location" placeholder="Ghent, Belgium" value="{{ location }}">
                                             {% if errorLocation %}
-                                                <div class="red p-2">{{errorLocation}}</div>
+                                                <div class="error-message">{{ errorLocation }}</div>
                                             {% endif %}
                                         </div>
                                         <div class="form-group">
                                             <label>About the event</label>
                                             <textarea class="form-control" id="description" name="description" rows="3" cols="20" placeholder="About the event...">{{ description }}</textarea>
                                             {% if errorDescription %}
-                                                <div class="red p-2">{{errorDescription}}</div>
+                                                <div class="error-message">{{ errorDescription }}</div>
                                             {% endif %}
                                         </div>
                                         <div class="form-group">
                                             <label>Artists present at the event</label>
                                             <textarea class="form-control" id="artists" name="artists" rows="3" cols="20" placeholder="Martin Garrix, Netsky,...">{{ artists }}</textarea>
                                             {% if errorArtists %}
-                                                <div class="red p-2">{{errorArtists}}</div>
+                                                <div class="error-message">{{ errorArtists }}</div>
                                             {% endif %}
                                         </div>
                                     </div>
