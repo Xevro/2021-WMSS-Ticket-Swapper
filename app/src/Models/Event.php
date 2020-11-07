@@ -3,16 +3,48 @@
 class Event {
     private $eventName;
     private $standardPrice;
+    private $startDate;
+    private $endDate;
     private $location;
     private $description;
     private $artists;
 
-    public function __construct(string $eventName, double $standardPrice, string $location, string $description, string $artists) {
+    public function __construct(string $eventName, float $standardPrice, string $startDate, string $endDate, string $location, string $description, string $artists) {
         $this->eventName = $eventName;
         $this->standardPrice = $standardPrice;
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
         $this->location = $location;
         $this->description = $description;
         $this->artists = $artists;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStartDate(): string {
+        return $this->startDate;
+    }
+
+    /**
+     * @param string $startDate
+     */
+    public function setStartDate(string $startDate) {
+        $this->startDate = $startDate;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEndDate(): string {
+        return $this->endDate;
+    }
+
+    /**
+     * @param string $endDate
+     */
+    public function setEndDate(string $endDate) {
+        $this->endDate = $endDate;
     }
 
     /**

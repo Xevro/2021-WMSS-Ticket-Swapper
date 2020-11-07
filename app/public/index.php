@@ -13,6 +13,7 @@ $loader = new \Twig\Loader\FilesystemLoader($basePath . '/resources/templates');
 $twig = new \Twig\Environment($loader);
 
 $connection = getDBConnection();
+$events = [];
 
 //Fetch events
 require_once $basePath . 'src/Models/Event.php';
@@ -21,9 +22,9 @@ $stmt = $connection->prepare('SELECT * FROM Evenementen');
 $stmt->execute([]);
 $eventsAssociative = $stmt->fetchAllAssociative();
 
-foreach($eventsAssociative as $Event) {
-    $events[] = new Event($Event['eventName'], $Event['standardPrice'],$Event['location'], $Event['description'], $Event['artists']);
+foreach ($eventsAssociative as $Event) {
+    $events[] = new Event($Event['Naam'], $Event['Standaard_ticketprijs'], $Event['Aanvangstijd'], $Event['Sluitingstijd'], $Event['Locatie'], $Event['Beschrijving'], $Event['Aanwezige_artiesten']);
 }
 
 // View
-echo $twig->render('pages/index.twig', ['events'  => $events]);
+echo $twig->render('pages/index.twig', ['events' => $events]);

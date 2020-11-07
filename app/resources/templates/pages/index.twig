@@ -35,30 +35,54 @@
                             </div>
                         </div>
                         <!-- /.card-header -->
-                        <div class="card-body table-responsive p-0">
-                            <table class="table table-hover text-nowrap">
+
+                        <div class="table-responsive">
+                            <table class="table table-striped jambo_table bulk_action">
                                 <thead>
-                                <tr>
-                                    <th>Event naam</th>
-                                    <th>Artiesten</th>
-                                    <th>Beschrijving</th>
-                                    <th>Locatie</th>
-                                    <th>Standaardprijs</th>
+                                <tr class="headings">
+                                    <th class="column-title">Name</th>
+                                    <th class="column-title">Standard ticket price</th>
+                                    <th class="column-title">Start date</th>
+                                    <th class="column-title">End date</th>
+                                    <th class="column-title">Location</th>
+                                    <th class="column-title">Description</th>
+                                    <th class="column-title">Artists</th>
+                                    <th class="column-title no-link last">View</th>
+                                    </th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>{{ Event.getEventName() }}</td>
-                                    <td>{{ Event.getArtists() }}</td>
-                                    <td>{{ Event.getDescription() }}</td>
-                                    <td>{{ Event.getLocation() }}</td>
-                                    <td>{{ Event.getStandardPrice() }}</td>
-                                </tr>
+                                {% if events %}
+                                {% for event in events %}
+                                    <tr class="{% if loop.index0 % 2 == 0 %}even{% else %}odd{% endif %} pointer">
+                                        <td class=" ">{{ event.getEventName() }}</td>
+                                        <td class=" ">€{{ event.getStandardPrice() }}</td>
+                                        <td class=" ">{{ event.getStartDate() }}</td>
+                                        <td class=" ">{{ event.getEndDate() }}</td>
+                                        <td class=" ">{{ event.getLocation() }}</td>
+                                        <td class=" ">{{ event.getDescription() }}</td>
+                                        <td class=" ">{{ event.getDescription() }}</td>
+                                        <td class=" last"><a href="event-info.php?id=">View</a></td>
+                                    </tr>
+                                {% endfor %}
+                                {% else %}
+                                    <tr class="pointer">
+                                        <td class=" ">No events where found</td>
+                                        <td class=" "></td>
+                                        <td class=" "></td>
+                                        <td class=" "></td>
+                                        <td class=" "></td>
+                                        <td class=" "></td>
+                                        <td class=" "></td>
+                                        <td class=" last"></td>
+                                    </tr>
+                                {% endif %}
                                 </tbody>
                             </table>
                         </div>
                         <!-- /.card-body -->
                     </div>
+
                     <!-- /.card -->
                 </div>
             </div>

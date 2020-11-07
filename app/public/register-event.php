@@ -12,12 +12,12 @@ $loader = new \Twig\Loader\FilesystemLoader($basePath . '/resources/templates');
 $twig = new \Twig\Environment($loader);
 
 $eventName = isset($_POST['eventName']) ? (string)$_POST['eventName'] : '';
-$standardPrice = isset($_POST['standardPrice']) ? (string)$_POST['standardPrice'] : '';
+$standardPrice = isset($_POST['standardPrice']) ? (float)$_POST['standardPrice'] : '';
 $location = isset($_POST['location']) ? (string)$_POST['location'] : '';
 $description = isset($_POST['description']) ? (string)$_POST['description'] : '';
 $artists = isset($_POST['artists']) ? (string)$_POST['artists'] : '';
-$startDate = isset($_POST['startdate']) ? (string)$_POST['startdate'] : date("d/m/Y H:i");
-$endDate = isset($_POST['enddate']) ? (string)$_POST['enddate'] : date('d/m/Y H:i');
+$startDate = isset($_POST['startdate']) ? (string)$_POST['startdate'] : date("Y-m-d  H:i");
+$endDate = isset($_POST['enddate']) ? (string)$_POST['enddate'] : date('Y-m-d H:i');
 
 $errorName = '';
 $errorPrice = '';
@@ -33,20 +33,20 @@ $stmt = $connection->prepare('SELECT * FROM Evenementen');
 $stmt->execute([]);
 $eventsAssociative = $stmt->fetchAssociative();
 
-
-
 if (isset($_POST['btnRegister'])) {
     $allOk = true;
     $allOkDateStart = true;
     $allOkDateEnd = true;
 
-    $dateformats = ['Y-m-d', 'd-m-Y', 'Y/m/d', 'd/m/Y', 'Y-m-d H:i', 'd-m-Y H:i', 'Y/m/d H:i', 'd/m/Y H:i'];
+    $selectedFormat = '';
+    $dateformats = ['Y-m-d', 'Y/m/d', 'Y-m-d H:i', 'd-m-Y H:i', 'Y/m/d H:i', 'd/m/Y H:i'];
     for ($i = 0; $i < count($dateformats); $i++) {
         $date = DateTime::createFromFormat($dateformats[$i], $startDate);
         if (!($date !== false)) {
             $errorStartDate = 'Please enter a valid date';
             $allOkDateStart = false;
         } else {
+            $selectedFormat = $dateformats[$i];
             $allOkDateStart = true;
             $errorStartDate = '';
             break;
@@ -58,6 +58,7 @@ if (isset($_POST['btnRegister'])) {
             $errorEndDate = 'Please enter a valid date';
             $allOkDateEnd = false;
         } else {
+            $selectedFormat = $dateformats[$i];
             $allOkDateEnd = true;
             $errorEndDate = '';
             break;
@@ -96,8 +97,12 @@ if (isset($_POST['btnRegister'])) {
 
     if ($allOk  && $allOkDateStart && $allOkDateEnd) {
         //add to database
+        //FROM_UNIXTIME(1231634282)
+        //$input = '06/10/2011 19:00:02';
+        //$date = strtotime($input);
+        //echo date('d/M/Y h:i:s', $date);
         $stmt = $connection->prepare('INSERT INTO Evenementen(Naam, standaard_ticketprijs, Aanvangstijd, Sluitingstijd, Locatie, Beschrijving, Aanwezige_artiesten) VALUES (?,?,?,?,?,?,?)');
-        $stmt->execute([$eventName, $standardPrice, $startDate, $endDate, $location, $description, $artists]);
+        $stmt->execute([$eventName, $standardPrice, date($selectedFormat, strtotime($startDate)), date($selectedFormat, strtotime($endDate)), $location, $description, $artists]);
         header('Location: index.php');
         exit();
     }
