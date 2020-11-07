@@ -18,7 +18,7 @@ $connection = getDBConnection();
 $events = '';
 
 //Fetch events
-$stmt = $connection->prepare('SELECT * FROM events');
+$stmt = $connection->prepare('SELECT * FROM Evenementen');
 $stmt->execute([]);
 $eventsAssociative = $stmt->fetchAssociative();
 
