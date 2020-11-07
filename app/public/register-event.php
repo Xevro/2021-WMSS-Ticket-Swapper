@@ -1,6 +1,9 @@
 <?php
 // General variables
 $basePath = __DIR__ . '/../';
+//require database config & functions
+require_once $basePath . 'config/database.php';
+require_once $basePath . 'src/functions.php';
 
 // Data
 require_once $basePath . 'vendor/autoload.php';
@@ -23,6 +26,13 @@ $errorDescription = '';
 $errorArtists = '';
 $errorStartDate = '';
 $errorEndDate = '';
+
+$connection = getDBConnection();
+
+$stmt = $connection->prepare('SELECT * FROM Evenementen');
+$stmt->execute([]);
+$eventsAssociative = $stmt->fetchAssociative();
+
 
 
 if (isset($_POST['btnRegister'])) {
@@ -86,9 +96,10 @@ if (isset($_POST['btnRegister'])) {
 
     if ($allOk  && $allOkDateStart && $allOkDateEnd) {
         //add to database
-
-        header('Location: index.php');
-        exit;
+        $stmt = $connection->prepare('INSERT INTO Evenementen(Naam, standaard_ticketprijs, Locatie, Beschrijving, Aanwezige_artiesten) VALUES (?,?,?,?,?)');
+        $stmt->execute([$eventName, $standardPrice, $location, $description, $artists]);
+        header('Location: register-event.php');
+        exit();
     }
 }
 
