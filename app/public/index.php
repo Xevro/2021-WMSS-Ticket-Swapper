@@ -14,15 +14,17 @@ $twig = new \Twig\Environment($loader);
 
 require_once $basePath . 'src/Models/Event.php';
 
-//$connection = getDBConnection();
+$connection = getDBConnection();
 $events = '';
 
-//Ophalen bedrijfsinfo
-//$stmt = $connection->prepare('SELECT * FROM events');
-//$stmt->execute([]);
-//while ($eventsDB = $stmt->fetchAllAssociative()) {
-//    $events = new Event();
-//}//string $eventName, double $standardPrice, string $location, string $description, string $artists
+//Fetch events
+$stmt = $connection->prepare('SELECT * FROM events');
+$stmt->execute([]);
+$eventsAssociative = $stmt->fetchAssociative();
+
+foreach($eventsAssociative as $event) {
+    $events[] = new Event($event['eventName'], $event['standardPrice'],$event['location'], $event['description'], $event['artists'], $event['startdate'], $event['enddate']);
+}
 
 // View
 echo $twig->render('pages/index.twig', ['events'  => $events]);
