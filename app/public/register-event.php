@@ -96,8 +96,8 @@ if (isset($_POST['btnRegister'])) {
 
     if ($allOk  && $allOkDateStart && $allOkDateEnd) {
         //add to database
-        $stmt = $connection->prepare('INSERT INTO Evenementen(Naam, standaard_ticketprijs, Locatie, Beschrijving, Aanwezige_artiesten) VALUES (?,?,?,?,?)');
-        $stmt->execute([$eventName, $standardPrice, $location, $description, $artists]);
+        $stmt = $connection->prepare('INSERT INTO Evenementen(Naam, standaard_ticketprijs, Aanvangstijd, Sluitingstijd, Locatie, Beschrijving, Aanwezige_artiesten) VALUES (?,?,?,?,?,?,?)');
+        $stmt->execute([$eventName, $standardPrice, $startDate, $endDate, $location, $description, $artists]);
         header('Location: register-event.php');
         exit();
     }
