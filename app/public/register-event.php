@@ -81,17 +81,17 @@ if (isset($_POST['btnRegister'])) {
         $errorArtists = 'Artists is required!';
         $allOk = false;
     }
-    if($endDate === '') {
+    if ($endDate === '') {
         $errorEndDate = 'Please enter a valid date';
         $allOk = false;
     }
 
-    if($startDate === '') {
+    if ($startDate === '') {
         $errorStartDate = 'Please enter a valid date';
         $allOk = false;
     }
 
-    if ($allOk  && $allOkDateStart && $allOkDateEnd) {
+    if ($allOk && $allOkDateStart && $allOkDateEnd) {
         //add to database
         $stmt = $connection->prepare('INSERT INTO Evenements(eventName, standardTicketPrice, startDate, endDate, location, description, artists) VALUES (?,?,?,?,?,?,?)');
         $stmt->execute([$eventName, $standardPrice, date($selectedFormat, strtotime($startDate)), date($selectedFormat, strtotime($endDate)), $location, $description, $artists]);

@@ -1,40 +1,31 @@
 {% extends 'layout/main.twig' %}
 
 {% block pageContent %}
+    <body class="register">
+    {% include 'layout/parts/menubar.twig' %}
     <!-- page content -->
-    <div class="content-header">
+    <div class="content-header title">
         <div class="container-fluid">
             <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Register event</h1>
-                </div><!-- /.col -->
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-                        <li class="breadcrumb-item active"><a href="#">Register event</a></li>
-                    </ol>
+                <div class="col-sm-">
+                    <!--<h1>Register event</h1>-->
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
     <section class="content">
-        <div class="container-fluid">
-            <div class="card card-default">
+            <div class="card card-default"  >
                 <div class="card-header">
                     <h4 class="card-title">Register your event here by filling in this form</h4>
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                        </button>
-                    </div>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <form action="{{ action }}" method="post" novalidate="">
+                    <form action="{{ action }}" method="post" novalidate="" enctype="multipart/form-data">
                         <div class="row">
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>Event name</label>
-                                    <input type="text" class="form-control" id="eventname" name="eventName" placeholder="Enter name" value="{{ eventName }}">
+                                    <input type="text" id="eventname" name="eventName" placeholder="Enter name" value="{{ eventName }}">
                                     {% if errorName %}
                                         <div class="error-message">{{ errorName }}</div>
                                     {% endif %}
@@ -46,28 +37,24 @@
                                         <div class="error-message">{{ errorPrice }}</div>
                                     {% endif %}
                                 </div>
-
                                 <div class="form-group">
                                     <label>Start date</label>
-                                    <input type="date" class="form-control" id="startdate" name="startdate" placeholder="{{ startDate }}" value="{{ startDate }}">
+                                    <input type="date" class="form-control" id="startdate" name="startdate" value="{{ startDate }}">
                                     {% if errorStartDate %}
                                         <div class="error-message">{{ errorStartDate }}</div>
                                     {% endif %}
                                 </div>
-
                                 <div class="form-group">
                                     <label>End date</label>
-                                    <input type="date" class="form-control" id="enddate" name="enddate" placeholder="{{ endDate }}" value="{{ endDate }}">
+                                    <input type="date" class="form-control" id="enddate" name="enddate" value="{{ endDate }}">
                                     {% if errorEndDate %}
                                         <div class="error-message">{{ errorEndDate }}</div>
                                     {% endif %}
                                 </div>
-
                             </div>
                             <!-- /.card-body -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <div class="card-body">
                                         <div class="form-group">
                                             <label>Location</label>
                                             <input type="text" class="form-control" id="location" name="location" placeholder="Ghent, Belgium" value="{{ location }}">
@@ -77,26 +64,25 @@
                                         </div>
                                         <div class="form-group">
                                             <label>About the event</label>
-                                            <textarea class="form-control" id="description" name="description" rows="3" cols="20" placeholder="About the event...">{{ description }}</textarea>
+                                            <textarea name="description" id="description" placeholder="About the event..." rows="3">{{ description }}</textarea>
                                             {% if errorDescription %}
                                                 <div class="error-message">{{ errorDescription }}</div>
                                             {% endif %}
                                         </div>
                                         <div class="form-group">
                                             <label>Artists present at the event</label>
-                                            <textarea class="form-control" id="artists" name="artists" rows="3" cols="20" placeholder="Martin Garrix, Netsky,...">{{ artists }}</textarea>
+                                            <textarea name="artists" id="artists" placeholder="Martin Garrix, Netsky,..." rows="3">{{ artists }}</textarea>
                                             {% if errorArtists %}
                                                 <div class="error-message">{{ errorArtists }}</div>
                                             {% endif %}
                                         </div>
-                                    </div>
                                 </div>
                             </div>
                             <!-- /.col -->
                         </div>
                         <!-- /.row -->
                         <div class="form-group">
-                            <button type="submit" value="Register event" id="btnRegister" name="btnRegister" class="btn btn-primary">Register event</button>
+                            <button type="submit" value="Register event" id="btnRegister" name="btnRegister" class="primary">Register event</button>
                         </div>
                     </form>
                     <!-- /.row -->
@@ -104,7 +90,6 @@
                 <!-- /.card-body -->
             </div>
             <!-- /.row -->
-        </div><!-- /.container-fluid -->
     </section>
     <script>
         document.addEventListener("wheel", function(event) {

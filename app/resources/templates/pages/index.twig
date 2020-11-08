@@ -1,91 +1,130 @@
 {% extends 'layout/main.twig' %}
 
 {% block pageContent %}
+    <body>
+    {% include 'layout/parts/menubar.twig' %}
     <!-- page content -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Ticketswapper</h1>
-                </div><!-- /.col -->
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item active"><a href="#">Home</a></li>
-                    </ol>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div>
+    <!-- Banner -->
+    <section id="banner">
+        <div class="inner">
+            <h1>Ticketswapper</h1>
+            <p>A responsive business oriented template with a video background<br />
+                designed by <a href="https://templated.co/">TEMPLATED</a> and released under the Creative Commons License.</p>
+        </div>
+        <video autoplay loop muted playsinline src="images/banner.mp4"></video>
+    </section>
+
     <section class="content">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Tickets</h3>
-                            <div class="card-tools">
-                                <div class="input-group input-group-sm" style="width: 150px;">
-                                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-                                    <div class="input-group-append">
-                                        <button type="submit" class="btn btn-default">
-                                            <i class="fas fa-search"></i>
-                                        </button>
+            <div class="row mt-3">
+                <div class="col-md-10 offset-md-1">
+                    <div class="list-group eventsBox">
+                        <div class="list-group-item col px-4">
+                            <div class="input-group input-group-sm float-right" style="width: 200px;">
+                                <input type="text" name="table_search" style="height: auto;" class="form-control float-right" placeholder="Search">
+                                <div class="input-group-append">
+                                    <button type="submit" class="button primary fit small icon fa-search"></button>
+                                </div>
+                            </div>
+                        </div>
+                        {% for event in events %}
+                        <div class="list-group-item" style="padding-left: 100px;">
+                            <div class="row">
+                                <div class="col px-4 event-content">
+                                        <h3>{{ event.getEventName() }}</h3>
+                                        <p>Ticket price: €{{ event.getStandardPrice() }}</p>
+                                        <p>Location: {{ event.getLocation() }}</p>
+                                        <p>Start date: {{ event.getStartDate() }}</p>
+                                        <p>End date: {{ event.getEndDate() }}</p>
+                                        <p class="boldtext">Description:</p>
+                                        <p>{{ event.getDescription() }}</p>
+                                        <p class="boldtext">Artists:</p>
+                                        <p>{{ event.getArtists() }}</p>
+                                </div>
+                                <div class="col px-4 viewbutton">
+                                    <div class="float-right" style="position: absolute; right: 10px; bottom: 0;">
+                                        <a href="#" style="color: white; text-decoration: none;" class="button primary">View event tickets</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- /.card-header -->
-
-                        <div class="table-responsive">
-                            <table class="table table-striped jambo_table bulk_action">
-                                <thead>
-                                <tr class="headings">
-                                    <th class="column-title">Name</th>
-                                    <th class="column-title">Standard ticket price</th>
-                                    <th class="column-title">Start date</th>
-                                    <th class="column-title">End date</th>
-                                    <th class="column-title">Location</th>
-                                    <th class="column-title">Description</th>
-                                    <th class="column-title">Artists</th>
-                                    <th class="column-title no-link last">View</th>
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% if events %}
-                                {% for event in events %}
-                                    <tr class="{% if loop.index0 % 2 == 0 %}even{% else %}odd{% endif %} pointer">
-                                        <td class=" ">{{ event.getEventName() }}</td>
-                                        <td class=" ">€{{ event.getStandardPrice() }}</td>
-                                        <td class=" ">{{ event.getStartDate() }}</td>
-                                        <td class=" ">{{ event.getEndDate() }}</td>
-                                        <td class=" ">{{ event.getLocation() }}</td>
-                                        <td class=" ">{{ event.getDescription() }}</td>
-                                        <td class=" ">{{ event.getDescription() }}</td>
-                                        <td class=" last"><a href="event-info.php?id=">View</a></td>
-                                    </tr>
-                                {% endfor %}
-                                {% else %}
-                                    <tr class="pointer">
-                                        <td class=" ">No events where found</td>
-                                        <td class=" "></td>
-                                        <td class=" "></td>
-                                        <td class=" "></td>
-                                        <td class=" "></td>
-                                        <td class=" "></td>
-                                        <td class=" "></td>
-                                        <td class=" last"></td>
-                                    </tr>
-                                {% endif %}
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- /.card-body -->
+                        {% endfor %}
                     </div>
-
-                    <!-- /.card -->
                 </div>
             </div>
+
+            <section id="cta" class="wrapper">
+                <div class="inner">
+                    <h2>Curabitur ullamcorper ultricies</h2>
+                    <p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus ornare mi ut ante amet placerat aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing. Lorem ipsum dolor vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing sed feugiat eu faucibus. Integer ac sed amet praesent. Nunc lacinia ante nunc ac gravida.</p>
+                </div>
+            </section>
+
+            <!-- Highlights -->
+            <section class="wrapper">
+                <div class="inner">
+                    <header class="special">
+                        <h2>Sem turpis amet semper</h2>
+                        <p>In arcu accumsan arcu adipiscing accumsan orci ac. Felis id enim aliquet. Accumsan ac integer lobortis commodo ornare aliquet accumsan erat tempus amet porttitor.</p>
+                    </header>
+                    <div class="highlights">
+                        <section>
+                            <div class="content">
+                                <header>
+                                    <a href="#" class="icon fa-vcard-o"><span class="label">Icon</span></a>
+                                    <h3>Feugiat consequat</h3>
+                                </header>
+                                <p>Nunc lacinia ante nunc ac lobortis ipsum. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus.</p>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="content">
+                                <header>
+                                    <a href="#" class="icon fa-files-o"><span class="label">Icon</span></a>
+                                    <h3>Ante sem integer</h3>
+                                </header>
+                                <p>Nunc lacinia ante nunc ac lobortis ipsum. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus.</p>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="content">
+                                <header>
+                                    <a href="#" class="icon fa-floppy-o"><span class="label">Icon</span></a>
+                                    <h3>Ipsum consequat</h3>
+                                </header>
+                                <p>Nunc lacinia ante nunc ac lobortis ipsum. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus.</p>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="content">
+                                <header>
+                                    <a href="#" class="icon fa-line-chart"><span class="label">Icon</span></a>
+                                    <h3>Interdum gravida</h3>
+                                </header>
+                                <p>Nunc lacinia ante nunc ac lobortis ipsum. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus.</p>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="content">
+                                <header>
+                                    <a href="#" class="icon fa-paper-plane-o"><span class="label">Icon</span></a>
+                                    <h3>Faucibus consequat</h3>
+                                </header>
+                                <p>Nunc lacinia ante nunc ac lobortis ipsum. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus.</p>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="content">
+                                <header>
+                                    <a href="#" class="icon fa-qrcode"><span class="label">Icon</span></a>
+                                    <h3>Accumsan viverra</h3>
+                                </header>
+                                <p>Nunc lacinia ante nunc ac lobortis ipsum. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus.</p>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </section>
         </div><!-- /.container-fluid -->
     </section>
     <!-- /page content -->

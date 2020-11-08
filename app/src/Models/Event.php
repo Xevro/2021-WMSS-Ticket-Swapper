@@ -107,7 +107,7 @@ class Event {
      * @return mixed
      */
     public function getStandardPrice() {
-        return $this->standardPrice;
+        return number_format($this->standardPrice, 2);;
     }
 
     /**

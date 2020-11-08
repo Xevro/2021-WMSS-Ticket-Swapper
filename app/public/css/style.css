@@ -3,3 +3,54 @@
     padding-top: 0.6rem;
     padding-left: 0.2rem;
 }
+
+.event-content p {
+    margin: 0px;
+}
+
+.boldtext {
+    padding-top: 10px;
+    font-weight: bold;
+}
+
+.viewbutton {
+    margin-top: 40px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.register {
+    background-attachment: fixed;
+    background-image: linear-gradient(rgba(206, 27, 40, 0.25), rgba(206, 27, 40, 0.25)), url(../../images/banner-register.jpg);
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: 1;
+}
+
+.register .card {
+    margin: 100px;
+    opacity: 0.93;
+}
+
+body:before {
+    content: ' ';
+    background-image: linear-gradient(rgba(206, 27, 40, 0.25), rgba(206, 27, 40, 0.25)), url(../../images/cta01.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    display: block;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.08;
+}
+
+.eventsBox {
+    margin-bottom: 100px;
+}
