@@ -18,12 +18,12 @@ $events = [];
 //Fetch events
 require_once $basePath . 'src/Models/Event.php';
 
-$stmt = $connection->prepare('SELECT * FROM Evenementen');
+$stmt = $connection->prepare('SELECT * FROM Evenements');
 $stmt->execute([]);
 $eventsAssociative = $stmt->fetchAllAssociative();
 
 foreach ($eventsAssociative as $Event) {
-    $events[] = new Event($Event['Naam'], $Event['Standaard_ticketprijs'], $Event['Aanvangstijd'], $Event['Sluitingstijd'], $Event['Locatie'], $Event['Beschrijving'], $Event['Aanwezige_artiesten']);
+    $events[] = new Event($Event['eventName'], $Event['standardTicketPrice'], $Event['startDate'], $Event['endDate'], $Event['location'], $Event['description'], $Event['artists']);
 }
 
 // View
