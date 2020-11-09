@@ -54,3 +54,31 @@ body:before {
 .eventsBox {
     margin-bottom: 100px;
 }
+
+.buttons-register li {
+    display: inline;
+    text-decoration: none;
+    padding: 2em;
+}
+
+.register-content {
+    padding-top: 5em;
+    position: relative;
+    z-index: 1;
+}
+
+.eventlist {
+    text-align: center;
+    margin-bottom: 1rem;
+    vertical-align: baseline;
+}
+
+.buttons {
+    width: 200px;
+}
+
+@media screen and (max-width: 680px) {
+    .buttons-register li {
+        padding: 0.325em;
+    }
+}
