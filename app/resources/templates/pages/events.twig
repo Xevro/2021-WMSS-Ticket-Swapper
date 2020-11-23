@@ -1,0 +1,54 @@
+{% extends 'layout/main.twig' %}
+
+{% block pageContent %}
+    <body>
+    {% include 'layout/parts/menubar.twig' %}
+    <!-- page content -->
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row mt-3">
+                <div class="col-md-10 offset-md-1">
+                    <div class="list-group eventsBox">
+                        <div class="eventlist">
+                            <h2>Events list</h2>
+                            <p>Choose an event to buy or sell tickets. You can search a certain event by using the search field</p>
+                        </div>
+                        <div class="list-group-item col px-4">
+                            <div class="input-group input-group-sm float-right" style="width: 200px;">
+                                <input type="text" name="table_search" style="height: auto;" class="form-control float-right" placeholder="Search">
+                                <div class="input-group-append">
+                                    <button type="submit" class="button primary fit small icon fa-search"></button>
+                                </div>
+                            </div>
+                        </div>
+                        {% for event in events %}
+                            <div class="list-group-item" style="padding-left: 100px;">
+                                <div class="row">
+                                    <div class="col px-4 event-content">
+                                        <h3>{{ event.getEventName() }}</h3>
+                                        <p>Ticket price: €{{ event.getStandardPrice() }}</p>
+                                        <p>Location: {{ event.getLocation() }}</p>
+                                        <p>Start date: {{ event.getStartDate() }}</p>
+                                        <p>End date: {{ event.getEndDate() }}</p>
+                                        <p class="boldtext">Description:</p>
+                                        <p>{{ event.getDescription() }}</p>
+                                        <p class="boldtext">Artists:</p>
+                                        <p>{{ event.getArtists() }}</p>
+                                    </div>
+                                    <div class="col px-4 viewbutton">
+                                        <div class="float-right" style="position: absolute; right: 10px; bottom: 0;">
+                                            <a href="event-tickets.php" style="color: white; text-decoration: none;" class="button primary">View event tickets</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /page content -->
+{% endblock %}
