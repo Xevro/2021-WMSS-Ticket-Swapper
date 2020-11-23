@@ -55,7 +55,7 @@
                                 <select class="form-control" id="eventName" name="events">
                                     <option value="">Choose event</option>
                                     {% for eventName in events %}
-                                        <option value="{{ eventName }}" {% if event2 == eventName %} selected{% endif %}>{{ eventName }}</option>
+                                        <option value="{{ eventName['idEvenements'] }}" {% if event2 == eventName['idEvenements'] %} selected{% endif %}>{{ eventName['eventName'] }}</option>
                                     {% endfor %}
                                 </select>
                                 {% if error %}

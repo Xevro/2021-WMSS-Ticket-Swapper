@@ -15,6 +15,8 @@ $ticketName = isset($_POST['ticketName']) ? (string)$_POST['ticketName'] : '';
 $ticketPrice = isset($_POST['ticketPrice']) ? (float)$_POST['ticketPrice'] : '';
 $amount = isset($_POST['amount']) ? (int)$_POST['amount'] : '';
 $reasonForSell = isset($_POST['reasonForSell']) ? (string)$_POST['reasonForSell'] : '';
+$eventName = isset($_POST['events']) ? (integer)$_POST['events'] : 0;
+
 $events = [];
 
 $errorName = '';
@@ -25,14 +27,14 @@ $errorReason = '';
 $connection = getDBConnection();
 
 //Events fetchen
-$stmt = $connection->prepare('SELECT eventName FROM Evenements');
+$stmt = $connection->prepare('SELECT idEvenements, eventName FROM Evenements');
 $stmt->execute([]);
 $eventsDB = $stmt->fetchAllAssociative();
 
 
 //fill events array for box
-foreach ($eventsDB as $eventName) {
-    $events[$eventName['eventName']] = $eventName['eventName'];
+foreach ($eventsDB as $event) {
+    $events[$event['idEvenements']] = $event;
 }
 asort($events);
 
@@ -44,7 +46,7 @@ if (isset($_POST['btnRegister'])) {
         $errorName = 'A valid ticket name is required!';
         $allOk = false;
     }
-    if ($ticketPrice == '0' ) {
+    if ($ticketPrice == '0') {
         $errorPrice = 'A valid price is required!';
         $allOk = false;
     }
@@ -56,14 +58,15 @@ if (isset($_POST['btnRegister'])) {
         $errorReason = 'A valid reason is required!';
         $allOk = false;
     }
-    if (($eventName === '') && (!in_array($eventName, $events))) {
+    if (($eventName === '') && (!in_array($eventName, $events['idEvenements']))) {
         $error['$eventName'] = 'This event does not exist';
         $allOK = false;
     }
     if ($allOk) {
         //add to database
-        $stmt = $connection->prepare('INSERT INTO Tickets(ticketName, ticketPrice, amount, reasonForSell) VALUES (?,?,?,?)');
-        $stmt->execute([$ticketName, $ticketPrice, $amount, $reasonForSell]);
+        echo $eventName;
+        $stmt = $connection->prepare('INSERT INTO Tickets(ticketName, ticketPrice, amount, reasonForSell, Evenements_idEvenements, 	Users_idGebruikers) VALUES (?,?,?,?, ?, ?)');
+        $stmt->execute([$ticketName, $ticketPrice, $amount, $reasonForSell, $eventName, 1]); // change 1, 1 to eventid and userid
         header('Location: index.php');
         exit();
     }
@@ -71,6 +74,5 @@ if (isset($_POST['btnRegister'])) {
 
 // View
 echo $twig->render('pages/add-ticket.twig', ['ticketName' => $ticketName, 'ticketPrice' => $ticketPrice, 'amount' => $amount,
-    'reasonForSell' => $reasonForSell,'events' => $events,'event2' => $eventName, 'errorName' => $errorName, 'errorPrice' => $errorPrice, 'errorAmount' => $errorAmount,
-    'errorReason' => $errorReason,
-    'action' => $_SERVER['PHP_SELF']]);
+    'reasonForSell' => $reasonForSell, 'events' => $events, 'event2' => $eventName, 'errorName' => $errorName, 'errorPrice' => $errorPrice, 'errorAmount' => $errorAmount,
+    'errorReason' => $errorReason, 'action' => $_SERVER['PHP_SELF']]);
