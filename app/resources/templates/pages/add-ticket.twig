@@ -1,0 +1,102 @@
+{% extends 'layout/main.twig' %}
+
+{% block pageContent %}
+    <body class="register">
+    {% include 'layout/parts/menubar.twig' %}
+    <!-- page content -->
+    <div class="content-header title">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-">
+                    <!--<h1>Register event</h1>-->
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <section class="content">
+        <div class="card card-default"  >
+            <div class="card-header">
+                <h4 class="card-title">Register your event here by filling in this form</h4>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <form action="{{ action }}" method="post" novalidate="" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Event name</label>
+                                <input type="text" id="eventname" name="eventName" placeholder="Enter name" value="{{ eventName }}">
+                                {% if errorName %}
+                                    <div class="error-message">{{ errorName }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label>Standard ticket price</label>
+                                <input type="number" min="0" class="form-control scroll" id="standardprice" name="standardPrice" placeholder="€50.00" value="{{ standardPrice }}">
+                                {% if errorPrice %}
+                                    <div class="error-message">{{ errorPrice }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label>Start date</label>
+                                <input type="date" class="form-control" id="startdate" name="startdate" value="{{ startDate }}">
+                                {% if errorStartDate %}
+                                    <div class="error-message">{{ errorStartDate }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label>End date</label>
+                                <input type="date" class="form-control" id="enddate" name="enddate" value="{{ endDate }}">
+                                {% if errorEndDate %}
+                                    <div class="error-message">{{ errorEndDate }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label>Location</label>
+                                    <input type="text" class="form-control" id="location" name="location" placeholder="Ghent, Belgium" value="{{ location }}">
+                                    {% if errorLocation %}
+                                        <div class="error-message">{{ errorLocation }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    <label>About the event</label>
+                                    <textarea name="description" id="description" placeholder="About the event..." rows="3">{{ description }}</textarea>
+                                    {% if errorDescription %}
+                                        <div class="error-message">{{ errorDescription }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    <label>Artists present at the event</label>
+                                    <textarea name="artists" id="artists" placeholder="Martin Garrix, Netsky,..." rows="3">{{ artists }}</textarea>
+                                    {% if errorArtists %}
+                                        <div class="error-message">{{ errorArtists }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                    <div class="form-group">
+                        <button type="submit" value="Register event" id="btnRegister" name="btnRegister" class="primary">Register event</button>
+                    </div>
+                </form>
+                <!-- /.row -->
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <script>
+        document.addEventListener("wheel", function(event) {
+            if (document.activeElement.type === "number" && document.activeElement.classList.contains("noscroll")) {
+                document.activeElement.blur();
+            }
+        });
+    </script>
+    <!-- /page content -->
+{% endblock %}
