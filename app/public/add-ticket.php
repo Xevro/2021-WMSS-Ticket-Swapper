@@ -15,7 +15,7 @@ $ticketName = isset($_POST['ticketName']) ? (string)$_POST['ticketName'] : '';
 $ticketPrice = isset($_POST['ticketPrice']) ? (float)$_POST['ticketPrice'] : '';
 $amount = isset($_POST['amount']) ? (int)$_POST['amount'] : '';
 $reasonForSell = isset($_POST['reasonForSell']) ? (string)$_POST['reasonForSell'] : '';
-
+$events = [];
 
 $errorName = '';
 $errorPrice = '';
@@ -24,19 +24,31 @@ $errorReason = '';
 
 $connection = getDBConnection();
 
+//Events fetchen
+$stmt = $connection->prepare('SELECT eventName FROM Evenements');
+$stmt->execute([]);
+$eventsDB = $stmt->fetchAllAssociative();
+
+
+//fill events array for box
+foreach ($eventsDB as $eventName) {
+    $events[$eventName['eventName']] = $eventName['eventName'];
+}
+asort($events);
+
+
 if (isset($_POST['btnRegister'])) {
     $allOk = true;
-
 
     if ($ticketName === '') {
         $errorName = 'A valid ticket name is required!';
         $allOk = false;
     }
-    if ($ticketPrice === '') {
+    if ($ticketPrice == '0' ) {
         $errorPrice = 'A valid price is required!';
         $allOk = false;
     }
-    if ($amount === '') {
+    if ($amount == '0') {
         $errorAmount = 'A valid amount is required!';
         $allOk = false;
     }
@@ -44,7 +56,10 @@ if (isset($_POST['btnRegister'])) {
         $errorReason = 'A valid reason is required!';
         $allOk = false;
     }
-
+    if (($eventName === '') && (!in_array($eventName, $events))) {
+        $error['$eventName'] = 'This event does not exist';
+        $allOK = false;
+    }
     if ($allOk) {
         //add to database
         $stmt = $connection->prepare('INSERT INTO Tickets(ticketName, ticketPrice, amount, reasonForSell) VALUES (?,?,?,?)');
@@ -56,6 +71,6 @@ if (isset($_POST['btnRegister'])) {
 
 // View
 echo $twig->render('pages/add-ticket.twig', ['ticketName' => $ticketName, 'ticketPrice' => $ticketPrice, 'amount' => $amount,
-    'reasonForSell' => $reasonForSell, 'errorName' => $errorName, 'errorPrice' => $errorPrice, 'errorAmount' => $errorAmount,
+    'reasonForSell' => $reasonForSell,'events' => $events,'event2' => $eventName, 'errorName' => $errorName, 'errorPrice' => $errorPrice, 'errorAmount' => $errorAmount,
     'errorReason' => $errorReason,
     'action' => $_SERVER['PHP_SELF']]);
