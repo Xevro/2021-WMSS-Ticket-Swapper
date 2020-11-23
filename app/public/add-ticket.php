@@ -31,7 +31,6 @@ $stmt = $connection->prepare('SELECT idEvenements, eventName FROM Evenements');
 $stmt->execute([]);
 $eventsDB = $stmt->fetchAllAssociative();
 
-
 //fill events array for box
 foreach ($eventsDB as $event) {
     $events[$event['idEvenements']] = $event;
@@ -65,8 +64,8 @@ if (isset($_POST['btnRegister'])) {
     if ($allOk) {
         //add to database
         echo $eventName;
-        $stmt = $connection->prepare('INSERT INTO Tickets(ticketName, ticketPrice, amount, reasonForSell, Evenements_idEvenements, 	Users_idGebruikers) VALUES (?,?,?,?, ?, ?)');
-        $stmt->execute([$ticketName, $ticketPrice, $amount, $reasonForSell, $eventName, 1]); // change 1, 1 to eventid and userid
+        $stmt = $connection->prepare('INSERT INTO Tickets(ticketName, ticketPrice, amount, reasonForSell, Evenements_idEvenements, Users_idGebruikers) VALUES (?,?,?,?, ?, ?)');
+        $stmt->execute([$ticketName, $ticketPrice, $amount, $reasonForSell, $eventName, 1]); // change 1 to userid
         header('Location: index.php');
         exit();
     }

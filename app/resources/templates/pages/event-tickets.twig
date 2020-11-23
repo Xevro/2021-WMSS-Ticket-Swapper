@@ -22,19 +22,14 @@
                                 </div>
                             </div>
                         </div>
-                        {% for event in events %}
+                        {% for tickets in tickets %}
                             <div class="list-group-item" style="padding-left: 100px;">
                                 <div class="row">
                                     <div class="col px-4 event-content">
-                                        <h3>{{ event.getEventName() }}</h3>
-                                        <p>Ticket price: €{{ event.getStandardPrice() }}</p>
-                                        <p>Location: {{ event.getLocation() }}</p>
-                                        <p>Start date: {{ event.getStartDate() }}</p>
-                                        <p>End date: {{ event.getEndDate() }}</p>
-                                        <p class="boldtext">Description:</p>
-                                        <p>{{ event.getDescription() }}</p>
-                                        <p class="boldtext">Artists:</p>
-                                        <p>{{ event.getArtists() }}</p>
+                                        <h3>{{ tickets.getTicketName() }}</h3>
+                                        <p>Ticket price: €{{ tickets.getAmount() }}</p>
+                                        <p>Amount of tickets: {{ tickets.getAmount() }}</p>
+                                        <p>Reason for sell: {{ tickets.getReasonForSell() }}</p>
                                     </div>
                                     <div class="col px-4 viewbutton">
                                         <div class="float-right" style="position: absolute; right: 10px; bottom: 0;">
