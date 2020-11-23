@@ -11,97 +11,51 @@ require_once $basePath . 'vendor/autoload.php';
 $loader = new \Twig\Loader\FilesystemLoader($basePath . '/resources/templates');
 $twig = new \Twig\Environment($loader);
 
-$eventName = isset($_POST['eventName']) ? (string)$_POST['eventName'] : '';
-$standardPrice = isset($_POST['standardPrice']) ? (float)$_POST['standardPrice'] : '';
-$location = isset($_POST['location']) ? (string)$_POST['location'] : '';
-$description = isset($_POST['description']) ? (string)$_POST['description'] : '';
-$artists = isset($_POST['artists']) ? (string)$_POST['artists'] : '';
-$startDate = isset($_POST['startdate']) ? (string)$_POST['startdate'] : date("Y-m-d H:i");
-$endDate = isset($_POST['enddate']) ? (string)$_POST['enddate'] : date('Y-m-d H:i');
+$ticketName = isset($_POST['ticketName']) ? (string)$_POST['ticketName'] : '';
+$ticketPrice = isset($_POST['ticketPrice']) ? (float)$_POST['ticketPrice'] : '';
+$amount = isset($_POST['amount']) ? (int)$_POST['amount'] : '';
+$reasonForSell = isset($_POST['reasonForSell']) ? (string)$_POST['reasonForSell'] : '';
+
 
 $errorName = '';
 $errorPrice = '';
-$errorLocation = '';
-$errorDescription = '';
-$errorArtists = '';
-$errorStartDate = '';
-$errorEndDate = '';
+$errorAmount = '';
+$errorReason = '';
 
 $connection = getDBConnection();
 
 if (isset($_POST['btnRegister'])) {
     $allOk = true;
-    $allOkDateStart = true;
-    $allOkDateEnd = true;
 
-    $selectedFormat = '';
-    $dateformats = ['Y-m-d', 'Y/m/d', 'Y-m-d H:i', 'Y/m/d H:i'];
-    for ($i = 0; $i < count($dateformats); $i++) {
-        $date = DateTime::createFromFormat($dateformats[$i], $startDate);
-        if (!($date !== false)) {
-            $errorStartDate = 'Please enter a valid date';
-            $allOkDateStart = false;
-        } else {
-            $selectedFormat = $dateformats[$i];
-            $allOkDateStart = true;
-            $errorStartDate = '';
-            break;
-        }
-    }
-    for ($i = 0; $i < count($dateformats); $i++) {
-        $dateEnd = DateTime::createFromFormat($dateformats[$i], $endDate);
-        if (!($dateEnd !== false)) {
-            $errorEndDate = 'Please enter a valid date';
-            $allOkDateEnd = false;
-        } else {
-            $selectedFormat = $dateformats[$i];
-            $allOkDateEnd = true;
-            $errorEndDate = '';
-            break;
-        }
-    }
 
-    if ($eventName === '') {
-        $errorName = 'An event name is required!';
+    if ($ticketName === '') {
+        $errorName = 'A valid ticket name is required!';
         $allOk = false;
     }
-    if ($standardPrice === '') {
+    if ($ticketPrice === '') {
         $errorPrice = 'A valid price is required!';
         $allOk = false;
     }
-    if ($location === '') {
-        $errorLocation = 'A location is required!';
+    if ($amount === '') {
+        $errorAmount = 'A valid amount is required!';
         $allOk = false;
     }
-    if ($description === '') {
-        $errorDescription = 'A description is required!';
-        $allOk = false;
-    }
-    if ($artists === '') {
-        $errorArtists = 'Artists is required!';
-        $allOk = false;
-    }
-    if ($endDate === '') {
-        $errorEndDate = 'Please enter a valid date';
+    if ($reasonForSell === '') {
+        $errorReason = 'A valid reason is required!';
         $allOk = false;
     }
 
-    if ($startDate === '') {
-        $errorStartDate = 'Please enter a valid date';
-        $allOk = false;
-    }
-
-    if ($allOk && $allOkDateStart && $allOkDateEnd) {
+    if ($allOk) {
         //add to database
-        $stmt = $connection->prepare('INSERT INTO Evenements(eventName, standardTicketPrice, startDate, endDate, location, description, artists) VALUES (?,?,?,?,?,?,?)');
-        $stmt->execute([$eventName, $standardPrice, date($selectedFormat, strtotime($startDate)), date($selectedFormat, strtotime($endDate)), $location, $description, $artists]);
+        $stmt = $connection->prepare('INSERT INTO Tickets(ticketName, ticketPrice, amount, reasonForSell) VALUES (?,?,?,?)');
+        $stmt->execute([$ticketName, $ticketPrice, $amount, $reasonForSell]);
         header('Location: index.php');
         exit();
     }
 }
 
 // View
-echo $twig->render('pages/register-event.twig', ['eventName' => $eventName, 'standardPrice' => $standardPrice, 'location' => $location,
-    'description' => $description, 'artists' => $artists, 'startDate' => $startDate, 'endDate' => $endDate, 'errorName' => $errorName, 'errorPrice' => $errorPrice, 'errorLocation' => $errorLocation,
-    'errorDescription' => $errorDescription, 'errorArtists' => $errorArtists, 'errorStartDate' => $errorStartDate, 'errorEndDate' => $errorEndDate,
+echo $twig->render('pages/add-ticket.twig', ['ticketName' => $ticketName, 'ticketPrice' => $ticketPrice, 'amount' => $amount,
+    'reasonForSell' => $reasonForSell, 'errorName' => $errorName, 'errorPrice' => $errorPrice, 'errorAmount' => $errorAmount,
+    'errorReason' => $errorReason,
     'action' => $_SERVER['PHP_SELF']]);

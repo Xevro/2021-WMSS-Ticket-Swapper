@@ -12,7 +12,7 @@ class ticket{
      * @param $amount
      * @param $reasonForSell
      */
-    public function __construct($ticketName, $ticketPrice, $amount, $reasonForSell) {
+    public function __construct(string $ticketName, float $ticketPrice, int $amount, string $reasonForSell) {
         $this->ticketName = $ticketName;
         $this->ticketPrice = $ticketPrice;
         $this->amount = $amount;
@@ -20,68 +20,69 @@ class ticket{
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getTicketName()
+    public function getTicketName(): string
     {
         return $this->ticketName;
     }
 
     /**
-     * @param mixed $ticketName
+     * @param string $ticketName
      */
-    public function setTicketName($ticketName): void
+    public function setTicketName(string $ticketName): void
     {
         $this->ticketName = $ticketName;
     }
 
     /**
-     * @return mixed
+     * @return float
      */
-    public function getTicketPrice()
+    public function getTicketPrice(): float
     {
         return $this->ticketPrice;
     }
 
     /**
-     * @param mixed $ticketPrice
+     * @param float $ticketPrice
      */
-    public function setTicketPrice($ticketPrice): void
+    public function setTicketPrice(float $ticketPrice): void
     {
         $this->ticketPrice = $ticketPrice;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getAmount()
+    public function getAmount(): int
     {
         return $this->amount;
     }
 
     /**
-     * @param mixed $amount
+     * @param int $amount
      */
-    public function setAmount($amount): void
+    public function setAmount(int $amount): void
     {
         $this->amount = $amount;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getReasonForSell()
+    public function getReasonForSell(): string
     {
         return $this->reasonForSell;
     }
 
     /**
-     * @param mixed $reasonForSell
+     * @param string $reasonForSell
      */
-    public function setReasonForSell($reasonForSell): void
+    public function setReasonForSell(string $reasonForSell): void
     {
         $this->reasonForSell = $reasonForSell;
     }
+
 
 }
 ?>
