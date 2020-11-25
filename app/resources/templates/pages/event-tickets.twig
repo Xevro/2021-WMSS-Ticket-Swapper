@@ -14,17 +14,6 @@
                             <h2>{{ eventName }} events list</h2>
                             <p>Below is a list of tickets that are for sale, click on the button to find more information about the ticket.</p>
                         </div>
-                       <!-- <div class="list-group-item col px-4">
-                            <form action="" method="GET" class="form-label-left input_mask">
-                            <div class="input-group input-group-sm float-right" style="width: 200px;">
-                                <input type="hidden" name="eventName" value="{{ eventName }}">
-                                <input type="text" value="{{ searchTerm }}" name="searchTickets" style="height: auto;" class="form-control float-right" placeholder="Search">
-                                <div class="input-group-append">
-                                    <button type="submit" class="button primary fit small icon fa-search"></button>
-                                </div>
-                            </div>
-                            </form>
-                        </div>-->
                         {% for tickets in tickets %}
                             <div class="list-group-item" style="padding-left: 100px;">
                                 <div class="row">

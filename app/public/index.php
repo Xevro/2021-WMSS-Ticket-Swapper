@@ -18,13 +18,21 @@ $events = [];
 //Fetch events
 require_once $basePath . 'src/Models/Event.php';
 
-$stmt = $connection->prepare('SELECT * FROM Evenements');
-$stmt->execute([]);
-$eventsAssociative = $stmt->fetchAllAssociative();
+$searchEvents = isset($_GET['searchEvents']) ? (string) $_GET['searchEvents'] : '';
+
+if($searchEvents) {
+    $stmt = $connection->prepare('SELECT * FROM Evenements WHERE eventName LIKE ?');
+    $stmt->execute(['%' . $searchEvents . '%']);
+    $eventsAssociative = $stmt->fetchAllAssociative();
+} else {
+    $stmt = $connection->prepare('SELECT * FROM Evenements');
+    $stmt->execute([]);
+    $eventsAssociative = $stmt->fetchAllAssociative();
+}
 
 foreach ($eventsAssociative as $Event) {
     $events[] = new Event($Event['eventName'], $Event['standardTicketPrice'], $Event['startDate'], $Event['endDate'], $Event['location'], $Event['description'], $Event['artists']);
 }
 
 // View
-echo $twig->render('pages/index.twig', ['events' => $events]);
+echo $twig->render('pages/index.twig', ['events' => $events, 'searchTerm' => $searchEvents]);
