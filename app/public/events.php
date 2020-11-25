@@ -16,14 +16,14 @@ $connection = getDBConnection();
 $events = [];
 
 //Fetch events
-require_once $basePath . 'src/Models/Event.php';
+require_once $basePath . 'src/Models/event.php';
 
 $stmt = $connection->prepare('SELECT * FROM Evenements');
 $stmt->execute([]);
 $eventsAssociative = $stmt->fetchAllAssociative();
 
 foreach ($eventsAssociative as $Event) {
-    $events[] = new Event($Event['eventName'], $Event['standardTicketPrice'], $Event['startDate'], $Event['endDate'], $Event['location'], $Event['description'], $Event['artists']);
+    $events[] = new event($Event['eventName'], $Event['standardTicketPrice'], $Event['startDate'], $Event['endDate'], $Event['location'], $Event['description'], $Event['artists']);
 }
 
 // View

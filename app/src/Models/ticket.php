@@ -1,5 +1,6 @@
 <?php
 class ticket{
+    private $ticketId;
     private $ticketName;
     private $ticketPrice;
     private $amount;
@@ -12,11 +13,26 @@ class ticket{
      * @param $amount
      * @param $reasonForSell
      */
-    public function __construct(string $ticketName, float $ticketPrice, int $amount, string $reasonForSell) {
+    public function __construct(int $ticketId, string $ticketName, float $ticketPrice, int $amount, string $reasonForSell) {
+        $this->ticketId = $ticketId;
         $this->ticketName = $ticketName;
         $this->ticketPrice = $ticketPrice;
         $this->amount = $amount;
         $this->reasonForSell = $reasonForSell;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTicketId(): int {
+        return $this->ticketId;
+    }
+
+    /**
+     * @param int $ticketId
+     */
+    public function setTicketId(int $ticketId): void {
+        $this->ticketId = $ticketId;
     }
 
     /**

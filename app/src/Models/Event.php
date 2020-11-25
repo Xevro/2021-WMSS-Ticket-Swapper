@@ -1,6 +1,6 @@
 <?php
 
-class Event {
+class event {
     private $eventName;
     private $standardPrice;
     private $startDate;
@@ -107,7 +107,7 @@ class Event {
      * @return mixed
      */
     public function getStandardPrice() {
-        return number_format($this->standardPrice, 2);;
+        return number_format($this->standardPrice, 2);
     }
 
     /**
