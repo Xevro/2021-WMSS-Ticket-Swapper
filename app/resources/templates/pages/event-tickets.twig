@@ -11,10 +11,10 @@
                 <div class="col-md-10 offset-md-1">
                     <div class="list-group eventsBox">
                         <div class="eventlist">
-                            <h2>Events list</h2>
-                            <p>Choose an event to buy or sell tickets. You can search a certain event by using the search field</p>
+                            <h2>{{ eventName }} events list</h2>
+                            <p>Below is a list of tickets that are for sale, click on the button to find more information about the ticket.</p>
                         </div>
-                        <div class="list-group-item col px-4">
+                       <!-- <div class="list-group-item col px-4">
                             <form action="" method="GET" class="form-label-left input_mask">
                             <div class="input-group input-group-sm float-right" style="width: 200px;">
                                 <input type="hidden" name="eventName" value="{{ eventName }}">
@@ -24,7 +24,7 @@
                                 </div>
                             </div>
                             </form>
-                        </div>
+                        </div>-->
                         {% for tickets in tickets %}
                             <div class="list-group-item" style="padding-left: 100px;">
                                 <div class="row">
@@ -36,7 +36,7 @@
                                     </div>
                                     <div class="col px-4 viewbutton">
                                         <div class="float-right" style="position: absolute; right: 10px; bottom: 0;">
-                                            <a href="#" style="color: white; text-decoration: none;" class="button primary">View event tickets</a>
+                                            <a href="ticket-info.php" style="color: white; text-decoration: none;" class="button primary">View event tickets</a>
                                         </div>
                                     </div>
                                 </div>

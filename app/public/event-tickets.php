@@ -25,6 +25,7 @@ $eventTickets = $stmt->fetchAllAssociative();
 
 foreach ($eventTickets as $ticket) {
     $tickets[] = new ticket($ticket['ticketName'], $ticket['ticketPrice'], $ticket['amount'], $ticket['reasonForSell']);
+
 }
 
 //View

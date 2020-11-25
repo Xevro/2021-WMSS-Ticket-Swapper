@@ -1,0 +1,41 @@
+{% extends 'layout/main.twig' %}
+
+{% block pageContent %}
+<body>
+{% include 'layout/parts/menubar.twig' %}
+
+    <!-- page content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row mt-3">
+                <div class="col-md-10 offset-md-1">
+                    <div class="list-group eventsBox">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                <div class="x_panel">
+                                    <div class="x_title">
+                                        <h2>Ticket #23{{ ticket.getId() }} - {{ tickets.getTicketName() }}</h2>
+                                    </div>
+                                    <div class="list-group-item">
+                                        <div class="x_content">
+                                            <dl>
+                                                <dd>Ticket price: €{{ tickets.getAmount() }}</dd>
+                                                <dd>Amount of tickets: {{ tickets.getAmount() }}</dd>
+                                                <dd>Reason for sell: {{ tickets.getReasonForSell() }}</dd>
+                                            </dl>
+                                            <div class="col-sm-9">
+                                                <h4>Ticket actions</h4>
+                                                <a href="#" class="button primary">Purchase ticket</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /page content -->
+{% endblock %}
