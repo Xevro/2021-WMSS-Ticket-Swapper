@@ -77,6 +77,11 @@ body:before {
     width: 200px;
 }
 
+dd:first-child {
+    margin: 0;
+    font-weight: bold;
+}
+
 @media screen and (max-width: 680px) {
     .buttons-register li {
         padding: 0.325em;
