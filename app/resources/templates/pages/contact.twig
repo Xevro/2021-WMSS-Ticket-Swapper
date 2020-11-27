@@ -1,0 +1,69 @@
+{% extends 'layout/main.twig' %}
+
+{% block pageContent %}
+    <body class="register">
+    {% include 'layout/parts/menubar.twig' %}
+    <!-- page content -->
+    <div class="content-header title">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-">
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <section class="content">
+        <div class="card card-default"  >
+            <div class="card-header">
+                <h4 class="card-title">Contact us by filling in this form</h4>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <form action="{{ action }}" method="post" novalidate="" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" id="Name" name="name" placeholder="Enter name" value="{{ name }}">
+                                {% if errorName %}
+                                    <div class="error-message">{{ errorName }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label>First name</label>
+                                <input type="text" id="firstname" name="firstName" placeholder="Enter first name" value="{{ firstName }}">
+                                {% if errorFirstName %}
+                                    <div class="error-message">{{ errorFirstName }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label>Subject</label>
+                                <input type="text" id="Subject" name="subject" placeholder="Enter subject" value="{{ subject }}">
+                                {% if errorSubject %}
+                                    <div class="error-message">{{ errorSubject }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label>Message</label>
+                                <textarea name="message" id="Message" placeholder="Write message here" rows="3">{{ message }}</textarea>
+                                {% if errorMessage %}
+                                    <div class="error-message">{{ errorMessage }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                    <div class="form-group">
+                        <button type="submit" value="Contact" id="btnRegister" name="btnRegister" class="primary">Send</button>
+                    </div>
+                </form>
+                <!-- /.row -->
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.row -->
+    </section>
+
+    <!-- /page content -->
+{% endblock %}
