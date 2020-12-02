@@ -2,10 +2,6 @@
 
 // General variables
 $basePath = __DIR__ . '/../';
-//require database config & functions
-require_once $basePath . 'config/database.php';
-require_once $basePath . 'src/functions.php';
-require_once $basePath . 'src/models/ticket.php';
 
 // Data
 require_once $basePath . 'vendor/autoload.php';
