@@ -144,4 +144,151 @@ class EventController {
             'errorDescription' => $errorDescription, 'errorArtists' => $errorArtists, 'errorStartDate' => $errorStartDate, 'errorEndDate' => $errorEndDate,
             'action' => '/register-event']);
     }
+
+    public function contact(){
+        $name = isset($_POST['name']) ? (string)$_POST['name'] : '';
+        $firstName = isset($_POST['firstName']) ? (string)$_POST['firstName'] : '';
+        $subject = isset($_POST['subject']) ? (string)$_POST['subject'] : '';
+        $message = isset($_POST['message']) ? (string)$_POST['message'] : '';
+
+
+        $errorName = '';
+        $errorFirstName = '';
+        $errorSubject = '';
+        $errorMessage = '';
+
+        $connection = getDBConnection();
+
+        if (isset($_POST['btnRegister'])) {
+            $allOk = true;
+
+            if ($name === '') {
+                $errorName = 'A valid name is required!';
+                $allOk = false;
+            }
+            if ($firstName === '') {
+                $errorFirstName = 'A valid first name is required!';
+                $allOk = false;
+            }
+            if ($subject === '') {
+                $errorSubject = 'A valid subject is required!';
+                $allOk = false;
+            }
+            if ($message === '') {
+                $errorMessage = 'A valid message is required!';
+                $allOk = false;
+            }
+            if ($allOk) {
+                //add to database
+                $stmt = $connection->prepare('INSERT INTO Contact(Name, FirstName, Subject, Message) VALUES (?,?,?,?)');
+                $stmt->execute([$name, $firstName, $subject, $message]);
+                header('Location: /contact');
+                exit();
+            }
+        }
+
+// View
+        echo $this->twig->render('pages/contact.twig', ['name' => $name, 'firstName' => $firstName, 'subject' => $subject,
+            'message' => $message, 'errorName' => $errorName, 'errorFirstName' => $errorFirstName, 'errorSubject' => $errorSubject,
+            'errorMessage' => $errorMessage, 'action' => '/contact']);
+    }
+    public function addTicket(){
+        $ticketName = isset($_POST['ticketName']) ? (string)$_POST['ticketName'] : '';
+        $ticketPrice = isset($_POST['ticketPrice']) ? (float)$_POST['ticketPrice'] : '';
+        $amount = isset($_POST['amount']) ? (int)$_POST['amount'] : '';
+        $reasonForSell = isset($_POST['reasonForSell']) ? (string)$_POST['reasonForSell'] : '';
+        $eventName = isset($_POST['events']) ? (integer)$_POST['events'] : 0;
+
+        $events = [];
+
+        $errorName = '';
+        $errorPrice = '';
+        $errorAmount = '';
+        $errorReason = '';
+
+        $connection = getDBConnection();
+
+//Events fetchen
+        $stmt = $connection->prepare('SELECT idEvenements, eventName FROM Evenements');
+        $stmt->execute([]);
+        $eventsDB = $stmt->fetchAllAssociative();
+
+//fill events array for box
+        foreach ($eventsDB as $event) {
+            $events[$event['idEvenements']] = $event;
+        }
+        asort($events);
+
+
+        if (isset($_POST['btnRegister'])) {
+            $allOk = true;
+
+            if ($ticketName === '') {
+                $errorName = 'A valid ticket name is required!';
+                $allOk = false;
+            }
+            if ($ticketPrice == '0') {
+                $errorPrice = 'A valid price is required!';
+                $allOk = false;
+            }
+            if ($amount == '0') {
+                $errorAmount = 'A valid amount is required!';
+                $allOk = false;
+            }
+            if ($reasonForSell === '') {
+                $errorReason = 'A valid reason is required!';
+                $allOk = false;
+            }
+            if (($eventName === '') && (!in_array($eventName, $events['idEvenements']))) {
+                $error['$eventName'] = 'This event does not exist';
+                $allOK = false;
+            }
+            if ($allOk) {
+                //add to database
+                echo $eventName;
+                $stmt = $connection->prepare('INSERT INTO Tickets(ticketName, ticketPrice, amount, reasonForSell, Evenements_idEvenements, Users_idGebruikers) VALUES (?,?,?,?, ?, ?)');
+                $stmt->execute([$ticketName, $ticketPrice, $amount, $reasonForSell, $eventName, 1]); // change 1 to userid
+                header('Location: /');
+                exit();
+            }
+        }
+
+// View
+        echo $this->twig->render('pages/add-ticket.twig', ['ticketName' => $ticketName, 'ticketPrice' => $ticketPrice, 'amount' => $amount,
+            'reasonForSell' => $reasonForSell, 'events' => $events, 'event2' => $eventName, 'errorName' => $errorName, 'errorPrice' => $errorPrice, 'errorAmount' => $errorAmount,
+            'errorReason' => $errorReason, 'action' => '/add-ticket']);
+    }
+    public function eventTickets(){
+        $eventName = isset($_GET['eventName']) ? (string) $_GET['eventName'] : '';
+        $searchTickets = isset($_GET['searchTickets']) ? (string) $_GET['searchTickets'] : '';
+        $tickets = [];
+
+        $connection = getDBConnection();
+        $stmt = $connection->prepare('SELECT * FROM tickets AS t LEFT JOIN evenements AS e ON t.Evenements_idEvenements = e.idEvenements WHERE e.eventName = ?;'); //OR t.ticketName LIKE ?
+        $stmt->execute([$eventName]); //$searchTickets <= zoeken met search form (werkt niet helemaal)
+        $eventTickets = $stmt->fetchAllAssociative();
+
+
+        foreach ($eventTickets as $ticket) {
+            $tickets[] = new ticket($ticket['idTickets'], $ticket['ticketName'], $ticket['ticketPrice'], $ticket['amount'], $ticket['reasonForSell']);
+        }
+
+//View
+        echo $this->twig->render('pages/event-tickets.twig', ['tickets' => $tickets, 'eventName' => $eventName, 'searchTerm' => $searchTickets]);
+    }
+    public function ticketInfo(){
+        $ticketId = isset($_GET['ticketid']) ? (int) $_GET['ticketid'] : '';
+
+        $connection = getDBConnection();
+        $stmt = $connection->prepare('SELECT * FROM tickets AS t LEFT JOIN evenements AS e ON t.Evenements_idEvenements = e.idEvenements WHERE t.idTickets = ?;'); //OR t.ticketName LIKE ?
+        $stmt->execute([$ticketId]);
+        $eventTicket = $stmt->fetchAssociative();
+
+
+        $ticketinfo = new ticket($eventTicket['idTickets'], $eventTicket['ticketName'], $eventTicket['ticketPrice'], $eventTicket['amount'], $eventTicket['reasonForSell']);
+        $eventinfo = new event($eventTicket['eventName'], $eventTicket['standardTicketPrice'], $eventTicket['startDate'], $eventTicket['endDate'], $eventTicket['location'], $eventTicket['description'], $eventTicket['artists']);
+
+//View
+        echo $this->twig->render('pages/ticket-info.twig', ['tickets' => $ticketinfo, 'event' => $eventinfo]);
+    }
 }
