@@ -5,6 +5,7 @@
         "bramus/router": "~1.5"
     },
     "autoload": {
-        "classmap": ["src/"]
+        "classmap": ["src/"],
+        "files": ["src/functions.php"]
     }
 }
