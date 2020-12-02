@@ -145,7 +145,7 @@ class EventController {
             'action' => '/register-event']);
     }
 
-    public function contact(){
+    public function contact() {
         $name = isset($_POST['name']) ? (string)$_POST['name'] : '';
         $firstName = isset($_POST['firstName']) ? (string)$_POST['firstName'] : '';
         $subject = isset($_POST['subject']) ? (string)$_POST['subject'] : '';
@@ -187,12 +187,13 @@ class EventController {
             }
         }
 
-// View
+        // View
         echo $this->twig->render('pages/contact.twig', ['name' => $name, 'firstName' => $firstName, 'subject' => $subject,
             'message' => $message, 'errorName' => $errorName, 'errorFirstName' => $errorFirstName, 'errorSubject' => $errorSubject,
             'errorMessage' => $errorMessage, 'action' => '/contact']);
     }
-    public function addTicket(){
+
+    public function addTicket() {
         $ticketName = isset($_POST['ticketName']) ? (string)$_POST['ticketName'] : '';
         $ticketPrice = isset($_POST['ticketPrice']) ? (float)$_POST['ticketPrice'] : '';
         $amount = isset($_POST['amount']) ? (int)$_POST['amount'] : '';
@@ -208,12 +209,12 @@ class EventController {
 
         $connection = getDBConnection();
 
-//Events fetchen
+        //Events fetchen
         $stmt = $connection->prepare('SELECT idEvenements, eventName FROM Evenements');
         $stmt->execute([]);
         $eventsDB = $stmt->fetchAllAssociative();
 
-//fill events array for box
+        //fill events array for box
         foreach ($eventsDB as $event) {
             $events[$event['idEvenements']] = $event;
         }
@@ -253,14 +254,15 @@ class EventController {
             }
         }
 
-// View
+        // View
         echo $this->twig->render('pages/add-ticket.twig', ['ticketName' => $ticketName, 'ticketPrice' => $ticketPrice, 'amount' => $amount,
             'reasonForSell' => $reasonForSell, 'events' => $events, 'event2' => $eventName, 'errorName' => $errorName, 'errorPrice' => $errorPrice, 'errorAmount' => $errorAmount,
             'errorReason' => $errorReason, 'action' => '/add-ticket']);
     }
-    public function eventTickets(){
-        $eventName = isset($_GET['eventName']) ? (string) $_GET['eventName'] : '';
-        $searchTickets = isset($_GET['searchTickets']) ? (string) $_GET['searchTickets'] : '';
+
+    public function eventTickets() {
+        $eventName = isset($_GET['eventName']) ? (string)$_GET['eventName'] : '';
+        $searchTickets = isset($_GET['searchTickets']) ? (string)$_GET['searchTickets'] : '';
         $tickets = [];
 
         $connection = getDBConnection();
@@ -273,11 +275,12 @@ class EventController {
             $tickets[] = new ticket($ticket['idTickets'], $ticket['ticketName'], $ticket['ticketPrice'], $ticket['amount'], $ticket['reasonForSell']);
         }
 
-//View
+        //View
         echo $this->twig->render('pages/event-tickets.twig', ['tickets' => $tickets, 'eventName' => $eventName, 'searchTerm' => $searchTickets]);
     }
-    public function ticketInfo(){
-        $ticketId = isset($_GET['ticketid']) ? (int) $_GET['ticketid'] : '';
+
+    public function ticketInfo() {
+        $ticketId = isset($_GET['ticketid']) ? (int)$_GET['ticketid'] : '';
 
         $connection = getDBConnection();
         $stmt = $connection->prepare('SELECT * FROM tickets AS t LEFT JOIN evenements AS e ON t.Evenements_idEvenements = e.idEvenements WHERE t.idTickets = ?;'); //OR t.ticketName LIKE ?
@@ -288,7 +291,7 @@ class EventController {
         $ticketinfo = new ticket($eventTicket['idTickets'], $eventTicket['ticketName'], $eventTicket['ticketPrice'], $eventTicket['amount'], $eventTicket['reasonForSell']);
         $eventinfo = new event($eventTicket['eventName'], $eventTicket['standardTicketPrice'], $eventTicket['startDate'], $eventTicket['endDate'], $eventTicket['location'], $eventTicket['description'], $eventTicket['artists']);
 
-//View
+        //View
         echo $this->twig->render('pages/ticket-info.twig', ['tickets' => $ticketinfo, 'event' => $eventinfo]);
     }
 }

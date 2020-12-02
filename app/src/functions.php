@@ -1,6 +1,8 @@
 <?php
 $basePath = __DIR__ . '/../';
+
 use Doctrine\DBAL\Connection;
+
 //require database config & functions
 
 require_once $basePath . 'config/database.php';
