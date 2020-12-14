@@ -43,8 +43,8 @@ class EventController {
         $stmt->execute([]);
         $eventsAssociative = $stmt->fetchAllAssociative();
 
-        foreach ($eventsAssociative as $Event) {
-            $events[] = new event($Event['eventName'], $Event['standardTicketPrice'], $Event['startDate'], $Event['endDate'], $Event['location'], $Event['description'], $Event['artists']);
+        foreach ($eventsAssociative as $event) {
+            $events[] = new event($event['eventName'], $event['standardTicketPrice'], $event['startDate'], $event['endDate'], $event['location'], $event['description'], $event['artists']);
         }
         // View
         echo $this->twig->render('pages/events.twig', ['events' => $events]);
@@ -220,7 +220,6 @@ class EventController {
         }
         asort($events);
 
-
         if (isset($_POST['btnRegister'])) {
             $allOk = true;
 
@@ -260,31 +259,25 @@ class EventController {
             'errorReason' => $errorReason, 'action' => '/add-ticket']);
     }
 
-    public function eventTickets() {
-        $eventName = isset($_GET['eventName']) ? (string)$_GET['eventName'] : '';
+    public function eventTickets(string $eventName) {
         $searchTickets = isset($_GET['searchTickets']) ? (string)$_GET['searchTickets'] : '';
         $tickets = [];
-
         $connection = getDBConnection();
         $stmt = $connection->prepare('SELECT * FROM tickets AS t LEFT JOIN evenements AS e ON t.Evenements_idEvenements = e.idEvenements WHERE e.eventName = ?;'); //OR t.ticketName LIKE ?
-        $stmt->execute([$eventName]); //$searchTickets <= zoeken met search form (werkt niet helemaal)
+        $stmt->execute([$eventName]);
         $eventTickets = $stmt->fetchAllAssociative();
-
 
         foreach ($eventTickets as $ticket) {
             $tickets[] = new ticket($ticket['idTickets'], $ticket['ticketName'], $ticket['ticketPrice'], $ticket['amount'], $ticket['reasonForSell']);
         }
-
         //View
         echo $this->twig->render('pages/event-tickets.twig', ['tickets' => $tickets, 'eventName' => $eventName, 'searchTerm' => $searchTickets]);
     }
 
-    public function ticketInfo() {
-        $ticketId = isset($_GET['ticketid']) ? (int)$_GET['ticketid'] : '';
-
+    public function ticketInfo(string $eventName, string $id) {
         $connection = getDBConnection();
         $stmt = $connection->prepare('SELECT * FROM tickets AS t LEFT JOIN evenements AS e ON t.Evenements_idEvenements = e.idEvenements WHERE t.idTickets = ?;'); //OR t.ticketName LIKE ?
-        $stmt->execute([$ticketId]);
+        $stmt->execute([$id]);
         $eventTicket = $stmt->fetchAssociative();
 
 

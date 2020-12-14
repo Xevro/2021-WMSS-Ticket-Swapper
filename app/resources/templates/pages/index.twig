@@ -31,9 +31,9 @@
             <div class="row mt-3">
                 <div class="col-md-10 offset-md-1">
                     <div class="list-group eventsBox">
-                        <div class="eventlist">
-                                <h2>Events list</h2>
-                                <p>Choose an event to buy or sell tickets. You can search a certain event by using the search field</p>
+                        <div class="eventlist" id="events">
+                            <h2>Events list</h2>
+                            <p>Choose an event to buy or sell tickets. You can search a certain event by using the search field</p>
                         </div>
                          <div class="list-group-item col px-4">
                             <form action="" method="GET" class="form-label-left input_mask">
@@ -61,7 +61,7 @@
                                 </div>
                                 <div class="col px-4 viewbutton">
                                     <div class="float-right" style="position: absolute; right: 10px; bottom: 0;">
-                                        <a href="/event-tickets?eventName={{ event.getEventName() }}" style="color: white; text-decoration: none;" class="button primary">View event tickets</a>
+                                        <a href="/events/{{ event.getEventName() }}/tickets" style="color: white; text-decoration: none;" class="button primary">View event tickets</a>
                                     </div>
                                 </div>
                             </div>
