@@ -53,9 +53,9 @@
                             <div class="col-md-4 col-sm-4 form-group has-feedback">
                                 <label for="event">Event</label>
                                 <select class="form-control" id="eventName" name="events">
-                                    <option value="">Choose event</option>
+                                    <option value="0">Choose event</option>
                                     {% for eventName in events %}
-                                        <option value="{{ event_name['event_id'] }}" {% if event2 == eventName['event_id'] %} selected{% endif %}>{{ eventName['event_name'] }}</option>
+                                        <option value="{{ eventName['event_id'] }}" {% if event2 == eventName['event_id'] %} selected{% endif %}>{{ eventName['event_name'] }}</option>
                                     {% endfor %}
                                 </select>
                                 {% if errorEvents %}

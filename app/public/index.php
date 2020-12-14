@@ -22,7 +22,7 @@ $router->post('/events/ticket/add', 'EventController@addTicket');
 
 $router->get('/events/(\w+)/tickets', 'EventController@eventTickets');
 
-$router->get('/events/(\w+)/(\w+)', 'EventController@ticketInfo');
+$router->get('/events/(\w+)/tickets/(\w+)', 'EventController@ticketInfo');
 
 // Run it!
 $router->run();

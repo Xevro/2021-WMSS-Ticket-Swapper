@@ -39,15 +39,23 @@ class EventController {
         $connection = getDBConnection();
         $events = [];
 
-        $stmt = $connection->prepare('SELECT * FROM events');
-        $stmt->execute([]);
-        $eventsAssociative = $stmt->fetchAllAssociative();
+        //Fetch events
+        $searchEvents = isset($_GET['searchEvents']) ? (string)$_GET['searchEvents'] : '';
 
+        if ($searchEvents) {
+            $stmt = $connection->prepare('SELECT * FROM events WHERE event_name LIKE ?');
+            $stmt->execute(['%' . $searchEvents . '%']);
+            $eventsAssociative = $stmt->fetchAllAssociative();
+        } else {
+            $stmt = $connection->prepare('SELECT * FROM events');
+            $stmt->execute([]);
+            $eventsAssociative = $stmt->fetchAllAssociative();
+        }
         foreach ($eventsAssociative as $event) {
-            $events[] = new event($event['eventName'], $event['standardTicketPrice'], $event['startDate'], $event['endDate'], $event['location'], $event['description'], $event['artists']);
+            $events[] = new event($event['event_name'], $event['standard_ticket_price'], $event['start_date'], $event['end_date'], $event['location'], $event['description'], $event['artist']);
         }
         // View
-        echo $this->twig->render('pages/events.twig', ['events' => $events]);
+        echo $this->twig->render('pages/events.twig', ['events' => $events, 'searchTerm' => $searchEvents]);
     }
 
     public function registerEvent() {
@@ -198,16 +206,16 @@ class EventController {
         $ticketPrice = isset($_POST['ticketPrice']) ? (float)$_POST['ticketPrice'] : '';
         $amount = isset($_POST['amount']) ? (int)$_POST['amount'] : '';
         $reasonForSell = isset($_POST['reasonForSell']) ? (string)$_POST['reasonForSell'] : '';
-        $eventName = isset($_POST['eventName']) ? (integer)$_POST['eventName'] : '';
+        $eventName = isset($_POST['events']) ? (integer)$_POST['events'] : 0;
 
         $errorName = '';
         $errorPrice = '';
         $errorAmount = '';
         $errorReason = '';
         $errorEvents = '';
+        $events = [];
 
         $connection = getDBConnection();
-
         //Events fetchen
         $stmt = $connection->prepare('SELECT event_id, event_name FROM events');
         $stmt->execute([]);
@@ -239,13 +247,13 @@ class EventController {
                 $allOk = false;
             }
             //if ((!in_array($eventName, $events['event_id']))) {
-            if ($eventName === '') {
+            if ($eventName == 0 && (!in_array($eventName, $events))) {
                 $errorEvents = 'This event does not exist';
                 $allOk = false;
             }
             if ($allOk) {
                 //add to database
-                $stmt = $connection->prepare('INSERT INTO Tickets(ticketName, ticketPrice, amount, reasonForSell, Evenements_idEvenements, Users_idGebruikers) VALUES (?,?,?,?, ?, ?)');
+                $stmt = $connection->prepare('INSERT INTO Tickets(ticket_name, ticket_price, amount, reason_for_sell, events_id_event, users_gebruiker_id) VALUES (?,?,?,?, ?, ?)');
                 $stmt->execute([$ticketName, $ticketPrice, $amount, $reasonForSell, $eventName, 1]); // change 1 to userid
                 header('Location: /');
                 exit();
@@ -253,9 +261,9 @@ class EventController {
         }
 
         // View
-        echo $this->twig->render('pages/add-ticket.twig', ['ticketName' => $ticketName, 'ticketPrice' => $ticketPrice, 'amount' => $amount,
+        echo $this->twig->render('pages/add-ticket.twig', ['ticket_name' => $ticketName, 'ticket_price' => $ticketPrice, 'amount' => $amount,
             'reasonForSell' => $reasonForSell, 'events' => $events, 'event2' => $eventName, 'errorName' => $errorName, 'errorPrice' => $errorPrice, 'errorAmount' => $errorAmount,
-            'errorReason' => $errorReason,'errorEvent' => $errorEvents, 'action' => '/events/ticket/add']);
+            'errorReason' => $errorReason, 'errorEvents' => $errorEvents, 'reason_for_sell' => $reasonForSell, 'action' => '/events/ticket/add']);
     }
 
     public function eventTickets(string $eventName) {

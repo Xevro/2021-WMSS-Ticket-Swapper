@@ -15,12 +15,14 @@
                             <p>Choose an event to buy or sell tickets. You can search a certain event by using the search field</p>
                         </div>
                         <div class="list-group-item col px-4">
+                            <form action="" method="GET" class="form-label-left input_mask">
                             <div class="input-group input-group-sm float-right" style="width: 200px;">
-                                <input type="text" name="table_search" style="height: auto;" class="form-control float-right" placeholder="Search">
+                                <input type="text" name="searchEvents" value="{{ searchTerm }}" style="height: auto;" class="form-control float-right" placeholder="Search">
                                 <div class="input-group-append">
                                     <button type="submit" class="button primary fit small icon fa-search"></button>
                                 </div>
                             </div>
+                            </form>
                         </div>
                         {% for event in events %}
                             <div class="list-group-item" style="padding-left: 100px;">

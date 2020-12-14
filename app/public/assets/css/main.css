@@ -1821,7 +1821,7 @@ ul.icons {
   -webkit-justify-content: center;
   -ms-justify-content: center;
   justify-content: center;
-  background-image: url("../../images/banner.jpg");
+  background-image: url("../../images/ezgif.com-video-to-gif.gif");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -2097,10 +2097,10 @@ ul.icons {
   #cta input[type="reset"],
   #cta input[type="button"],
   #cta button,
-  #cta .button {ackground-color: transparent;
-    
+  #cta .button {
+    background-color: transparent;
     color: #ffffff !important;
-    b }
+}
     #cta input[type="submit"]:hover,
     #cta input[type="reset"]:hover,
     #cta input[type="button"]:hover,
