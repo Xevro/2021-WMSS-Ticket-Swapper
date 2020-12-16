@@ -213,10 +213,10 @@ class EventController {
         $errorAmount = '';
         $errorReason = '';
         $errorEvents = '';
+        $errorFile = '';
         $events = [];
 
         $connection = getDBConnection();
-        //Events fetchen
         $stmt = $connection->prepare('SELECT event_id, event_name FROM events');
         $stmt->execute([]);
         $eventsDB = $stmt->fetchAllAssociative();
@@ -251,19 +251,35 @@ class EventController {
                 $errorEvents = 'This event does not exist';
                 $allOk = false;
             }
+
+            $fileTmpName = $_FILES['ticketFile']['tmp_name'];
+            $array = explode('.', $_FILES['ticketFile']['name']);
+            $fileExtension = strtolower(end($array));
+            $imageDirectory = "/tickets/" . basename($fileTmpName . '.' . $fileExtension);
+            $uploadDirectory = getcwd() . $imageDirectory;
+            $fileExtensionsAllowed = ['jpeg', 'jpg', 'png', 'pdf'];
+
+            // Allow certain file formats
+            if (!in_array($fileExtension, $fileExtensionsAllowed)) {
+                $errorFile = "Sorry, only JPG, JPEG, PNG & PDF files are allowed.";
+                $allOk = false;
+            }
+
             if ($allOk) {
                 //add to database
-                $stmt = $connection->prepare('INSERT INTO Tickets(ticket_name, ticket_price, amount, reason_for_sell, events_id_event, users_gebruiker_id) VALUES (?,?,?,?, ?, ?)');
-                $stmt->execute([$ticketName, $ticketPrice, $amount, $reasonForSell, $eventName, 1]); // change 1 to userid
-                header('Location: /');
-                exit();
+                if (move_uploaded_file($fileTmpName, $uploadDirectory)) {
+                    $stmt = $connection->prepare('INSERT INTO Tickets(ticket_name, ticket_price, amount, ticket_file_location, reason_for_sell, events_id_event, users_gebruiker_id) VALUES (?,?,?,?,?, ?, ?)');
+                    $stmt->execute([$ticketName, $ticketPrice, $amount, $imageDirectory, $reasonForSell, $eventName, 1]); // change 1 to userid
+                    header('Location: /');
+                    exit();
+                }
             }
         }
 
         // View
         echo $this->twig->render('pages/add-ticket.twig', ['ticket_name' => $ticketName, 'ticket_price' => $ticketPrice, 'amount' => $amount,
             'reasonForSell' => $reasonForSell, 'events' => $events, 'event2' => $eventName, 'errorName' => $errorName, 'errorPrice' => $errorPrice, 'errorAmount' => $errorAmount,
-            'errorReason' => $errorReason, 'errorEvents' => $errorEvents, 'reason_for_sell' => $reasonForSell, 'action' => '/events/ticket/add']);
+            'errorReason' => $errorReason, 'errorEvents' => $errorEvents, 'errorFile' => $errorFile, 'reason_for_sell' => $reasonForSell, 'action' => '/events/ticket/add']);
     }
 
     public function eventTickets(string $eventName) {
