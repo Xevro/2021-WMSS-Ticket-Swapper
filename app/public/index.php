@@ -11,6 +11,7 @@ $router->before('GET|POST', '/.*', function () {
     session_start();
 });
 
+
 $router->get('/', 'EventController@home');
 $router->get('/overview', 'EventController@events');
 $router->get('/overview/(\w+)/tickets', 'EventController@eventTickets');
@@ -45,4 +46,7 @@ $router->post('/ticket/add', 'EventController@addTicket');
 
 // Run it!
 $router->run();
+
+// View
+echo $twig->render('pages/index.twig', []);
 
