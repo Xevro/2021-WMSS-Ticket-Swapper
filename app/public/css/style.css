@@ -29,11 +29,35 @@ a {
     background-size: cover;
     z-index: 1;
 }
-
-.register .card {
+.register .card  {
     margin: 100px;
     opacity: 0.93;
 }
+.ticket {
+    background-attachment: fixed;
+    background-image: linear-gradient(rgba(206, 27, 40, 0.25), rgba(206, 27, 40, 0.25)), url(../../images/banner-ticket.jpg);
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: 1;
+}
+.ticket .card  {
+    margin: 100px;
+    opacity: 0.93;
+}
+.contact {
+    background-attachment: fixed;
+    background-image: linear-gradient(rgba(206, 27, 40, 0.25), rgba(206, 27, 40, 0.25)), url(../../images/banner-contact.jpg);
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: 1;
+}
+.contact .card  {
+    margin: 100px;
+    opacity: 0.93;
+}
+
 
 body:before {
     content: ' ';
