@@ -6,24 +6,30 @@ class EventController {
     protected \Twig\Environment $twig;
 
     public function __construct() {
+        if (!isset($_SESSION['user'])) {
+            header('Location: /login');
+            exit();
+        }
+        $this->user = $_SESSION['user'];
         // bootstrap Twig
         $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/../resources/templates');
         $this->twig = new \Twig\Environment($loader);
+        //Database connection
+        $this->db = getDBConnection();
     }
 
     public function home() {
-        $connection = getDBConnection();
         $events = [];
 
         //Fetch events
         $searchEvents = isset($_GET['searchEvents']) ? (string)$_GET['searchEvents'] : '';
 
         if ($searchEvents) {
-            $stmt = $connection->prepare('SELECT * FROM events WHERE event_name LIKE ?');
+            $stmt = $this->db->prepare('SELECT * FROM events WHERE event_name LIKE ?');
             $stmt->execute(['%' . $searchEvents . '%']);
             $eventsAssociative = $stmt->fetchAllAssociative();
         } else {
-            $stmt = $connection->prepare('SELECT * FROM events');
+            $stmt = $this->db->prepare('SELECT * FROM events');
             $stmt->execute([]);
             $eventsAssociative = $stmt->fetchAllAssociative();
         }
@@ -36,17 +42,16 @@ class EventController {
     }
 
     public function events() {
-        $connection = getDBConnection();
         $events = [];
 
         $searchEvents = isset($_GET['searchEvents']) ? (string)$_GET['searchEvents'] : '';
 
         if ($searchEvents) {
-            $stmt = $connection->prepare('SELECT * FROM events WHERE slug LIKE ?');
+            $stmt = $this->db->prepare('SELECT * FROM events WHERE slug LIKE ?');
             $stmt->execute(['%' . $searchEvents . '%']);
             $eventsAssociative = $stmt->fetchAllAssociative();
         } else {
-            $stmt = $connection->prepare('SELECT * FROM events');
+            $stmt = $this->db->prepare('SELECT * FROM events');
             $stmt->execute([]);
             $eventsAssociative = $stmt->fetchAllAssociative();
         }
@@ -73,8 +78,6 @@ class EventController {
         $errorArtists = '';
         $errorStartDate = '';
         $errorEndDate = '';
-
-        $connection = getDBConnection();
 
         if (isset($_POST['btnRegister'])) {
             $allOk = true;
@@ -139,7 +142,7 @@ class EventController {
 
             if ($allOk && $allOkDateStart && $allOkDateEnd) {
                 //add to database
-                $stmt = $connection->prepare('INSERT INTO events(event_name, standard_ticket_price, start_date, end_date, location, description, artist, slug) VALUES (?,?,?,?,?,?,?,?)');
+                $stmt = $this->db->prepare('INSERT INTO events(event_name, standard_ticket_price, start_date, end_date, location, description, artist, slug) VALUES (?,?,?,?,?,?,?,?)');
                 $stmt->execute([$eventName, $standardPrice, date($selectedFormat, strtotime($startDate)), date($selectedFormat, strtotime($endDate)), $location, $description, $artists, str_replace(' ', '', trim(strtolower($eventName)))]);
                 header('Location: /');
                 exit();
@@ -215,8 +218,7 @@ class EventController {
         $errorFile = '';
         $events = [];
 
-        $connection = getDBConnection();
-        $stmt = $connection->prepare('SELECT event_id, event_name FROM events');
+        $stmt = $this->db->prepare('SELECT event_id, event_name FROM events');
         $stmt->execute([]);
         $eventsDB = $stmt->fetchAllAssociative();
 
@@ -245,7 +247,6 @@ class EventController {
                 $errorReason = 'A valid reason is required!';
                 $allOk = false;
             }
-            //if ((!in_array($eventName, $events['event_id']))) {
             if ($eventId == 0 && (!in_array($eventId, $events))) {
                 $errorEvents = 'This event does not exist';
                 $allOk = false;
@@ -267,8 +268,8 @@ class EventController {
             if ($allOk) {
                 //add to database
                 if (move_uploaded_file($fileTmpName, $uploadDirectory)) {
-                    $stmt = $connection->prepare('INSERT INTO Tickets(ticket_name, ticket_price, amount, ticket_file_location, reason_for_sell, events_id_event, users_gebruiker_id) VALUES (?,?,?,?,?,?,?)');
-                    $stmt->execute([$ticketName, $ticketPrice, $amount, $imageDirectory, $reasonForSell, $eventId, isset($_SESSION['user']['gebruiker_id'])]);
+                    $stmt = $this->db->prepare('INSERT INTO Tickets(ticket_name, ticket_price, amount, ticket_file_location, reason_for_sell, events_id_event, users_gebruiker_id) VALUES (?,?,?,?,?,?,?)');
+                    $stmt->execute([$ticketName, $ticketPrice, $amount, $imageDirectory, $reasonForSell, $eventId, $_SESSION['user']['gebruiker_id']]);
                     header('Location: /');
                     exit();
                 }
@@ -283,8 +284,7 @@ class EventController {
     public function eventTickets(string $eventName) {
         $searchTickets = isset($_GET['searchTickets']) ? (string)$_GET['searchTickets'] : '';
         $tickets = [];
-        $connection = getDBConnection();
-        $stmt = $connection->prepare('SELECT * FROM tickets AS t LEFT JOIN events AS e ON t.events_id_event = e.event_id WHERE e.slug = ?;');
+        $stmt = $this->db->prepare('SELECT * FROM tickets AS t LEFT JOIN events AS e ON t.events_id_event = e.event_id WHERE e.slug = ?;');
         $stmt->execute([$eventName]);
         $eventTickets = $stmt->fetchAllAssociative();
 
@@ -296,8 +296,7 @@ class EventController {
     }
 
     public function ticketInfo(string $eventName, string $id) {
-        $connection = getDBConnection();
-        $stmt = $connection->prepare('SELECT * FROM tickets AS t LEFT JOIN events AS e ON t.events_id_event = e.event_id WHERE t.ticket_id = ?;');
+        $stmt = $this->db->prepare('SELECT * FROM tickets AS t LEFT JOIN events AS e ON t.events_id_event = e.event_id WHERE t.ticket_id = ?;');
         $stmt->execute([$id]);
         $eventTicket = $stmt->fetchAssociative();
 
