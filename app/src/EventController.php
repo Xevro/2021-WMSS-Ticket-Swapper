@@ -13,6 +13,30 @@ class EventController {
         $this->db = getDBConnection();
     }
 
+    /*public function name() {
+
+
+            $fname = '';
+
+            $stmt = $this->db->prepare('SELECT first_name FROM users');
+            $stmt->execute([]);
+            $fname = $stmt->fetchAllAssociative();
+
+        // View
+        echo $this->twig->render('pages/index.twig', ['fname' => $fname]);
+    public function code() {
+
+
+            $code = '';
+
+            $stmt = $this->db->prepare('SELECT couponcode FROM users');
+            $stmt->execute([]);
+            $code = $stmt->fetchAllAssociative();
+
+        // View
+        echo $this->twig->render('pages/index.twig', ['code' => $code]);
+    }*/
+
     public function home() {
         $events = [];
 
@@ -289,7 +313,7 @@ class EventController {
     public function eventTickets(string $eventName) {
         $searchTickets = isset($_GET['searchTickets']) ? (string)$_GET['searchTickets'] : '';
         $tickets = [];
-        $stmt = $this->db->prepare('SELECT * FROM tickets AS t LEFT JOIN events AS e ON t.events_id_event = e.event_id WHERE e.slug = ?;');
+        $stmt = $this->db->prepare('SELECT * FROM tickets AS t LEFT JOIN events AS e ON t.events_id_event = e.event_id WHERE e.slug = ? ORDER BY ticket_price;');
         $stmt->execute([$eventName]);
         $eventTickets = $stmt->fetchAllAssociative();
 
