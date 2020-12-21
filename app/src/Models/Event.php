@@ -8,8 +8,9 @@ class event {
     private $location;
     private $description;
     private $artists;
+    private $slug;
 
-    public function __construct(string $eventName, float $standardPrice, string $startDate, string $endDate, string $location, string $description, string $artists) {
+    public function __construct(string $eventName, float $standardPrice, string $startDate, string $endDate, string $location, string $description, string $artists, string $slug) {
         $this->eventName = $eventName;
         $this->standardPrice = $standardPrice;
         $this->startDate = $startDate;
@@ -17,6 +18,21 @@ class event {
         $this->location = $location;
         $this->description = $description;
         $this->artists = $artists;
+        $this->slug = $slug;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug(): string {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug(string $slug): void {
+        $this->slug = $slug;
     }
 
     /**
