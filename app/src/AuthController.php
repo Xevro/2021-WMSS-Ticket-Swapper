@@ -18,7 +18,7 @@ class AuthController {
             exit();
         }
         //View
-        echo $this->twig->render('pages/login.twig', []);
+        echo $this->twig->render('pages/login.twig', ['firstName' => isset($_SESSION['user']['first_name']), 'email' => (string)isset($_COOKIE['email']) ? $_COOKIE['email'] : '']);
     }
 
     public function login() {
@@ -30,7 +30,7 @@ class AuthController {
         if (isset($_POST['moduleAction']) && ($_POST['moduleAction'] == 'login')) {
             // Get user with sent username from DB
             $connection = getDBConnection();
-            $stmt = $connection->prepare('SELECT * FROM users WHERE email = ?');
+            $stmt = $connection->prepare('SELECT * FROM users WHERE email = ?;');
             $stmt->execute([$email]);
             $user = $stmt->fetchAssociative();
 
@@ -41,9 +41,6 @@ class AuthController {
                     if ($remember) {
                         setcookie('email', $_SESSION['user']['email'], time() + 24 * 60 * 60 * 7);
                     }
-                    $stmt = $connection->prepare('UPDATE users SET last_login = ? WHERE email = ?;');
-                    $stmt->execute([date('Y-m-d h:i:s', time()), $email]);
-
                     header('location: /');
                     exit();
                 } else { // Invalid login
@@ -74,8 +71,8 @@ class AuthController {
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 if ($password == $confirm_password) {
                     $connection = getDBConnection();
-                    $stmt = $connection->prepare('INSERT INTO users SET first_name = ?, last_name = ?, email = ?, password = ?, first_login = ?');
-                    $stmt->execute([$firstname, $lastname, $email, password_hash($password, PASSWORD_DEFAULT), date('Y-m-d h:i:s', time())]);
+                    $stmt = $connection->prepare('INSERT INTO users SET first_name = ?, last_name = ?, address =?, couponcode = ?, email = ?, password = ?');
+                    $stmt->execute([$firstname, $lastname, "qsd", "ABD", $email, password_hash($password, PASSWORD_DEFAULT)]);
 
                     $stmt = $connection->prepare('SELECT * FROM users WHERE email = ?');
                     $stmt->execute([$email]);
