@@ -24,7 +24,7 @@ class EventController {
             $stmt->execute(['%' . $searchEvents . '%']);
             $eventsAssociative = $stmt->fetchAllAssociative();
         } else {
-            $stmt = $this->db->prepare('SELECT * FROM events');
+            $stmt = $this->db->prepare('SELECT * FROM events ORDER BY start_date LIMIT 10');
             $stmt->execute([]);
             $eventsAssociative = $stmt->fetchAllAssociative();
         }
