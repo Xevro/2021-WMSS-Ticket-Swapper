@@ -6,11 +6,6 @@ class EventController {
     protected \Twig\Environment $twig;
 
     public function __construct() {
-        if (!isset($_SESSION['user'])) {
-            header('Location: /login');
-            exit();
-        }
-        $this->user = $_SESSION['user'];
         // bootstrap Twig
         $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/../resources/templates');
         $this->twig = new \Twig\Environment($loader);
@@ -63,6 +58,11 @@ class EventController {
     }
 
     public function registerEvent() {
+        if (!isset($_SESSION['user'])) {
+            header('Location: /login');
+            exit();
+        }
+        $this->user = $_SESSION['user'];
         $eventName = isset($_POST['eventName']) ? (string)$_POST['eventName'] : '';
         $standardPrice = isset($_POST['standardPrice']) ? (float)$_POST['standardPrice'] : '';
         $location = isset($_POST['location']) ? (string)$_POST['location'] : '';
@@ -204,6 +204,11 @@ class EventController {
     }
 
     public function addTicket() {
+        if (!isset($_SESSION['user'])) {
+            header('Location: /login');
+            exit();
+        }
+        $this->user = $_SESSION['user'];
         $ticketName = isset($_POST['ticketName']) ? (string)$_POST['ticketName'] : '';
         $ticketPrice = isset($_POST['ticketPrice']) ? (float)$_POST['ticketPrice'] : '';
         $amount = isset($_POST['amount']) ? (int)$_POST['amount'] : '';
