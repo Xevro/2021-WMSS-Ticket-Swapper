@@ -66,17 +66,21 @@ class AuthController {
         $firstname = isset($_POST['firstname']) ? trim($_POST['firstname']) : '';
         $lastname = isset($_POST['lastname']) ? trim($_POST['lastname']) : '';
         $confirm_password = isset($_POST['confirm_password']) ? trim($_POST['confirm_password']) : '';
+        $invitecode = isset($_POST['invitecode']) ? trim($_POST['invitecode']) : '';
 
         if (isset($_POST['moduleAction']) && ($_POST['moduleAction'] == 'register')) {
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 if ($password == $confirm_password) {
                     $connection = getDBConnection();
-                    $stmt = $connection->prepare('INSERT INTO users SET first_name = ?, last_name = ?, address =?, couponcode = ?, email = ?, password = ?');
-                    $stmt->execute([$firstname, $lastname, "qsd", "ABD", $email, password_hash($password, PASSWORD_DEFAULT)]);
-
+                    $stmt = $connection->prepare('INSERT INTO users SET first_name = ?, last_name = ?, address = ?, couponcode = ?, email = ?, password = ?');
+                    $stmt->execute([$firstname, $lastname, "qsd", generateRandomString(10), $email, password_hash($password, PASSWORD_DEFAULT)]);
                     $stmt = $connection->prepare('SELECT * FROM users WHERE email = ?');
                     $stmt->execute([$email]);
                     $user = $stmt->fetchAssociative();
+
+                    $stmt = $connection->prepare('UPDATE users SET invite_number = invite_number + 1 WHERE couponcode = ?');
+                    $stmt->execute([$invitecode]);
+
                     $_SESSION['user'] = $user;
                     header('location: /');
                     exit();
