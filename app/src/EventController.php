@@ -13,30 +13,6 @@ class EventController {
         $this->db = getDBConnection();
     }
 
-    /*public function name() {
-
-
-            $fname = '';
-
-            $stmt = $this->db->prepare('SELECT first_name FROM users');
-            $stmt->execute([]);
-            $fname = $stmt->fetchAllAssociative();
-
-        // View
-        echo $this->twig->render('pages/index.twig', ['fname' => $fname]);
-    public function code() {
-
-
-            $code = '';
-
-            $stmt = $this->db->prepare('SELECT couponcode FROM users');
-            $stmt->execute([]);
-            $code = $stmt->fetchAllAssociative();
-
-        // View
-        echo $this->twig->render('pages/index.twig', ['code' => $code]);
-    }*/
-
     public function home() {
         $events = [];
 
@@ -57,7 +33,7 @@ class EventController {
             $events[] = new event($event['event_name'], $event['standard_ticket_price'], $event['start_date'], $event['end_date'], $event['location'], $event['description'], $event['artist'], $event['slug']);
         }
         // View
-        echo $this->twig->render('pages/index.twig', ['events' => $events, 'searchTerm' => $searchEvents]);
+        echo $this->twig->render('pages/index.twig', ['events' => $events, 'searchTerm' => $searchEvents, 'username' => $_SESSION['user']['first_name']]);
     }
 
     public function events() {
@@ -78,7 +54,7 @@ class EventController {
             $events[] = new event($event['event_name'], $event['standard_ticket_price'], $event['start_date'], $event['end_date'], $event['location'], $event['description'], $event['artist'], $event['slug']);
         }
         // View
-        echo $this->twig->render('pages/events.twig', ['events' => $events, 'searchTerm' => $searchEvents]);
+        echo $this->twig->render('pages/events.twig', ['events' => $events, 'searchTerm' => $searchEvents, 'username' => $_SESSION['user']['first_name']]);
     }
 
     public function registerEvent() {
@@ -175,7 +151,7 @@ class EventController {
         // View
         echo $this->twig->render('pages/register-event.twig', ['eventName' => $eventName, 'standardPrice' => $standardPrice, 'location' => $location,
             'description' => $description, 'artists' => $artists, 'startDate' => $startDate, 'endDate' => $endDate, 'errorName' => $errorName, 'errorPrice' => $errorPrice, 'errorLocation' => $errorLocation,
-            'errorDescription' => $errorDescription, 'errorArtists' => $errorArtists, 'errorStartDate' => $errorStartDate, 'errorEndDate' => $errorEndDate,
+            'errorDescription' => $errorDescription, 'errorArtists' => $errorArtists, 'errorStartDate' => $errorStartDate, 'errorEndDate' => $errorEndDate, 'username' => $_SESSION['user']['first_name'],
             'action' => '/events/register']);
     }
 
@@ -224,7 +200,7 @@ class EventController {
         // View
         echo $this->twig->render('pages/contact.twig', ['name' => $name, 'firstName' => $firstName, 'subject' => $subject,
             'message' => $message, 'errorName' => $errorName, 'errorFirstName' => $errorFirstName, 'errorSubject' => $errorSubject,
-            'errorMessage' => $errorMessage, 'action' => '/contact']);
+            'errorMessage' => $errorMessage, 'action' => '/contact', 'username' => $_SESSION['user']['first_name']]);
     }
 
     public function addTicket() {
@@ -307,7 +283,7 @@ class EventController {
         // View
         echo $this->twig->render('pages/add-ticket.twig', ['ticket_name' => $ticketName, 'ticket_price' => $ticketPrice, 'amount' => $amount,
             'reasonForSell' => $reasonForSell, 'events' => $events, 'eventId' => $eventId, 'errorName' => $errorName, 'errorPrice' => $errorPrice, 'errorAmount' => $errorAmount,
-            'errorReason' => $errorReason, 'errorEvents' => $errorEvents, 'errorFile' => $errorFile, 'reason_for_sell' => $reasonForSell, 'action' => '/events/ticket/add']);
+            'errorReason' => $errorReason, 'errorEvents' => $errorEvents, 'errorFile' => $errorFile, 'reason_for_sell' => $reasonForSell, 'username' => $_SESSION['user']['first_name'], 'action' => '/events/ticket/add']);
     }
 
     public function eventTickets(string $eventName) {
@@ -321,7 +297,7 @@ class EventController {
             $tickets[] = new ticket($ticket['ticket_id'], $ticket['ticket_name'], $ticket['ticket_price'], $ticket['amount'], $ticket['reason_for_sell']);
         }
         //View
-        echo $this->twig->render('pages/event-tickets.twig', ['tickets' => $tickets, 'eventName' => $eventName, 'searchTerm' => $searchTickets]);
+        echo $this->twig->render('pages/event-tickets.twig', ['tickets' => $tickets, 'eventName' => $eventName, 'searchTerm' => $searchTickets, 'username' => $_SESSION['user']['first_name']]);
     }
 
     public function ticketInfo(string $eventName, string $id) {
@@ -333,6 +309,6 @@ class EventController {
         $eventinfo = new event($eventTicket['event_name'], $eventTicket['standard_ticket_price'], $eventTicket['start_date'], $eventTicket['end_date'], $eventTicket['location'], $eventTicket['description'], $eventTicket['artist'], $eventTicket['slug']);
 
         //View
-        echo $this->twig->render('pages/ticket-info.twig', ['tickets' => $ticketinfo, 'event' => $eventinfo]);
+        echo $this->twig->render('pages/ticket-info.twig', ['tickets' => $ticketinfo, 'event' => $eventinfo, 'username' => $_SESSION['user']['first_name']]);
     }
 }
