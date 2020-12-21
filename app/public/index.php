@@ -7,22 +7,41 @@ require $basePath . 'vendor/autoload.php';
 // Create Router instance
 $router = new \Bramus\Router\Router();
 
-// Define routes
-$router->get('/', 'EventController@home');
-$router->get('/events', 'EventController@events');
+$router->before('GET|POST', '/.*', function () {
+    session_start();
+});
 
-$router->get('/events/register', 'EventController@registerEvent');
-$router->post('/events/register', 'EventController@registerEvent');
+$router->get('/', 'EventController@home');
+$router->get('/overview', 'EventController@events');
+$router->get('/overview/(\w+)/tickets', 'EventController@eventTickets');
+
+$router->get('/overview/(\w+)/tickets/(\w+)', 'EventController@ticketInfo');
 
 $router->get('/contact', 'EventController@contact');
 $router->post('/contact', 'EventController@contact');
 
-$router->get('/events/ticket/add', 'EventController@addTicket');
-$router->post('/events/ticket/add', 'EventController@addTicket');
+$router->get('/login', 'AuthController@showLogin');
+$router->post('/login', 'AuthController@login');
+$router->get('/register', 'AuthController@showRegister');
+$router->post('/register', 'AuthController@register');
+$router->get('/logout', 'AuthController@logout');
 
-$router->get('/events/(\w+)/tickets', 'EventController@eventTickets');
+$router->before('GET|POST', '/events.*', function () {
+    if (!isset($_SESSION['user'])) {
+        header('Location: /login');
+        exit();
+    }
+});
 
-$router->get('/events/(\w+)/tickets/(\w+)', 'EventController@ticketInfo');
+$router->mount('/events', function () use ($router) {
+
+// Define routes
+$router->get('/register', 'EventController@registerEvent');
+$router->post('/register', 'EventController@registerEvent');
+
+$router->get('/ticket/add', 'EventController@addTicket');
+$router->post('/ticket/add', 'EventController@addTicket');
+});
 
 // Run it!
 $router->run();
