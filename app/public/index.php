@@ -47,6 +47,3 @@ $router->post('/ticket/add', 'EventController@addTicket');
 // Run it!
 $router->run();
 
-// View
-echo $twig->render('pages/index.twig', []);
-
