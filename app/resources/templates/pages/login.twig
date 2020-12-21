@@ -12,52 +12,47 @@
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
+
     <section class="content">
-        <div class="right_col" role="main">
-            <div class="card card-default">
-
-                <div class="clearfix"></div>
-                <div class="login">
-                    <a class="hiddenanchor" id="signup"></a>
-                    <a class="hiddenanchor" id="signin"></a>
-                    <div class="login_wrapper">
-                        <div class="animate form login_form">
-                            <section class="login_content">
-                                <form action="/login" method="post">
-                                    <h1>Login Form</h1>
-                                    {% if formErrors['login'] %}
-                                        <div class="error-message">
-                                            <p>{{ formErrors['login'] }}</p>
-                                        </div>
-                                    {% endif %}
-                                    <div>
-                                        <input type="text" class="form-control" placeholder="E-mail address" name="email" value="{{ email }}" required=""/>
-                                    </div>
-                                    <div>
-                                        <input type="password" class="form-control" placeholder="Password" name="password" required=""/>
-                                    </div>
-                                    <div class="text-left">
-                                        <input type="checkbox" id="remember" name="remember">
-                                        <label for="remember">Remember my e-mailaddress</label>
-                                    </div>
-                                    <div>
-                                        <input type="hidden" name="moduleAction" value="login"/>
-                                        <input type="submit" class="btn btn-default submit" value="Login">
-                                    </div>
-                                    <div class="clearfix"></div>
-                                    <div class="separator">
-                                        <p class="change_link">New to our site?<a href="/register" class="to_register"> Create Account </a></p>
-                                        <div class="clearfix"></div>
-                                        <br/>
-                                    </div>
-                                </form>
-                            </section>
-                        </div>
-                    </div>
-                </div>
-
+        <div class="card card-default"  >
+            <div class="card-header">
+                <h4 class="card-title">Login</h4>
             </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <form action="/login" method="post" novalidate="" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="text" class="form-control" placeholder="E-mail address" name="email" value="{{ email }}" required=""/>
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" class="form-control" placeholder="Password" name="password" required=""/>
+                            </div>
+                            <div class="text-left">
+                                <input type="checkbox" id="remember" name="remember">
+                                <label for="remember">Remember my e-mail address</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="hidden" name="moduleAction" value="login"/>
+                                <button type="submit" value="Login" name="btnLogin" class="primary">Login2</button>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="separator">
+                                <p class="change_link">New to our site?<a href="/register" class="to_register"> Create Account </a></p>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </form>
+                <!-- /.row -->
+            </div>
+            <!-- /.card-body -->
         </div>
+        <!-- /.row -->
     </section>
     <!-- /page content -->
 {% endblock %}
