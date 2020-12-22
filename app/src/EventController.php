@@ -33,7 +33,8 @@ class EventController {
             $events[] = new event($event['event_name'], $event['standard_ticket_price'], $event['start_date'], $event['end_date'], $event['location'], $event['description'], $event['artist'], $event['slug']);
         }
         // View
-        echo $this->twig->render('pages/index.twig', ['events' => $events, 'searchTerm' => $searchEvents, 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '']);
+        echo $this->twig->render('pages/index.twig', ['events' => $events, 'searchTerm' => $searchEvents, 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '',
+            'couponcode' => isset($_SESSION['user']['couponcode']) ? $_SESSION['user']['couponcode'] : '']);
     }
 
     public function events() {

@@ -16,6 +16,9 @@
     <section class="register-content">
             <header class="special">
                 <h2>Get coupons</h2>
+                {% if couponcode %}
+                <h3>Your couponcode: <a style="font-weight: bold;">{{ couponcode }}</a></h3>
+                {% endif %}
                 <p>Register an account or simply login to have the chance to buy tickets cheaper. You will get a coupon code if you make an account. If you invite 3 friends who each make an account with your code, you will get a 5 euros discount. If you invite 10 friends who each make an account with your code, you get a coupon for 10 euros!</p>
                 <div class="inner">
                 <ul class="buttons-register">
