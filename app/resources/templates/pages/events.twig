@@ -24,6 +24,7 @@
                             </div>
                             </form>
                         </div>
+                        {% if events %}
                         {% for event in events %}
                             <div class="list-group-item" style="padding-left: 100px;">
                                 <div class="row">
@@ -46,6 +47,13 @@
                                 </div>
                             </div>
                         {% endfor %}
+                        {% else %}
+                            <div class="list-group-item" style="padding-left: 30px;">
+                                <div class="col px-4 event-content">
+                                    <p>There are no events found.</p>
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
