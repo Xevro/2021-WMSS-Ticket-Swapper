@@ -14,6 +14,7 @@
                             <h2>{{ eventName }} events list</h2>
                             <p>Below is a list of tickets that are for sale, click on the button to find more information about the ticket.</p>
                         </div>
+                        {% if events %}
                         {% for ticket in tickets %}
                             <div class="list-group-item" style="padding-left: 100px;">
                                 <div class="row">
@@ -31,6 +32,13 @@
                                 </div>
                             </div>
                         {% endfor %}
+                        {% else %}
+                            <div class="list-group-item" style="padding-left: 30px;">
+                                <div class="col px-4 event-content">
+                                    <p>There are no tickets found for this event.</p>
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

@@ -320,6 +320,16 @@ class EventController {
         }
         $this->user = $_SESSION['user'];
 
+        $userId = isset($_SESSION['user']['gebruiker_id']) ? $_SESSION['user']['gebruiker_id'] : '';
+        $tickets = [];
+        $stmt = $this->db->prepare('SELECT * FROM tickets AS t LEFT JOIN users AS u ON t.users_gebruiker_id = u.gebruiker_id WHERE t.users_gebruiker_id  = ?;');
+        $stmt->execute([$userId]);
+        $eventTickets = $stmt->fetchAllAssociative();
+
+        foreach ($eventTickets as $ticket) {
+            $tickets[] = new ticket($ticket['ticket_id'], $ticket['ticket_name'], $ticket['ticket_price'], $ticket['amount'], $ticket['reason_for_sell']);
+        }
+
         //View
         echo $this->twig->render('pages/my-account.twig', [
             'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '',
@@ -328,7 +338,6 @@ class EventController {
             'address' => isset($_SESSION['user']['address']) ? $_SESSION['user']['address'] : '',
             'email' => isset($_SESSION['user']['email']) ? $_SESSION['user']['email'] : '',
             'couponcode' => isset($_SESSION['user']['couponcode']) ? $_SESSION['user']['couponcode'] : '',
-            'invite_number' => isset($_SESSION['user']['invite_number']) ? $_SESSION['user']['invite_number'] : ''
-            ]);
+            'invite_number' => isset($_SESSION['user']['invite_number']) ? $_SESSION['user']['invite_number'] : '', 'tickets' => $tickets]);
     }
 }

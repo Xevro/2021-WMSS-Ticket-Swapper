@@ -11,7 +11,6 @@ $router->before('GET|POST', '/.*', function () {
     session_start();
 });
 
-
 $router->get('/', 'EventController@home');
 $router->get('/overview', 'EventController@events');
 $router->get('/overview/(\w+)/tickets', 'EventController@eventTickets');
@@ -26,7 +25,6 @@ $router->post('/login', 'AuthController@login');
 $router->get('/register', 'AuthController@showRegister');
 $router->post('/register', 'AuthController@register');
 $router->get('/logout', 'AuthController@logout');
-
 
 
 $router->before('GET|POST', '/events.*', function () {
@@ -51,4 +49,3 @@ $router->post('/ticket/add', 'EventController@addTicket');
 
 // Run it!
 $router->run();
-
