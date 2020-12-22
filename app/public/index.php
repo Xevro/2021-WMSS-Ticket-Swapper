@@ -15,7 +15,7 @@ $router->get('/', 'EventController@home');
 $router->get('/overview', 'EventController@events');
 $router->get('/overview/(\w+)/tickets', 'EventController@eventTickets');
 
-$router->get('/overview/(\w+)/tickets/(\w+)', 'EventController@ticketInfo');
+$router->get('/overview/(\w+)/tickets/(\d+)', 'EventController@ticketInfo');
 
 $router->get('/contact', 'EventController@contact');
 $router->post('/contact', 'EventController@contact');
@@ -45,6 +45,7 @@ $router->post('/register', 'EventController@registerEvent');
 $router->get('/ticket/add', 'EventController@addTicket');
 $router->post('/ticket/add', 'EventController@addTicket');
 
+$router->get('/ticket/(\d+)/purchase', 'EventController@purchaseTicket');
 });
 
 // Run it!

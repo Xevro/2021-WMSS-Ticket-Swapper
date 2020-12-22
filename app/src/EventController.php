@@ -340,4 +340,16 @@ class EventController {
             'couponcode' => isset($_SESSION['user']['couponcode']) ? $_SESSION['user']['couponcode'] : '',
             'invite_number' => isset($_SESSION['user']['invite_number']) ? $_SESSION['user']['invite_number'] : '', 'tickets' => $tickets]);
     }
+
+    public function purchaseTicket(int $ticketId) {
+        $stmt = $this->db->prepare('SELECT * FROM tickets AS t LEFT JOIN events AS e ON t.events_id_event = e.event_id WHERE t.ticket_id = ?;');
+        $stmt->execute([$ticketId]);
+        $eventTicket = $stmt->fetchAssociative();
+
+        $ticketinfo = new ticket($eventTicket['ticket_id'], $eventTicket['ticket_name'], $eventTicket['ticket_price'], $eventTicket['amount'], $eventTicket['reason_for_sell']);
+        $eventinfo = new event($eventTicket['event_name'], $eventTicket['standard_ticket_price'], $eventTicket['start_date'], $eventTicket['end_date'], $eventTicket['location'], $eventTicket['description'], $eventTicket['artist'], $eventTicket['slug']);
+
+        //View
+        echo $this->twig->render('pages/checkout.twig', ['tickets' => $ticketinfo, 'event' => $eventinfo, 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '']);
+    }
 }
