@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`gebruiker_id`, `first_name`, `last_name`, `address`, `couponcode`, `invite_number`, `email`, `password`) VALUES
-(1, 'Louis', 'D\'Hont', 'Dorp 71A, Oosterzele', 'sD4oFcma9c', '0', 'dhontlouis@gmail.com', '$2y$10$c1sEgmT2nGWGCZXGybKtuuk4Fsw97niUWrfNd2OlPM/dG46g4K4n2'),
+(1, 'Louis', 'D\'Hont', 'Dorp 71A, Oosterzele', 'sD4oFcma9c', '0', 'louis.dhont@student.odisee.be', '$2y$10$qpMTkVbvc6E.4dt2uk9BlOOadOXiz3J5tqiBwtcmWMupGiX5GiO/q'),
 (2, 'Joris', 'Maervoet', 'Gebroeders de Smetstraat 1, 9000 Gent', 'fo2qmt17xr', '0', 'joris.maervoet@odisee.be', '$2y$10$qpMTkVbvc6E.4dt2uk9BlOOadOXiz3J5tqiBwtcmWMupGiX5GiO/q'),
 (3, 'Timon', 'De Bruyne', 'randomStraat 9, 9000 Gent', 'f2TIKVJ2KP', '0', 'timon.debruyne@student.odisee.be', '$2y$10$KqrUuDwLRFHEBX/Ul2wEMOthuLZqRYa0cL0xhYaLcknux7jNAETxO');
 
