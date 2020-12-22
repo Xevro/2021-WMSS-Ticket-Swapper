@@ -311,4 +311,23 @@ class EventController {
         //View
         echo $this->twig->render('pages/ticket-info.twig', ['tickets' => $ticketinfo, 'event' => $eventinfo, 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '']);
     }
+
+    public function myAccount() {
+        if (!isset($_SESSION['user'])) {
+            header('Location: /login');
+            exit();
+        }
+        $this->user = $_SESSION['user'];
+
+        //View
+        echo $this->twig->render('pages/my-account.twig', [
+            'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '',
+            'firstname' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '',
+            'lastname' => isset($_SESSION['user']['last_name']) ? $_SESSION['user']['last_name'] : '',
+            'address' => isset($_SESSION['user']['address']) ? $_SESSION['user']['address'] : '',
+            'email' => isset($_SESSION['user']['email']) ? $_SESSION['user']['email'] : '',
+            'couponcode' => isset($_SESSION['user']['couponcode']) ? $_SESSION['user']['couponcode'] : '',
+            'invite_number' => isset($_SESSION['user']['invite_number']) ? $_SESSION['user']['invite_number'] : ''
+            ]);
+    }
 }

@@ -27,12 +27,16 @@ $router->get('/register', 'AuthController@showRegister');
 $router->post('/register', 'AuthController@register');
 $router->get('/logout', 'AuthController@logout');
 
+
+
 $router->before('GET|POST', '/events.*', function () {
     if (!isset($_SESSION['user'])) {
         header('Location: /login');
         exit();
     }
 });
+
+$router->get('/account', 'EventController@myAccount');
 
 $router->mount('/events', function () use ($router) {
 
@@ -42,6 +46,7 @@ $router->post('/register', 'EventController@registerEvent');
 
 $router->get('/ticket/add', 'EventController@addTicket');
 $router->post('/ticket/add', 'EventController@addTicket');
+
 });
 
 // Run it!
