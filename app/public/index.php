@@ -26,7 +26,6 @@ $router->get('/register', 'AuthController@showRegister');
 $router->post('/register', 'AuthController@register');
 $router->get('/logout', 'AuthController@logout');
 
-
 $router->before('GET|POST', '/events.*', function () {
     if (!isset($_SESSION['user'])) {
         header('Location: /login');

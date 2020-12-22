@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysqldb
--- Gegenereerd op: 21 dec 2020 om 23:37
+-- Gegenereerd op: 22 dec 2020 om 23:29
 -- Serverversie: 5.7.32
 -- PHP-versie: 7.4.11
 
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `events` (
   `artist` varchar(1000) NOT NULL,
   `slug` varchar(255) NOT NULL,
   PRIMARY KEY (`event_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `events`
@@ -101,17 +101,18 @@ CREATE TABLE IF NOT EXISTS `tickets` (
   PRIMARY KEY (`ticket_id`),
   KEY `fk_tickets_events1_idx` (`events_id_event`),
   KEY `fk_tickets_users1_idx` (`users_gebruiker_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `tickets`
 --
 
 INSERT INTO `tickets` (`ticket_id`, `ticket_name`, `ticket_price`, `amount`, `reason_for_sell`, `ticket_file_location`, `events_id_event`, `users_gebruiker_id`) VALUES
-(1, 'Comboticket', 129.00, 5, 'can\'t go', '/', 1, 1),
-(2, 'Day pass', 48.00, 1, 'Have other plans', NULL, 2, 2),
-(3, 'Day ticket', 48.00, 2, 'Going on a city trip', NULL, 3, 2),
-(4, 'Combi + camping', 730.00, 1, 'Have to work that weekend...', NULL, 1, 1);
+(1, 'Comboticket', 129.00, 5, 'can\'t go', '/tickets/phpxKIAxs.pdf', 1, 1),
+(2, 'Day pass', 48.00, 1, 'Have other plans', '/tickets/phpxKIAxs.pdf', 2, 2),
+(3, 'Day ticket', 48.00, 2, 'Going on a city trip', '/tickets/phpxKIAxs.pdf', 3, 2),
+(4, 'Combi + camping', 730.00, 1, 'Have to work that weekend...', '/tickets/phpxKIAxs.pdf', 1, 1),
+(5, 'test', 123.00, 292, 'qsdsqdsd', '/tickets/phpxKIAxs.pdf', 9, 1);
 
 -- --------------------------------------------------------
 
@@ -129,16 +130,17 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` varchar(150) NOT NULL,
   `password` varchar(255) NOT NULL,
   PRIMARY KEY (`gebruiker_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `users`
 --
 
 INSERT INTO `users` (`gebruiker_id`, `first_name`, `last_name`, `address`, `couponcode`, `invite_number`, `email`, `password`) VALUES
-(1, 'Louis', 'D\'Hont', 'Dorp 71A, Oosterzele', 'sD4oFcma9c', '0', 'louis.dhont@student.odisee.be', '$2y$10$qpMTkVbvc6E.4dt2uk9BlOOadOXiz3J5tqiBwtcmWMupGiX5GiO/q'),
+(1, 'Louis', 'D\'Hont', 'Dorp 71A, Oosterzele', 'sD4oFcma9c', '1', 'louis.dhont@student.odisee.be', '$2y$10$qpMTkVbvc6E.4dt2uk9BlOOadOXiz3J5tqiBwtcmWMupGiX5GiO/q'),
 (2, 'Joris', 'Maervoet', 'Gebroeders de Smetstraat 1, 9000 Gent', 'fo2qmt17xr', '0', 'joris.maervoet@odisee.be', '$2y$10$qpMTkVbvc6E.4dt2uk9BlOOadOXiz3J5tqiBwtcmWMupGiX5GiO/q'),
-(3, 'Timon', 'De Bruyne', 'randomStraat 9, 9000 Gent', 'f2TIKVJ2KP', '0', 'timon.debruyne@student.odisee.be', '$2y$10$KqrUuDwLRFHEBX/Ul2wEMOthuLZqRYa0cL0xhYaLcknux7jNAETxO');
+(3, 'Timon', 'De Bruyne', 'randomStraat 9, 9000 Gent', 'f2TIKVJ2KP', '0', 'timon.debruyne@student.odisee.be', '$2y$10$KqrUuDwLRFHEBX/Ul2wEMOthuLZqRYa0cL0xhYaLcknux7jNAETxO'),
+(5, 'qsfd', 'qsds', 'zfeeffz', 'sAySlozWUv', '0', 'qsds@fqsd.ca', '$2y$10$knfh9XdX5nYI5M.NXDrVCugtMe/gA9kYbWgvP0YwX6v7jpxjy0ULW');
 
 --
 -- Beperkingen voor geëxporteerde tabellen
