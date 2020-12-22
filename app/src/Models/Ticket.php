@@ -5,20 +5,29 @@ class ticket{
     private $ticketPrice;
     private $amount;
     private $reasonForSell;
+    private $slug;
 
-    /**
-     * ticket constructor.
-     * @param $ticketName
-     * @param $ticketPrice
-     * @param $amount
-     * @param $reasonForSell
-     */
-    public function __construct(int $ticketId, string $ticketName, float $ticketPrice, int $amount, string $reasonForSell) {
+    public function __construct(int $ticketId, string $ticketName, float $ticketPrice, int $amount, string $reasonForSell, string $slug = null) {
         $this->ticketId = $ticketId;
         $this->ticketName = $ticketName;
         $this->ticketPrice = $ticketPrice;
         $this->amount = $amount;
         $this->reasonForSell = $reasonForSell;
+        $this->slug = $slug;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSlug(): ?string {
+        return $this->slug;
+    }
+
+    /**
+     * @param string|null $slug
+     */
+    public function setSlug(?string $slug): void {
+        $this->slug = $slug;
     }
 
     /**

@@ -316,15 +316,15 @@ class EventController {
             exit();
         }
         $this->user = $_SESSION['user'];
-
         $userId = isset($_SESSION['user']['gebruiker_id']) ? $_SESSION['user']['gebruiker_id'] : '';
         $tickets = [];
-        $stmt = $this->db->prepare('SELECT * FROM tickets AS t LEFT JOIN users AS u ON t.users_gebruiker_id = u.gebruiker_id WHERE t.users_gebruiker_id  = ?;');
+
+        $stmt = $this->db->prepare('SELECT * FROM tickets AS t LEFT JOIN users AS u ON t.users_gebruiker_id = u.gebruiker_id LEFT JOIN events AS e ON e.event_id = events_id_event WHERE t.users_gebruiker_id  = ?;');
         $stmt->execute([$userId]);
         $eventTickets = $stmt->fetchAllAssociative();
 
         foreach ($eventTickets as $ticket) {
-            $tickets[] = new ticket($ticket['ticket_id'], $ticket['ticket_name'], $ticket['ticket_price'], $ticket['amount'], $ticket['reason_for_sell']);
+            $tickets[] = new ticket($ticket['ticket_id'], $ticket['ticket_name'], $ticket['ticket_price'], $ticket['amount'], $ticket['reason_for_sell'], $ticket['slug']);
         }
 
         //View
@@ -335,7 +335,8 @@ class EventController {
             'address' => isset($_SESSION['user']['address']) ? $_SESSION['user']['address'] : '',
             'email' => isset($_SESSION['user']['email']) ? $_SESSION['user']['email'] : '',
             'couponcode' => isset($_SESSION['user']['couponcode']) ? $_SESSION['user']['couponcode'] : '',
-            'invite_number' => isset($_SESSION['user']['invite_number']) ? $_SESSION['user']['invite_number'] : '', 'tickets' => $tickets]);
+            'invite_number' => isset($_SESSION['user']['invite_number']) ? $_SESSION['user']['invite_number'] : '',
+            'tickets' => $tickets]);
     }
 
     public function showPurchaseTicket(int $ticketId) {
@@ -357,6 +358,9 @@ class EventController {
         $stmt = $this->db->prepare('SELECT ticket_file_location FROM tickets AS t LEFT JOIN events AS e ON t.events_id_event = e.event_id WHERE t.ticket_id = ?;');
         $stmt->execute([$ticketId]);
         $ticketFileLocation = $stmt->fetchAssociative();
+
+        $stmt = $this->db->prepare('DELETE FROM tickts WHERE t.ticket_id = ?;');
+        $stmt->execute([$ticketId]);
 
         //View
         echo $this->twig->render('pages/download-ticket.twig', ['ticketFileLocation' => $ticketFileLocation['ticket_file_location'], 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '']);
