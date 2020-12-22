@@ -162,13 +162,10 @@ class EventController {
         $subject = isset($_POST['subject']) ? (string)$_POST['subject'] : '';
         $message = isset($_POST['message']) ? (string)$_POST['message'] : '';
 
-
         $errorName = '';
         $errorFirstName = '';
         $errorSubject = '';
         $errorMessage = '';
-
-        $connection = getDBConnection();
 
         if (isset($_POST['btnRegister'])) {
             $allOk = true;
@@ -191,7 +188,7 @@ class EventController {
             }
             if ($allOk) {
                 //add to database
-                $stmt = $connection->prepare('INSERT INTO contact(name, first_name, subject, message) VALUES (?,?,?,?)');
+                $stmt = $this->db->prepare('INSERT INTO contact(name, first_name, subject, message) VALUES (?,?,?,?)');
                 $stmt->execute([$name, $firstName, $subject, $message]);
                 header('Location: /contact');
                 exit();
@@ -341,15 +338,27 @@ class EventController {
             'invite_number' => isset($_SESSION['user']['invite_number']) ? $_SESSION['user']['invite_number'] : '', 'tickets' => $tickets]);
     }
 
-    public function purchaseTicket(int $ticketId) {
+    public function showPurchaseTicket(int $ticketId) {
         $stmt = $this->db->prepare('SELECT * FROM tickets AS t LEFT JOIN events AS e ON t.events_id_event = e.event_id WHERE t.ticket_id = ?;');
         $stmt->execute([$ticketId]);
         $eventTicket = $stmt->fetchAssociative();
-
         $ticketinfo = new ticket($eventTicket['ticket_id'], $eventTicket['ticket_name'], $eventTicket['ticket_price'], $eventTicket['amount'], $eventTicket['reason_for_sell']);
-        $eventinfo = new event($eventTicket['event_name'], $eventTicket['standard_ticket_price'], $eventTicket['start_date'], $eventTicket['end_date'], $eventTicket['location'], $eventTicket['description'], $eventTicket['artist'], $eventTicket['slug']);
 
         //View
-        echo $this->twig->render('pages/checkout.twig', ['tickets' => $ticketinfo, 'event' => $eventinfo, 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '']);
+        echo $this->twig->render('pages/checkout.twig', ['tickets' => $ticketinfo, 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '']);
+    }
+
+    public function purchaseTicket(int $ticketId) {
+        header('Location: /events/ticket/'. $ticketId . '/download');
+        exit();
+    }
+
+    public function downloadTicket(int $ticketId) {
+        $stmt = $this->db->prepare('SELECT ticket_file_location FROM tickets AS t LEFT JOIN events AS e ON t.events_id_event = e.event_id WHERE t.ticket_id = ?;');
+        $stmt->execute([$ticketId]);
+        $ticketFileLocation = $stmt->fetchAssociative();
+
+        //View
+        echo $this->twig->render('pages/download-ticket.twig', ['ticketFileLocation' => $ticketFileLocation['ticket_file_location'], 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '']);
     }
 }

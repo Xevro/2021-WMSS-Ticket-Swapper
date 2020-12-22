@@ -151,6 +151,7 @@ dd:first-child {
     padding: 5px 20px 15px 20px;
     border: 1px solid lightgrey;
     border-radius: 3px;
+    margin-bottom: 40px;
 }
 
 input[type=text] {
@@ -209,4 +210,9 @@ span.price {
     .col-25 {
         margin-bottom: 20px;
     }
+}
+
+.download-button {
+    margin-top: 20px;
+    margin-bottom: 100px;
 }

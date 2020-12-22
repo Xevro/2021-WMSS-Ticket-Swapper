@@ -10,12 +10,10 @@
             <div class="row mt-3">
                 <div class="col-md-10 offset-md-1">
                     <h2>Checkout - Ticket #{{ tickets.getTicketId() }} - {{ tickets.getTicketName() }}</h2>
-                    <p>Resize the browser window to see the effect. When the screen is less than 800px wide, make the
-                        two columns stack on top of each other instead of next to each other.</p>
                     <div class="row">
                         <div class="col-50">
                             <div class="container">
-                                <form action="{{ action }}">
+                                <form action="{{ action }}" method="post">
                                     <div class="row">
                                         <div class="col-50">
                                             <h3>Payment</h3>
@@ -52,11 +50,11 @@
                         </div>
                         <div class="col-50">
                             <div class="container">
-                                <h3>Cart <span class="price" style="color:black"><i class="fa fa-shopping-cart"></i></span></h3>
+                                <h3>Ticket information <span class="price" style="color:black"><i class="fa fa-shopping-cart"></i></span></h3>
                                 <dl>
-                                    <dt>Ticket information</dt>
-                                    <dd>Ticket #{{ tickets.getTicketId() }} - {{ tickets.getTicketName() }}</dd>
-                                    <dd>Ticket price: €{{ tickets.getTicketPrice() }}</dd>
+                                    <dt>{{ tickets.getTicketName() }}</dt>
+                                    <dd>Ticket #{{ tickets.getTicketId() }}</dd>
+                                    <dd>Ticket price: <a style="font-weight: bold;">€{{ tickets.getTicketPrice() }}</a></dd>
                                     <dd>Amount of tickets: {{ tickets.getAmount() }}</dd>
                                 </dl>
                             </div>

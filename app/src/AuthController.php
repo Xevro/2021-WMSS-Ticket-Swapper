@@ -5,11 +5,11 @@ class AuthController {
     protected \Twig\Environment $twig;
 
     public function __construct() {
-        // initiate DB connection
-
         // bootstrap Twig
         $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/../resources/templates');
         $this->twig = new \Twig\Environment($loader);
+        //Database connection
+        $this->db = getDBConnection();
     }
 
     public function showLogin() {
@@ -29,8 +29,7 @@ class AuthController {
 
         if (isset($_POST['moduleAction']) && ($_POST['moduleAction'] == 'login')) {
             // Get user with sent username from DB
-            $connection = getDBConnection();
-            $stmt = $connection->prepare('SELECT * FROM users WHERE email = ?;');
+            $stmt = $this->db->prepare('SELECT * FROM users WHERE email = ?;');
             $stmt->execute([$email]);
             $user = $stmt->fetchAssociative();
 
@@ -56,7 +55,7 @@ class AuthController {
     }
 
     public function showRegister() {
-        echo $this->twig->render('pages/register-account.twig', []);
+        echo $this->twig->render('pages/register-account.twig');
     }
 
     public function register() {
@@ -72,14 +71,13 @@ class AuthController {
         if (isset($_POST['moduleAction']) && ($_POST['moduleAction'] == 'register')) {
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 if ($password == $confirm_password) {
-                    $connection = getDBConnection();
-                    $stmt = $connection->prepare('INSERT INTO users SET first_name = ?, last_name = ?, address = ?, couponcode = ?, email = ?, password = ?');
+                    $stmt = $this->db->prepare('INSERT INTO users SET first_name = ?, last_name = ?, address = ?, couponcode = ?, email = ?, password = ?');
                     $stmt->execute([$firstname, $lastname, $address, generateRandomString(10), $email, password_hash($password, PASSWORD_DEFAULT)]);
-                    $stmt = $connection->prepare('SELECT * FROM users WHERE email = ?');
+                    $stmt = $this->db->prepare('SELECT * FROM users WHERE email = ?');
                     $stmt->execute([$email]);
                     $user = $stmt->fetchAssociative();
 
-                    $stmt = $connection->prepare('UPDATE users SET invite_number = invite_number + 1 WHERE couponcode = ?');
+                    $stmt = $this->db->prepare('UPDATE users SET invite_number = invite_number + 1 WHERE couponcode = ?');
                     $stmt->execute([$invitecode]);
 
                     $_SESSION['user'] = $user;

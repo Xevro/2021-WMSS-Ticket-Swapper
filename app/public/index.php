@@ -45,7 +45,10 @@ $router->post('/register', 'EventController@registerEvent');
 $router->get('/ticket/add', 'EventController@addTicket');
 $router->post('/ticket/add', 'EventController@addTicket');
 
-$router->get('/ticket/(\d+)/purchase', 'EventController@purchaseTicket');
+$router->get('/ticket/(\d+)/purchase', 'EventController@showPurchaseTicket');
+$router->post('/ticket/(\d+)/purchase', 'EventController@purchaseTicket');
+
+$router->get('/ticket/(\d+)/download', 'EventController@downloadTicket');
 });
 
 // Run it!
