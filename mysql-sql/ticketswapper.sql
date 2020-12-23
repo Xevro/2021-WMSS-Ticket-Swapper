@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysqldb
--- Gegenereerd op: 22 dec 2020 om 23:29
+-- Gegenereerd op: 23 dec 2020 om 15:35
 -- Serverversie: 5.7.32
 -- PHP-versie: 7.4.11
 
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `tickets` (
   PRIMARY KEY (`ticket_id`),
   KEY `fk_tickets_events1_idx` (`events_id_event`),
   KEY `fk_tickets_users1_idx` (`users_gebruiker_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `tickets`
@@ -111,8 +111,7 @@ INSERT INTO `tickets` (`ticket_id`, `ticket_name`, `ticket_price`, `amount`, `re
 (1, 'Comboticket', 129.00, 5, 'can\'t go', '/tickets/phpxKIAxs.pdf', 1, 1),
 (2, 'Day pass', 48.00, 1, 'Have other plans', '/tickets/phpxKIAxs.pdf', 2, 2),
 (3, 'Day ticket', 48.00, 2, 'Going on a city trip', '/tickets/phpxKIAxs.pdf', 3, 2),
-(4, 'Combi + camping', 730.00, 1, 'Have to work that weekend...', '/tickets/phpxKIAxs.pdf', 1, 1),
-(5, 'test', 123.00, 292, 'qsdsqdsd', '/tickets/phpxKIAxs.pdf', 9, 1);
+(4, 'Combi + camping', 730.00, 1, 'Have to work that weekend...', '/tickets/phpxKIAxs.pdf', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -129,6 +128,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `invite_number` varchar(45) DEFAULT '0',
   `email` varchar(150) NOT NULL,
   `password` varchar(255) NOT NULL,
+  `discount_amount` int(4) DEFAULT '0',
   PRIMARY KEY (`gebruiker_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
@@ -136,11 +136,10 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Gegevens worden geëxporteerd voor tabel `users`
 --
 
-INSERT INTO `users` (`gebruiker_id`, `first_name`, `last_name`, `address`, `couponcode`, `invite_number`, `email`, `password`) VALUES
-(1, 'Louis', 'D\'Hont', 'Dorp 71A, Oosterzele', 'sD4oFcma9c', '1', 'louis.dhont@student.odisee.be', '$2y$10$qpMTkVbvc6E.4dt2uk9BlOOadOXiz3J5tqiBwtcmWMupGiX5GiO/q'),
-(2, 'Joris', 'Maervoet', 'Gebroeders de Smetstraat 1, 9000 Gent', 'fo2qmt17xr', '0', 'joris.maervoet@odisee.be', '$2y$10$qpMTkVbvc6E.4dt2uk9BlOOadOXiz3J5tqiBwtcmWMupGiX5GiO/q'),
-(3, 'Timon', 'De Bruyne', 'randomStraat 9, 9000 Gent', 'f2TIKVJ2KP', '0', 'timon.debruyne@student.odisee.be', '$2y$10$KqrUuDwLRFHEBX/Ul2wEMOthuLZqRYa0cL0xhYaLcknux7jNAETxO'),
-(5, 'qsfd', 'qsds', 'zfeeffz', 'sAySlozWUv', '0', 'qsds@fqsd.ca', '$2y$10$knfh9XdX5nYI5M.NXDrVCugtMe/gA9kYbWgvP0YwX6v7jpxjy0ULW');
+INSERT INTO `users` (`gebruiker_id`, `first_name`, `last_name`, `address`, `couponcode`, `invite_number`, `email`, `password`, `discount_amount`) VALUES
+(1, 'Louis', 'D\'Hont', 'Dorp 71A, Oosterzele', 'sD4oFcma9c', '0', 'louis.dhont@student.odisee.be', '$2y$10$qpMTkVbvc6E.4dt2uk9BlOOadOXiz3J5tqiBwtcmWMupGiX5GiO/q', 0),
+(2, 'Joris', 'Maervoet', 'Gebroeders de Smetstraat 1, 9000 Gent', 'fo2qmt17xr', '0', 'joris.maervoet@odisee.be', '$2y$10$qpMTkVbvc6E.4dt2uk9BlOOadOXiz3J5tqiBwtcmWMupGiX5GiO/q', 0),
+(3, 'Timon', 'De Bruyne', 'randomStraat 9, 9000 Gent', 'f2TIKVJ2KP', '0', 'timon.debruyne@student.odisee.be', '$2y$10$KqrUuDwLRFHEBX/Ul2wEMOthuLZqRYa0cL0xhYaLcknux7jNAETxO', 0);
 
 --
 -- Beperkingen voor geëxporteerde tabellen
