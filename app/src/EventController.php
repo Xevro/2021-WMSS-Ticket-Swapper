@@ -358,11 +358,11 @@ class EventController {
         $stmt->execute([$ticketId]);
         $ticketFileLocation = $stmt->fetchAssociative();
 
-        $stmt = $this->db->prepare('DELETE FROM tickets WHERE ticket_id = ?;');
-        $stmt->execute([$ticketId]);
+        //$stmt = $this->db->prepare('DELETE FROM tickets WHERE ticket_id = ?;');
+       // $stmt->execute([$ticketId]);
 
-        header('Location: /');
-        exit();
+//        header('Location: /');
+      //  exit();
 
         //View
         echo $this->twig->render('pages/download-ticket.twig', ['ticketFileLocation' => $ticketFileLocation['ticket_file_location'], 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '']);
