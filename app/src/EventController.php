@@ -387,6 +387,5 @@ class EventController {
     public function error404() {
         header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
         echo $this->twig->render('pages/error-404.twig');
-
     }
 }
