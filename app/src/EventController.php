@@ -15,8 +15,6 @@ class EventController {
 
     public function home() {
         $events = [];
-
-        //Fetch events
         $searchEvents = isset($_GET['searchEvents']) ? (string)$_GET['searchEvents'] : '';
 
         if ($searchEvents) {
@@ -313,20 +311,20 @@ class EventController {
             $tickets[] = new ticket($ticket['ticket_id'], $ticket['ticket_name'], $ticket['ticket_price'], $ticket['amount'], $ticket['reason_for_sell'], $ticket['slug']);
         }
 
-        $stmt = $this->db->prepare('SELECT * FROM users WHERE gebruiker_id  = ?;');
+        $stmt = $this->db->prepare('SELECT * FROM users WHERE gebruiker_id = ?;');
         $stmt->execute([$_SESSION['user']['gebruiker_id']]);
         $user = $stmt->fetchAssociative();
-        $userInfo = new user($user['first_name'], $user['last_name'], $user['address'], $user['couponcode'], $user['invite_number'], $user['email'], $user['discount_amount']);
+        $userInfo = new user($user['first_name'], $user['last_name'], $user['address'], $user['couponcode'], $user['invite_number'], $user['email'], $user['discount_amount'], $user['coupons_used']);
 
-        if ($userInfo->getInviteNumber() == 3) {
+        if ($userInfo->getInviteNumber() == 3 && $userInfo->getCouponsUsed() == 0) {
             $stmt = $this->db->prepare('UPDATE users SET discount_amount = ? WHERE gebruiker_id = ?');
             $stmt->execute([5, $_SESSION['user']['gebruiker_id']]);
-        } else if ($userInfo->getInviteNumber() == 10) {
+        } else if ($userInfo->getInviteNumber() == 10 && $userInfo->getCouponsUsed() <= 1) {
             $stmt = $this->db->prepare('UPDATE users SET discount_amount = ? WHERE gebruiker_id = ?');
             $stmt->execute([10, $_SESSION['user']['gebruiker_id']]);
         }
         //View
-        echo $this->twig->render('pages/my-account.twig', ['user' => $userInfo, 'tickets' => $tickets]);
+        echo $this->twig->render('pages/my-account.twig', ['username' => $userInfo->getFirstName(), 'user' => $userInfo, 'tickets' => $tickets]);
     }
 
     public function showPurchaseTicket(int $ticketId) {
@@ -334,8 +332,17 @@ class EventController {
         $stmt->execute([$ticketId]);
         $eventTicket = $stmt->fetchAssociative();
         $ticketinfo = new ticket($eventTicket['ticket_id'], $eventTicket['ticket_name'], $eventTicket['ticket_price'], $eventTicket['amount'], $eventTicket['reason_for_sell']);
+
+        $stmt = $this->db->prepare('SELECT * FROM users WHERE gebruiker_id = ?;');
+        $stmt->execute([$_SESSION['user']['gebruiker_id']]);
+        $user = $stmt->fetchAssociative();
+        if($user['discount_amount'] >= 1) {
+            $discountAmount = ($ticketinfo->getTicketPrice() - $user['discount_amount']);
+        } else {
+            $discountAmount = 0;
+        }
         //View
-        echo $this->twig->render('pages/checkout.twig', ['ticket' => $ticketinfo, 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '']);
+        echo $this->twig->render('pages/checkout.twig', ['ticket' => $ticketinfo, 'discountAmount' => $discountAmount, 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '']);
     }
 
     public function purchaseTicket(int $ticketId) {
@@ -344,12 +351,16 @@ class EventController {
     }
 
     public function downloadTicket(int $ticketId) {
+        $stmt = $this->db->prepare('SELECT * FROM users WHERE gebruiker_id = ?;');
+        $stmt->execute([$_SESSION['user']['gebruiker_id']]);
+        $user = $stmt->fetchAssociative();
+        if($user['discount_amount'] >= 1) {
+            $stmt = $this->db->prepare('UPDATE users SET discount_amount = 0, coupons_used = coupons_used + 1 WHERE gebruiker_id = ?');
+            $stmt->execute([$_SESSION['user']['gebruiker_id']]);
+        }
         $stmt = $this->db->prepare('SELECT * FROM tickets AS t LEFT JOIN events AS e ON t.events_id_event = e.event_id WHERE t.ticket_id = ?;');
         $stmt->execute([$ticketId]);
         $ticketFileLocation = $stmt->fetchAssociative();
-
-
-
         //$stmt = $this->db->prepare('DELETE FROM tickets WHERE ticket_id = ?;');
         //$stmt->execute([$ticketId]);
         //header('Location: /');

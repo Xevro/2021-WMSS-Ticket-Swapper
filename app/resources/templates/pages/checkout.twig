@@ -55,6 +55,9 @@
                                     <dt>{{ ticket.getTicketName() }}</dt>
                                     <dd>Ticket #{{ ticket.getTicketId() }}</dd>
                                     <dd>Ticket price: <a style="font-weight: bold;">€{{ ticket.getTicketPrice() }}</a></dd>
+                                    {% if discountAmount %}
+                                    <dd>Ticket price after discount: €{{ discountAmount }}</dd>
+                                    {% endif %}
                                     <dd>Amount of tickets: {{ ticket.getAmount() }}</dd>
                                 </dl>
                             </div>

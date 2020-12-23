@@ -30,7 +30,7 @@
                                                     <dd>Email: {{ user.getEmail() }}</dd>
                                                     <dd>My coupon code: {{ user.getCouponCode() }}</dd>
                                                     <dd>My number of invites: {{ user.getInviteNumber() }}</dd>
-                                                    {% if user.getDicountAmount() > 0 %}
+                                                    {% if use.getDicountAmount() <= 1 %}
                                                     <dd>My discount amount: €{{ user.getDicountAmount() }}</dd>
                                                     {% endif %}
                                                 </dl>

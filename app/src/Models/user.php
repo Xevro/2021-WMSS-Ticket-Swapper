@@ -10,8 +10,9 @@ class user {
     private $inviteNumber;
     private $email;
     private $dicountAmount;
+    private $couponsUsed;
 
-    public function __construct($firstName, $lastName, $address, $couponCode, $inviteNumber, $email, $dicountAmount) {
+    public function __construct(string $firstName, string $lastName, string $address, string $couponCode, int $inviteNumber, string $email, int $dicountAmount, int $couponsUsed) {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->address = $address;
@@ -19,6 +20,21 @@ class user {
         $this->inviteNumber = $inviteNumber;
         $this->email = $email;
         $this->dicountAmount = $dicountAmount;
+        $this->couponsUsed = $couponsUsed;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getCouponsUsed(): int {
+        return $this->couponsUsed;
+    }
+
+    /**
+     * @param bool $couponsUsed
+     */
+    public function setCouponUsed(int $couponsUsed): void {
+        $this->couponsUsed = $couponsUsed;
     }
 
     /**
