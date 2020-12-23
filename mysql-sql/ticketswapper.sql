@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysqldb
--- Gegenereerd op: 23 dec 2020 om 17:49
+-- Gegenereerd op: 23 dec 2020 om 18:19
 -- Serverversie: 5.7.32
 -- PHP-versie: 7.4.11
 
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `events` (
   `artist` varchar(1000) NOT NULL,
   `slug` varchar(255) NOT NULL,
   PRIMARY KEY (`event_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `events`
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `tickets` (
   PRIMARY KEY (`ticket_id`),
   KEY `fk_tickets_events1_idx` (`events_id_event`),
   KEY `fk_tickets_users1_idx` (`users_gebruiker_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `tickets`
@@ -124,22 +124,22 @@ CREATE TABLE IF NOT EXISTS `users` (
   `first_name` varchar(50) NOT NULL,
   `last_name` varchar(50) NOT NULL,
   `address` varchar(200) NOT NULL,
-  `couponcode` varchar(10) NOT NULL,
+  `invitecode` varchar(10) NOT NULL,
   `invite_number` varchar(45) DEFAULT '0',
   `email` varchar(150) NOT NULL,
   `password` varchar(255) NOT NULL,
   `discount_amount` int(4) DEFAULT '0',
   `coupons_used` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`gebruiker_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `users`
 --
 
-INSERT INTO `users` (`gebruiker_id`, `first_name`, `last_name`, `address`, `couponcode`, `invite_number`, `email`, `password`, `discount_amount`, `coupons_used`) VALUES
-(1, 'Louis', 'D\'Hont', 'Dorp 71A, Oosterzele', 'sD4oFcma9c', '0', 'louis.dhont@student.odisee.be', '$2y$10$qpMTkVbvc6E.4dt2uk9BlOOadOXiz3J5tqiBwtcmWMupGiX5GiO/q', 0, 0),
-(2, 'Joris', 'Maervoet', 'Gebroeders de Smetstraat 1, 9000 Gent', 'fo2qmt17xr', '0', 'joris.maervoet@odisee.be', '$2y$10$qpMTkVbvc6E.4dt2uk9BlOOadOXiz3J5tqiBwtcmWMupGiX5GiO/q', 0, 0),
+INSERT INTO `users` (`gebruiker_id`, `first_name`, `last_name`, `address`, `invitecode`, `invite_number`, `email`, `password`, `discount_amount`, `coupons_used`) VALUES
+(1, 'Louis', 'D\'Hont', 'Dorp 71A, Oosterzele', 'sD4oFcma9c', '3', 'louis.dhont@student.odisee.be', '$2y$10$qpMTkVbvc6E.4dt2uk9BlOOadOXiz3J5tqiBwtcmWMupGiX5GiO/q', 5, 0),
+(2, 'Joris', 'Maervoet', 'Gebroeders de Smetstraat 1, 9000 Gent', 'fo2qmt17xr', '3', 'joris.maervoet@odisee.be', '$2y$10$qpMTkVbvc6E.4dt2uk9BlOOadOXiz3J5tqiBwtcmWMupGiX5GiO/q', 5, 0),
 (3, 'Timon', 'De Bruyne', 'randomStraat 9, 9000 Gent', 'f2TIKVJ2KP', '0', 'timon.debruyne@student.odisee.be', '$2y$10$KqrUuDwLRFHEBX/Ul2wEMOthuLZqRYa0cL0xhYaLcknux7jNAETxO', 0, 0);
 
 --
