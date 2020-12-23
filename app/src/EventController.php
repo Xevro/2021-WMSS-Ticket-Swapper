@@ -344,25 +344,43 @@ class EventController {
         $stmt->execute([$ticketId]);
         $eventTicket = $stmt->fetchAssociative();
         $ticketinfo = new ticket($eventTicket['ticket_id'], $eventTicket['ticket_name'], $eventTicket['ticket_price'], $eventTicket['amount'], $eventTicket['reason_for_sell']);
-
         //View
-        echo $this->twig->render('pages/checkout.twig', ['tickets' => $ticketinfo, 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '']);
+        echo $this->twig->render('pages/checkout.twig', ['ticket' => $ticketinfo, 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '']);
     }
 
     public function purchaseTicket(int $ticketId) {
-        header('Location: /events/ticket/'. $ticketId . '/download');
+        header('Location: /events/ticket/3/download');
         exit();
     }
 
     public function downloadTicket(int $ticketId) {
-        $stmt = $this->db->prepare('SELECT ticket_file_location FROM tickets AS t LEFT JOIN events AS e ON t.events_id_event = e.event_id WHERE t.ticket_id = ?;');
+        $stmt = $this->db->prepare('SELECT * FROM tickets AS t LEFT JOIN events AS e ON t.events_id_event = e.event_id WHERE t.ticket_id = ?;');
         $stmt->execute([$ticketId]);
         $ticketFileLocation = $stmt->fetchAssociative();
 
-        $stmt = $this->db->prepare('DELETE FROM tickts WHERE t.ticket_id = ?;');
+        $stmt = $this->db->prepare('DELETE FROM tickets WHERE ticket_id = ?;');
         $stmt->execute([$ticketId]);
+
+        header('Location: /');
+        exit();
 
         //View
         echo $this->twig->render('pages/download-ticket.twig', ['ticketFileLocation' => $ticketFileLocation['ticket_file_location'], 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '']);
+    }
+
+    public function showRemoveTicket(int $ticketId) {
+        $stmt = $this->db->prepare('SELECT * FROM tickets AS t LEFT JOIN events AS e ON t.events_id_event = e.event_id WHERE t.ticket_id = ?;');
+        $stmt->execute([$ticketId]);
+        $eventTicket = $stmt->fetchAssociative();
+        $ticketinfo = new ticket($eventTicket['ticket_id'], $eventTicket['ticket_name'], $eventTicket['ticket_price'], $eventTicket['amount'], $eventTicket['reason_for_sell']);
+        //View
+        echo $this->twig->render('pages/remove-ticket.twig', ['ticket' => $ticketinfo, 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '']);
+    }
+
+    public function removeTicket(int $ticketId) {
+        $stmt = $this->db->prepare('DELETE FROM tickets WHERE ticket_id = ?;');
+        $stmt->execute([$ticketId]);
+        header('Location: /');
+        exit();
     }
 }

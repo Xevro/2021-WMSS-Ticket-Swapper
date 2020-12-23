@@ -9,11 +9,11 @@
         <div class="container-fluid">
             <div class="row mt-3">
                 <div class="col-md-10 offset-md-1">
-                    <h2>Checkout - Ticket #{{ tickets.getTicketId() }} - {{ tickets.getTicketName() }}</h2>
+                    <h2>Checkout - Ticket #{{ ticket.getTicketId() }} - {{ ticket.getTicketName() }}</h2>
                     <div class="row">
                         <div class="col-50">
                             <div class="container">
-                                <form action="{{ action }}" method="post">
+                                <form action="" method="post">
                                     <div class="row">
                                         <div class="col-50">
                                             <h3>Payment</h3>
@@ -52,10 +52,10 @@
                             <div class="container">
                                 <h3>Ticket information <span class="price" style="color:black"><i class="fa fa-shopping-cart"></i></span></h3>
                                 <dl>
-                                    <dt>{{ tickets.getTicketName() }}</dt>
-                                    <dd>Ticket #{{ tickets.getTicketId() }}</dd>
-                                    <dd>Ticket price: <a style="font-weight: bold;">€{{ tickets.getTicketPrice() }}</a></dd>
-                                    <dd>Amount of tickets: {{ tickets.getAmount() }}</dd>
+                                    <dt>{{ ticket.getTicketName() }}</dt>
+                                    <dd>Ticket #{{ ticket.getTicketId() }}</dd>
+                                    <dd>Ticket price: <a style="font-weight: bold;">€{{ ticket.getTicketPrice() }}</a></dd>
+                                    <dd>Amount of tickets: {{ ticket.getAmount() }}</dd>
                                 </dl>
                             </div>
                         </div>

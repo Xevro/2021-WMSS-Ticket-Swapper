@@ -48,6 +48,9 @@ $router->get('/ticket/(\d+)/purchase', 'EventController@showPurchaseTicket');
 $router->post('/ticket/(\d+)/purchase', 'EventController@purchaseTicket');
 
 $router->get('/ticket/(\d+)/download', 'EventController@downloadTicket');
+
+$router->get('/ticket/(\d+)/remove', 'EventController@showRemoveTicket');
+$router->post('/ticket/(\d+)/remove', 'EventController@removeTicket');
 });
 
 // Run it!
