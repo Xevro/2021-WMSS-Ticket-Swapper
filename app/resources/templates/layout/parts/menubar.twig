@@ -1,8 +1,8 @@
 <!-- Header -->
 <header id="header">
     <a class="logo" href="/">Ticketswapper</a>
-    {% if username %}
-    <a class="logo" href="/">Hello {{ username }}</a>
+    {% if user.getFirstName() %}
+    <a class="logo" href="/">Hello {{ user.getFirstName() }}</a>
     {% endif %}
     <nav>
         <a href="/login">Login</a>

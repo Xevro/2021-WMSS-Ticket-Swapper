@@ -6,8 +6,9 @@ use Doctrine\DBAL\Connection;
 //require database config & functions
 
 require_once $basePath . 'config/database.php';
-require_once $basePath . 'src/models/Ticket.php';
-require_once $basePath . 'src/models/Event.php';
+require_once $basePath . 'src/models/ticket.php';
+require_once $basePath . 'src/models/event.php';
+require_once $basePath . 'src/models/user.php';
 
 function getDBConnection(): Connection {
     $connectionParams = [

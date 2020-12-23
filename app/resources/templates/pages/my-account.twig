@@ -15,7 +15,7 @@
                                 <div class="x_panel">
                                     <div class="x_panel">
                                         <div class="x_title">
-                                            <h2>{{ firstname }} {{ lastname }}</h2>
+                                            <h2>{{ user.getFirstName() }} {{ user.getLastName() }}</h2>
                                             <h3></h3>
                                         </div>
                                         <div class="eventlist">
@@ -25,11 +25,14 @@
                                             <div class="x_content">
                                                 <dl>
                                                     <dt>User information</dt>
-                                                    <dd>Full name: {{ firstname }} {{ lastname }}</dd>
-                                                    <dd>Adress: {{ address }}</dd>
-                                                    <dd>Email: {{ email }}</dd>
-                                                    <dd>My coupon code: {{ couponcode }}</dd>
-                                                    <dd>My number of invites: {{ invite_number }}</dd>
+                                                    <dd>Full name: {{ user.getFirstName() }} {{ user.getLastName() }}</dd>
+                                                    <dd>Adress: {{ user.getAddress() }}</dd>
+                                                    <dd>Email: {{ user.getEmail() }}</dd>
+                                                    <dd>My coupon code: {{ user.getCouponCode() }}</dd>
+                                                    <dd>My number of invites: {{ user.getInviteNumber() }}</dd>
+                                                    {% if user.getDicountAmount() > 0 %}
+                                                    <dd>My discount amount: €{{ user.getDicountAmount() }}</dd>
+                                                    {% endif %}
                                                 </dl>
                                             </div>
                                         </div>
