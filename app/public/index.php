@@ -7,6 +7,8 @@ require $basePath . 'vendor/autoload.php';
 // Create Router instance
 $router = new \Bramus\Router\Router();
 
+$router->set404('EventController@error404');
+
 $router->before('GET|POST', '/.*', function () {
     session_start();
 });

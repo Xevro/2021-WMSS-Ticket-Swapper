@@ -1,0 +1,27 @@
+{% extends 'layout/main.twig' %}
+
+{% block pageContent %}
+    <body>
+    {% include 'layout/parts/menubar.twig' %}
+
+    <!-- page content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row mt-3">
+                <div class="col-md-10 offset-md-1">
+                    <div class="list-group eventsBox">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                <div class="x_title">
+                                    <h2>Error 404</h2>
+                                    <h3>The page you where trying to reach doesn't exist</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /page content -->
+{% endblock %}
