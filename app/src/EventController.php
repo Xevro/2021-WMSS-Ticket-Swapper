@@ -32,7 +32,7 @@ class EventController {
         }
         // View
         echo $this->twig->render('pages/index.twig', ['events' => $events, 'searchTerm' => $searchEvents, 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '',
-            'couponcode' => isset($_SESSION['user']['couponcode']) ? $_SESSION['user']['couponcode'] : '']);
+            'invitecode' => isset($_SESSION['user']['invitecode']) ? $_SESSION['user']['invitecode'] : '']);
     }
 
     public function events() {
@@ -314,7 +314,7 @@ class EventController {
         $stmt = $this->db->prepare('SELECT * FROM users WHERE gebruiker_id = ?;');
         $stmt->execute([$_SESSION['user']['gebruiker_id']]);
         $user = $stmt->fetchAssociative();
-        $userInfo = new user($user['first_name'], $user['last_name'], $user['address'], $user['couponcode'], $user['invite_number'], $user['email'], $user['discount_amount'], $user['coupons_used']);
+        $userInfo = new user($user['first_name'], $user['last_name'], $user['address'], $user['invitecode'], $user['invite_number'], $user['email'], $user['discount_amount'], $user['coupons_used']);
 
         if ($userInfo->getInviteNumber() == 3 && $userInfo->getCouponsUsed() == 0) {
             $stmt = $this->db->prepare('UPDATE users SET discount_amount = ? WHERE gebruiker_id = ?');

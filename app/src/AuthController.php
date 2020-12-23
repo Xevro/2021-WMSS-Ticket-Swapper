@@ -71,13 +71,13 @@ class AuthController {
         if (isset($_POST['moduleAction']) && ($_POST['moduleAction'] == 'register')) {
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 if ($password == $confirm_password) {
-                    $stmt = $this->db->prepare('INSERT INTO users SET first_name = ?, last_name = ?, address = ?, couponcode = ?, email = ?, password = ?');
+                    $stmt = $this->db->prepare('INSERT INTO users SET first_name = ?, last_name = ?, address = ?, invitecode = ?, email = ?, password = ?');
                     $stmt->execute([$firstname, $lastname, $address, generateRandomString(10), $email, password_hash($password, PASSWORD_DEFAULT)]);
                     $stmt = $this->db->prepare('SELECT * FROM users WHERE email = ?');
                     $stmt->execute([$email]);
                     $user = $stmt->fetchAssociative();
 
-                    $stmt = $this->db->prepare('UPDATE users SET invite_number = invite_number + 1 WHERE couponcode = ?');
+                    $stmt = $this->db->prepare('UPDATE users SET invite_number = invite_number + 1 WHERE invitecode = ?');
                     $stmt->execute([$invitecode]);
 
                     $_SESSION['user'] = $user;

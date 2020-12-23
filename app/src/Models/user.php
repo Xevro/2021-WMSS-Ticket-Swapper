@@ -6,17 +6,17 @@ class user {
     private $firstName;
     private $lastName;
     private $address;
-    private $couponCode;
+    private $inviteCode;
     private $inviteNumber;
     private $email;
     private $dicountAmount;
     private $couponsUsed;
 
-    public function __construct(string $firstName, string $lastName, string $address, string $couponCode, int $inviteNumber, string $email, int $dicountAmount, int $couponsUsed) {
+    public function __construct(string $firstName, string $lastName, string $address, string $inviteCode, int $inviteNumber, string $email, int $dicountAmount, int $couponsUsed) {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->address = $address;
-        $this->couponCode = $couponCode;
+        $this->inviteCode = $inviteCode;
         $this->inviteNumber = $inviteNumber;
         $this->email = $email;
         $this->dicountAmount = $dicountAmount;
@@ -82,8 +82,8 @@ class user {
     /**
      * @return mixed
      */
-    public function getCouponCode() {
-        return $this->couponCode;
+    public function getInviteCode() {
+        return $this->inviteCode;
     }
 
     /**
