@@ -15,6 +15,7 @@ class EventController {
 
     public function home() {
         $events = [];
+        $username = isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '';
         $searchEvents = isset($_GET['searchEvents']) ? (string)$_GET['searchEvents'] : '';
 
         if ($searchEvents) {
@@ -46,12 +47,13 @@ class EventController {
             }
         }
         // View
-        echo $this->twig->render('pages/index.twig', ['events' => $events, 'searchTerm' => $searchEvents, 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '',
+        echo $this->twig->render('pages/index.twig', ['events' => $events, 'searchTerm' => $searchEvents, 'username' => $username,
             'invitecode' => isset($_SESSION['user']['invitecode']) ? $_SESSION['user']['invitecode'] : '']);
     }
 
     public function events() {
         $events = [];
+        $username = isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '';
         $searchEvents = isset($_GET['searchEvents']) ? (string)$_GET['searchEvents'] : '';
 
         if ($searchEvents) {
@@ -67,10 +69,11 @@ class EventController {
             $events[] = new event($event['event_name'], $event['standard_ticket_price'], $event['start_date'], $event['end_date'], $event['location'], $event['description'], $event['artist'], $event['slug']);
         }
         // View
-        echo $this->twig->render('pages/events.twig', ['events' => $events, 'searchTerm' => $searchEvents, 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '']);
+        echo $this->twig->render('pages/events.twig', ['events' => $events, 'searchTerm' => $searchEvents, 'username' => $username]);
     }
 
     public function registerEvent() {
+        $username = isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '';
         $eventName = isset($_POST['eventName']) ? (string)$_POST['eventName'] : '';
         $standardPrice = isset($_POST['standardPrice']) ? (float)$_POST['standardPrice'] : '';
         $location = isset($_POST['location']) ? (string)$_POST['location'] : '';
@@ -159,11 +162,12 @@ class EventController {
         // View
         echo $this->twig->render('pages/register-event.twig', ['eventName' => $eventName, 'standardPrice' => $standardPrice, 'location' => $location,
             'description' => $description, 'artists' => $artists, 'startDate' => $startDate, 'endDate' => $endDate, 'errorName' => $errorName, 'errorPrice' => $errorPrice, 'errorLocation' => $errorLocation,
-            'errorDescription' => $errorDescription, 'errorArtists' => $errorArtists, 'errorStartDate' => $errorStartDate, 'errorEndDate' => $errorEndDate, 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '',
+            'errorDescription' => $errorDescription, 'errorArtists' => $errorArtists, 'errorStartDate' => $errorStartDate, 'errorEndDate' => $errorEndDate, 'username' => $username,
             'action' => '/events/register']);
     }
 
     public function contact() {
+        $username = isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '';
         $name = isset($_POST['name']) ? (string)$_POST['name'] : '';
         $firstName = isset($_POST['firstName']) ? (string)$_POST['firstName'] : '';
         $subject = isset($_POST['subject']) ? (string)$_POST['subject'] : '';
@@ -205,22 +209,18 @@ class EventController {
         // View
         echo $this->twig->render('pages/contact.twig', ['name' => $name, 'firstName' => $firstName, 'subject' => $subject,
             'message' => $message, 'errorName' => $errorName, 'errorFirstName' => $errorFirstName, 'errorSubject' => $errorSubject,
-            'errorMessage' => $errorMessage, 'action' => '/contact', 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '']);
+            'errorMessage' => $errorMessage, 'action' => '/contact', 'username' => $username]);
     }
 
     public function addTicket() {
+        $username = isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '';
         $ticketName = isset($_POST['ticketName']) ? (string)$_POST['ticketName'] : '';
         $ticketPrice = isset($_POST['ticketPrice']) ? (float)$_POST['ticketPrice'] : '';
         $amount = isset($_POST['amount']) ? (int)$_POST['amount'] : '';
         $reasonForSell = isset($_POST['reasonForSell']) ? (string)$_POST['reasonForSell'] : '';
         $eventId = isset($_POST['events']) ? (integer)$_POST['events'] : 0;
 
-        $errorName = '';
-        $errorPrice = '';
-        $errorAmount = '';
-        $errorReason = '';
-        $errorEvents = '';
-        $errorFile = '';
+        $errors = [];
         $events = [];
 
         $stmt = $this->db->prepare('SELECT event_id, event_name FROM events');
@@ -237,23 +237,23 @@ class EventController {
             $allOk = true;
 
             if ($ticketName === '') {
-                $errorName = 'A valid ticket name is required!';
+                $errors['name'] = 'A valid ticket name is required!';
                 $allOk = false;
             }
             if ($ticketPrice == '0') {
-                $errorPrice = 'A valid price is required!';
+                $errors['price'] = 'A valid price is required!';
                 $allOk = false;
             }
             if ($amount == '0') {
-                $errorAmount = 'A valid amount is required!';
+                $errors['amount'] = 'A valid amount is required!';
                 $allOk = false;
             }
             if ($reasonForSell === '') {
-                $errorReason = 'A valid reason is required!';
+                $errors['reason'] = 'A valid reason is required!';
                 $allOk = false;
             }
             if ($eventId == 0 && (!in_array($eventId, $events))) {
-                $errorEvents = 'This event does not exist';
+                $errors['events'] = 'This event does not exist';
                 $allOk = false;
             }
 
@@ -266,7 +266,7 @@ class EventController {
 
             // Allow certain file formats
             if (!in_array($fileExtension, $fileExtensionsAllowed)) {
-                $errorFile = "Sorry, only JPG, JPEG, PNG & PDF files are allowed.";
+                $errors['file'] = "Sorry, only JPG, JPEG, PNG & PDF files are allowed.";
                 $allOk = false;
             }
 
@@ -282,11 +282,12 @@ class EventController {
         }
         // View
         echo $this->twig->render('pages/add-ticket.twig', ['ticket_name' => $ticketName, 'ticket_price' => $ticketPrice, 'amount' => $amount,
-            'reasonForSell' => $reasonForSell, 'events' => $events, 'eventId' => $eventId, 'errorName' => $errorName, 'errorPrice' => $errorPrice, 'errorAmount' => $errorAmount,
-            'errorReason' => $errorReason, 'errorEvents' => $errorEvents, 'errorFile' => $errorFile, 'reason_for_sell' => $reasonForSell, 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '', 'action' => '/events/ticket/add']);
+            'reasonForSell' => $reasonForSell, 'events' => $events, 'eventId' => $eventId, 'errors' => $errors, 'reason_for_sell' => $reasonForSell,
+            'username' => $username, 'action' => '/events/ticket/add']);
     }
 
     public function eventTickets(string $eventName) {
+        $username = isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '';
         $searchTickets = isset($_GET['searchTickets']) ? (string)$_GET['searchTickets'] : '';
         $tickets = [];
         $stmt = $this->db->prepare('SELECT * FROM tickets AS t LEFT JOIN events AS e ON t.events_id_event = e.event_id WHERE e.slug = ? ORDER BY ticket_price;');
@@ -297,10 +298,11 @@ class EventController {
             $tickets[] = new ticket($ticket['ticket_id'], $ticket['ticket_name'], $ticket['ticket_price'], $ticket['amount'], $ticket['reason_for_sell']);
         }
         //View
-        echo $this->twig->render('pages/event-tickets.twig', ['tickets' => $tickets, 'eventName' => $eventName, 'searchTerm' => $searchTickets, 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '']);
+        echo $this->twig->render('pages/event-tickets.twig', ['tickets' => $tickets, 'eventName' => $eventName, 'searchTerm' => $searchTickets, 'username' => $username]);
     }
 
     public function ticketInfo(string $eventName, string $id) {
+        $username = isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '';
         $stmt = $this->db->prepare('SELECT * FROM tickets AS t LEFT JOIN events AS e ON t.events_id_event = e.event_id WHERE t.ticket_id = ?;');
         $stmt->execute([$id]);
         $eventTicket = $stmt->fetchAssociative();
@@ -309,7 +311,7 @@ class EventController {
         $eventinfo = new event($eventTicket['event_name'], $eventTicket['standard_ticket_price'], $eventTicket['start_date'], $eventTicket['end_date'], $eventTicket['location'], $eventTicket['description'], $eventTicket['artist'], $eventTicket['slug']);
 
         //View
-        echo $this->twig->render('pages/ticket-info.twig', ['tickets' => $ticketinfo, 'event' => $eventinfo, 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '']);
+        echo $this->twig->render('pages/ticket-info.twig', ['tickets' => $ticketinfo, 'event' => $eventinfo, 'username' => $username]);
     }
 
     public function myAccount() {
@@ -343,11 +345,15 @@ class EventController {
     }
 
     public function showPurchaseTicket(int $ticketId) {
+        $username = isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '';
+        $allowedToPurchase = true;
         $stmt = $this->db->prepare('SELECT * FROM tickets AS t LEFT JOIN events AS e ON t.events_id_event = e.event_id WHERE t.ticket_id = ?;');
         $stmt->execute([$ticketId]);
         $eventTicket = $stmt->fetchAssociative();
         $ticketinfo = new ticket($eventTicket['ticket_id'], $eventTicket['ticket_name'], $eventTicket['ticket_price'], $eventTicket['amount'], $eventTicket['reason_for_sell']);
-
+        if($_SESSION['user']['gebruiker_id'] == $eventTicket['users_gebruiker_id']) {
+            $allowedToPurchase = false;
+        }
         $stmt = $this->db->prepare('SELECT * FROM users WHERE gebruiker_id = ?;');
         $stmt->execute([$_SESSION['user']['gebruiker_id']]);
         $user = $stmt->fetchAssociative();
@@ -357,7 +363,7 @@ class EventController {
             $discountAmount = 0;
         }
         //View
-        echo $this->twig->render('pages/checkout.twig', ['ticket' => $ticketinfo, 'discountAmount' => $discountAmount, 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '']);
+        echo $this->twig->render('pages/checkout.twig', ['ticket' => $ticketinfo, 'discountAmount' => $discountAmount, 'username' => $username, 'allowed' => $allowedToPurchase]);
     }
 
     public function purchaseTicket(int $ticketId) {
@@ -366,6 +372,7 @@ class EventController {
     }
 
     public function downloadTicket(int $ticketId) {
+        $username = isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '';
         $stmt = $this->db->prepare('SELECT * FROM users WHERE gebruiker_id = ?;');
         $stmt->execute([$_SESSION['user']['gebruiker_id']]);
         $user = $stmt->fetchAssociative();
@@ -376,22 +383,23 @@ class EventController {
         $stmt = $this->db->prepare('SELECT * FROM tickets AS t LEFT JOIN events AS e ON t.events_id_event = e.event_id WHERE t.ticket_id = ?;');
         $stmt->execute([$ticketId]);
         $ticketFileLocation = $stmt->fetchAssociative();
-        //$stmt = $this->db->prepare('DELETE FROM tickets WHERE ticket_id = ?;');
-        //$stmt->execute([$ticketId]);
-        //header('Location: /');
-        //exit();
+        $stmt = $this->db->prepare('DELETE FROM tickets WHERE ticket_id = ?;');
+        $stmt->execute([$ticketId]);
+        header('Location: /');
+        exit();
 
         //View
-        echo $this->twig->render('pages/download-ticket.twig', ['ticketFileLocation' => $ticketFileLocation['ticket_file_location'], 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '']);
+        echo $this->twig->render('pages/download-ticket.twig', ['ticketFileLocation' => $ticketFileLocation['ticket_file_location'], 'username' => $username]);
     }
 
     public function showRemoveTicket(int $ticketId) {
+        $username = isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '';
         $stmt = $this->db->prepare('SELECT * FROM tickets AS t LEFT JOIN events AS e ON t.events_id_event = e.event_id WHERE t.ticket_id = ?;');
         $stmt->execute([$ticketId]);
         $eventTicket = $stmt->fetchAssociative();
         $ticketinfo = new ticket($eventTicket['ticket_id'], $eventTicket['ticket_name'], $eventTicket['ticket_price'], $eventTicket['amount'], $eventTicket['reason_for_sell']);
         //View
-        echo $this->twig->render('pages/remove-ticket.twig', ['ticket' => $ticketinfo, 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '']);
+        echo $this->twig->render('pages/remove-ticket.twig', ['ticket' => $ticketinfo, 'username' => $username]);
     }
 
     public function removeTicket(int $ticketId) {

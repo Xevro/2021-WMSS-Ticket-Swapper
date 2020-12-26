@@ -216,3 +216,8 @@ span.price {
     margin-top: 20px;
     margin-bottom: 100px;
 }
+
+.notAllowed {
+    padding-top: 25px;
+    margin-bottom: 40px;
+}
