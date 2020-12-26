@@ -66,33 +66,73 @@ class AuthController {
         $address = isset($_POST['address']) ? trim($_POST['address']) : '';
         $confirm_password = isset($_POST['confirm_password']) ? trim($_POST['confirm_password']) : '';
         $invitecode = isset($_POST['invitecode']) ? trim($_POST['invitecode']) : '';
-        $formErrors = [];
 
-        if (isset($_POST['moduleAction']) && ($_POST['moduleAction'] == 'register')) {
-            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                if ($password == $confirm_password) {
-                    $stmt = $this->db->prepare('INSERT INTO users SET first_name = ?, last_name = ?, address = ?, invitecode = ?, email = ?, password = ?');
-                    $stmt->execute([$firstname, $lastname, $address, generateRandomString(10), $email, password_hash($password, PASSWORD_DEFAULT)]);
-                    $stmt = $this->db->prepare('SELECT * FROM users WHERE email = ?');
-                    $stmt->execute([$email]);
-                    $user = $stmt->fetchAssociative();
+        $errorEmail = '';
+        $errorPassword = '';
+        $errorFirstName = '';
+        $errorLastName = '';
+        $errorAddress ='';
+        $errorConfirm ='';
+        $errorInviteCode ='';
 
-                    $stmt = $this->db->prepare('UPDATE users SET invite_number = invite_number + 1 WHERE invitecode = ?');
-                    $stmt->execute([$invitecode]);
+        if (isset($_POST['btnRegister'])) {
+            $allOk = true;
 
-                    $_SESSION['user'] = $user;
-                    header('location: /');
-                    exit();
-                } else {
-                    $formErrors['register'] = 'Invalid login credentials';
-                }
-            } else {
-                $formErrors['register'] = 'Not a valid e-mail address';
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL) ) {
+                $errorEmail = 'A valid email is required!';
+                $allOk = false;
+            }
+            if ($password === '') {
+                $errorPassword = 'A valid first password is required!';
+                $allOk = false;
+            }
+            if ($confirm_password === '') {
+                $errorConfirm = 'this is not the same as your password';
+                $allOk = false;
+            }
+            if ($firstname === '') {
+                $errorFirstName = 'A valid firstname is required!';
+                $allOk = false;
+            }
+            if ($lastname === '') {
+                $errorLastName = 'A valid lastname is required!';
+                $allOk = false;
+            }
+            if ($address === '') {
+                $errorAddress = 'A valid address is required!';
+                $allOk = false;
+            }
+            if ($invitecode === '') {
+                $errorInviteCode = 'A valid invitecode is required!';
+                $allOk = false;
+            }
+            if ($allOk && $password == $confirm_password) {
+                //add to database
+                $stmt = $this->db->prepare('INSERT INTO users SET first_name = ?, last_name = ?, address = ?, invitecode = ?, email = ?, password = ?');
+                $stmt->execute([$firstname, $lastname, $address, generateRandomString(10), $email, password_hash($password, PASSWORD_DEFAULT)]);
+                $stmt = $this->db->prepare('SELECT * FROM users WHERE email = ?');
+                $stmt->execute([$email]);
+                $user = $stmt->fetchAssociative();
+
+                $stmt = $this->db->prepare('UPDATE users SET invite_number = invite_number + 1 WHERE invitecode = ?');
+                $stmt->execute([$invitecode]);
+
+                $_SESSION['user'] = $user;
+                header('location: /');
+                exit();
             }
         }
+
         //View
-        echo $this->twig->render('pages/register-account.twig', ['firstName' => isset($_SESSION['user']['first_name']), 'formErrors' => $formErrors]);
+        echo $this->twig->render('pages/register-account.twig', [
+            'firstName' => isset($_SESSION['user']['first_name']),'lastName' => isset($_SESSION['user']['last_name']),
+            'firstname' => $firstname,'lastname' => $lastname,'email' => $email, 'password' => $password, 'address' => $address, 'invitecode' => $invitecode,
+            'errorEmail' => $errorEmail,'errorPassword' => $errorPassword,'errorFirstName' => $errorFirstName,'errorLastName' => $errorLastName,'errorAddress' => $errorAddress,'errorConfirm' => $errorConfirm,'errorInviteCode' => $errorInviteCode]);
     }
+
+
+
+
 
     public function logout() {
         $_SESSION = [];
