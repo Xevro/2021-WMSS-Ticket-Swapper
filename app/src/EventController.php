@@ -30,6 +30,21 @@ class EventController {
         foreach ($eventsAssociative as $event) {
             $events[] = new event($event['event_name'], $event['standard_ticket_price'], $event['start_date'], $event['end_date'], $event['location'], $event['description'], $event['artist'], $event['slug']);
         }
+
+        if (isset($_SESSION['user'])) {
+            $stmt = $this->db->prepare('SELECT * FROM users WHERE gebruiker_id = ?;');
+            $stmt->execute([$_SESSION['user']['gebruiker_id']]);
+            $user = $stmt->fetchAssociative();
+            $userInfo = new user($user['first_name'], $user['last_name'], $user['address'], $user['invitecode'], $user['invite_number'], $user['email'], $user['discount_amount'], $user['coupons_used']);
+
+            if ($userInfo->getInviteNumber() >= 3 && $userInfo->getInviteNumber() <= 9 && $userInfo->getCouponsUsed() == 0) {
+                $stmt = $this->db->prepare('UPDATE users SET discount_amount = ? WHERE gebruiker_id = ?');
+                $stmt->execute([5, $_SESSION['user']['gebruiker_id']]);
+            } else if ($userInfo->getInviteNumber() >= 10 && $userInfo->getCouponsUsed() <= 1) {
+                $stmt = $this->db->prepare('UPDATE users SET discount_amount = ? WHERE gebruiker_id = ?');
+                $stmt->execute([10, $_SESSION['user']['gebruiker_id']]);
+            }
+        }
         // View
         echo $this->twig->render('pages/index.twig', ['events' => $events, 'searchTerm' => $searchEvents, 'username' => isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '',
             'invitecode' => isset($_SESSION['user']['invitecode']) ? $_SESSION['user']['invitecode'] : '']);
@@ -316,10 +331,10 @@ class EventController {
         $user = $stmt->fetchAssociative();
         $userInfo = new user($user['first_name'], $user['last_name'], $user['address'], $user['invitecode'], $user['invite_number'], $user['email'], $user['discount_amount'], $user['coupons_used']);
 
-        if ($userInfo->getInviteNumber() == 3 && $userInfo->getCouponsUsed() == 0) {
+        if ($userInfo->getInviteNumber() >= 3 && $userInfo->getInviteNumber() <= 9 && $userInfo->getCouponsUsed() == 0) {
             $stmt = $this->db->prepare('UPDATE users SET discount_amount = ? WHERE gebruiker_id = ?');
             $stmt->execute([5, $_SESSION['user']['gebruiker_id']]);
-        } else if ($userInfo->getInviteNumber() == 10 && $userInfo->getCouponsUsed() <= 1) {
+        } else if ($userInfo->getInviteNumber() >= 10 && $userInfo->getCouponsUsed() <= 1) {
             $stmt = $this->db->prepare('UPDATE users SET discount_amount = ? WHERE gebruiker_id = ?');
             $stmt->execute([10, $_SESSION['user']['gebruiker_id']]);
         }
@@ -336,7 +351,7 @@ class EventController {
         $stmt = $this->db->prepare('SELECT * FROM users WHERE gebruiker_id = ?;');
         $stmt->execute([$_SESSION['user']['gebruiker_id']]);
         $user = $stmt->fetchAssociative();
-        if($user['discount_amount'] >= 1) {
+        if ($user['discount_amount'] >= 1) {
             $discountAmount = ($ticketinfo->getTicketPrice() - $user['discount_amount']);
         } else {
             $discountAmount = 0;
@@ -354,7 +369,7 @@ class EventController {
         $stmt = $this->db->prepare('SELECT * FROM users WHERE gebruiker_id = ?;');
         $stmt->execute([$_SESSION['user']['gebruiker_id']]);
         $user = $stmt->fetchAssociative();
-        if($user['discount_amount'] >= 1) {
+        if ($user['discount_amount'] >= 1) {
             $stmt = $this->db->prepare('UPDATE users SET discount_amount = 0, coupons_used = coupons_used + 1 WHERE gebruiker_id = ?');
             $stmt->execute([$_SESSION['user']['gebruiker_id']]);
         }
