@@ -351,16 +351,16 @@ class EventController {
         $stmt->execute([$ticketId]);
         $eventTicket = $stmt->fetchAssociative();
         $ticketinfo = new ticket($eventTicket['ticket_id'], $eventTicket['ticket_name'], $eventTicket['ticket_price'], $eventTicket['amount'], $eventTicket['reason_for_sell']);
-        if($_SESSION['user']['gebruiker_id'] == $eventTicket['users_gebruiker_id']) {
+        if($_SESSION['user']['gebruiker_id'] != $eventTicket['users_gebruiker_id']) {
             $allowedToPurchase = false;
-        }
-        $stmt = $this->db->prepare('SELECT * FROM users WHERE gebruiker_id = ?;');
-        $stmt->execute([$_SESSION['user']['gebruiker_id']]);
-        $user = $stmt->fetchAssociative();
-        if ($user['discount_amount'] >= 1) {
-            $discountAmount = ($ticketinfo->getTicketPrice() - $user['discount_amount']);
-        } else {
-            $discountAmount = 0;
+            $stmt = $this->db->prepare('SELECT * FROM users WHERE gebruiker_id = ?;');
+            $stmt->execute([$_SESSION['user']['gebruiker_id']]);
+            $user = $stmt->fetchAssociative();
+            if ($user['discount_amount'] >= 1) {
+                $discountAmount = ($ticketinfo->getTicketPrice() - $user['discount_amount']);
+            } else {
+                $discountAmount = 0;
+            }
         }
         //View
         echo $this->twig->render('pages/checkout.twig', ['ticket' => $ticketinfo, 'discountAmount' => $discountAmount, 'username' => $username, 'allowed' => $allowedToPurchase]);
