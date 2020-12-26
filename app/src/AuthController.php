@@ -71,14 +71,14 @@ class AuthController {
         $errorPassword = '';
         $errorFirstName = '';
         $errorLastName = '';
-        $errorAddress ='';
-        $errorConfirm ='';
-        $errorInviteCode ='';
+        $errorAddress = '';
+        $errorConfirm = '';
+        $errorInviteCode = '';
 
         if (isset($_POST['btnRegister'])) {
             $allOk = true;
 
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL) ) {
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $errorEmail = 'A valid email is required!';
                 $allOk = false;
             }
@@ -125,14 +125,10 @@ class AuthController {
 
         //View
         echo $this->twig->render('pages/register-account.twig', [
-            'firstName' => isset($_SESSION['user']['first_name']),'lastName' => isset($_SESSION['user']['last_name']),
-            'firstname' => $firstname,'lastname' => $lastname,'email' => $email, 'password' => $password, 'address' => $address, 'invitecode' => $invitecode,
-            'errorEmail' => $errorEmail,'errorPassword' => $errorPassword,'errorFirstName' => $errorFirstName,'errorLastName' => $errorLastName,'errorAddress' => $errorAddress,'errorConfirm' => $errorConfirm,'errorInviteCode' => $errorInviteCode]);
+            'firstName' => isset($_SESSION['user']['first_name']), 'lastName' => isset($_SESSION['user']['last_name']),
+            'firstname' => $firstname, 'lastname' => $lastname, 'email' => $email, 'password' => $password, 'address' => $address, 'invitecode' => $invitecode,
+            'errorEmail' => $errorEmail, 'errorPassword' => $errorPassword, 'errorFirstName' => $errorFirstName, 'errorLastName' => $errorLastName, 'errorAddress' => $errorAddress, 'errorConfirm' => $errorConfirm, 'errorInviteCode' => $errorInviteCode]);
     }
-
-
-
-
 
     public function logout() {
         $_SESSION = [];
