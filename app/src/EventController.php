@@ -347,12 +347,12 @@ class EventController {
     public function showPurchaseTicket(int $ticketId) {
         $username = isset($_SESSION['user']['first_name']) ? $_SESSION['user']['first_name'] : '';
         $allowedToPurchase = true;
+        $discountAmount = 0;
         $stmt = $this->db->prepare('SELECT * FROM tickets AS t LEFT JOIN events AS e ON t.events_id_event = e.event_id WHERE t.ticket_id = ?;');
         $stmt->execute([$ticketId]);
         $eventTicket = $stmt->fetchAssociative();
         $ticketinfo = new ticket($eventTicket['ticket_id'], $eventTicket['ticket_name'], $eventTicket['ticket_price'], $eventTicket['amount'], $eventTicket['reason_for_sell']);
         if($_SESSION['user']['gebruiker_id'] != $eventTicket['users_gebruiker_id']) {
-            $allowedToPurchase = false;
             $stmt = $this->db->prepare('SELECT * FROM users WHERE gebruiker_id = ?;');
             $stmt->execute([$_SESSION['user']['gebruiker_id']]);
             $user = $stmt->fetchAssociative();
@@ -361,6 +361,8 @@ class EventController {
             } else {
                 $discountAmount = 0;
             }
+        } else {
+            $allowedToPurchase = false;
         }
         //View
         echo $this->twig->render('pages/checkout.twig', ['ticket' => $ticketinfo, 'discountAmount' => $discountAmount, 'username' => $username, 'allowed' => $allowedToPurchase]);
@@ -385,8 +387,6 @@ class EventController {
         $ticketFileLocation = $stmt->fetchAssociative();
         $stmt = $this->db->prepare('DELETE FROM tickets WHERE ticket_id = ?;');
         $stmt->execute([$ticketId]);
-        header('Location: /');
-        exit();
 
         //View
         echo $this->twig->render('pages/download-ticket.twig', ['ticketFileLocation' => $ticketFileLocation['ticket_file_location'], 'username' => $username]);
