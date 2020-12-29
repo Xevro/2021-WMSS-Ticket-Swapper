@@ -102,10 +102,12 @@ class AuthController {
                 $errorAddress = 'A valid address is required!';
                 $allOk = false;
             }
-            if ($invitecode === '') {
-                $errorInviteCode = 'A valid invitecode is required!';
+            $code = $this->db->fetchAssociative('SELECT * FROM users WHERE invitecode = ?', [$invitecode]);
+            if ($code === false && $code != '') {
+                $errorInviteCode = 'the coupon code you entered is not valid';
                 $allOk = false;
             }
+
             if ($allOk && $password == $confirm_password) {
                 //add to database
                 $stmt = $this->db->prepare('INSERT INTO users SET first_name = ?, last_name = ?, address = ?, invitecode = ?, email = ?, password = ?');

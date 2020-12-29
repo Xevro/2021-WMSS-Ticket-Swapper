@@ -6,7 +6,7 @@
     <!-- page content -->
 
     <section class="content">
-        <div class="container-fluid">
+        <div class="container-fluid" id="eventslist">
             <div class="row mt-3">
                 <div class="col-md-10 offset-md-1">
                     <div class="list-group eventsBox">
@@ -15,7 +15,7 @@
                             <p>Choose an event to buy or sell tickets. You can search a certain event by using the search field</p>
                         </div>
                         <div class="list-group-item col px-4">
-                            <form action="" method="GET" class="form-label-left input_mask">
+                            <form action="#eventslist" method="GET" class="form-label-left input_mask">
                             <div class="input-group input-group-sm float-right" style="width: 200px;">
                                 <input type="text" name="searchEvents" value="{{ searchTerm }}" style="height: auto;" class="form-control float-right" placeholder="Search">
                                 <div class="input-group-append">
