@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "bramus/router",
-            "version": "1.6",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bramus/router.git",
-                "reference": "d2cf97d5c471e272ac5a2a88b652bc75089c8ae3"
+                "reference": "55657b76da8a0a509250fb55b9dd24e1aa237eba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bramus/router/zipball/d2cf97d5c471e272ac5a2a88b652bc75089c8ae3",
-                "reference": "d2cf97d5c471e272ac5a2a88b652bc75089c8ae3",
+                "url": "https://api.github.com/repos/bramus/router/zipball/55657b76da8a0a509250fb55b9dd24e1aa237eba",
+                "reference": "55657b76da8a0a509250fb55b9dd24e1aa237eba",
                 "shasum": ""
             },
             "require": {
@@ -53,9 +53,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bramus/router/issues",
-                "source": "https://github.com/bramus/router/tree/1.6"
+                "source": "https://github.com/bramus/router/tree/1.6.1"
             },
-            "time": "2021-07-23T09:48:14+00:00"
+            "time": "2021-11-18T19:24:07+00:00"
         },
         {
             "name": "composer/package-versions-deprecated",
