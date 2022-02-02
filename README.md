@@ -1,6 +1,9 @@
 # Serverside web project Ticketswapper
 
-## Docker setup
+Made by Louis D'Hont in 2020 for a serverside class.
+
+## Setup the project
+### Docker setup
 ```
 docker-compose up -d
 ```
